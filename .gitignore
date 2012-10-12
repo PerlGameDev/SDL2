@@ -3,6 +3,6 @@ blib
 *.o
 lib/*.c
 *.swp
-Build 
+Build
 MYMETA.json
 MYMETA.yml
