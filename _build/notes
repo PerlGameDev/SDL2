@@ -1,5 +1,0 @@
-do{ my $x = {
-  'sdl_cflags' => '-I /usr/local/lib',
-  'sdl_libs' => '-lSDL2'
-};
-$x; }

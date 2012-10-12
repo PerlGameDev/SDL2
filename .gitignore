@@ -1,0 +1,5 @@
+_build
+blib
+*.o
+lib/*.c
+*.swp
