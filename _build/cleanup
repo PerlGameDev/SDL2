@@ -1,0 +1,9 @@
+do{ my $x = {
+  'lib/SDL2.c' => 1,
+  'lib/SDL2.o' => 1,
+  'blib/arch/auto/SDL2/SDL2.bs' => 1,
+  'lib/SDL2.xs' => 1,
+  'blib/arch/auto/SDL2/SDL2.so' => 1,
+  'blib' => 1
+};
+$x; }

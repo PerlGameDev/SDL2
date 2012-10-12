@@ -1,0 +1,146 @@
+do{ my $x = [
+  {
+    'ARGV' => []
+  },
+  {},
+  {
+    'verbose' => undef,
+    'dist_suffix' => undef,
+    'PL_files' => undef,
+    'pollute' => undef,
+    'metafile2' => 'META.json',
+    'bindoc_dirs' => [
+      'blib/script'
+    ],
+    'conflicts' => {},
+    'recommends' => {},
+    'scripts' => undef,
+    'pod_files' => undef,
+    'dist_version' => '0.01',
+    'config_dir' => '_build',
+    'sign' => undef,
+    'recurse_into' => [],
+    'build_bat' => 0,
+    'extra_linker_flags' => [
+      '-lSDL2'
+    ],
+    'build_class' => 'Module::Build',
+    'prereq_action_types' => [
+      'requires',
+      'build_requires',
+      'conflicts',
+      'recommends'
+    ],
+    'base_dir' => '/home/kthakore/Documents/Development/PerlGameDev/libsdl2-perl',
+    'allow_mb_mismatch' => 0,
+    'destdir' => undef,
+    'metafile' => 'META.yml',
+    'xs_files' => {
+      'src/SDL2.xs' => 'lib/SDL2.xs'
+    },
+    'mb_version' => '0.4',
+    'use_tap_harness' => 0,
+    'test_file_exts' => [
+      '.t'
+    ],
+    'dist_name' => 'SDL2',
+    'has_config_data' => undef,
+    'install_base' => undef,
+    'module_name' => 'SDL2',
+    '_have_c_compiler' => 1,
+    'recursive_test_files' => undef,
+    'libdoc_dirs' => [
+      'blib/lib',
+      'blib/arch'
+    ],
+    'perl' => '/home/kthakore/.perl5/perls/perl-5.14.2/bin/perl',
+    'dist_author' => undef,
+    'bundle_inc' => [],
+    'use_rcfile' => 1,
+    'configure_requires' => {
+      'Capture::Tiny' => '0',
+      'Tie::Simple' => '0',
+      'File::ShareDir' => '1.0',
+      'File::Find' => '0',
+      'Module::Build' => '0',
+      'Alien::SDL' => '1.438',
+      'ExtUtils::CBuilder' => '0.260301'
+    },
+    'test_files' => undef,
+    'dist_abstract' => undef,
+    'create_readme' => undef,
+    'prefix_relpaths' => {},
+    'share_dir' => undef,
+    'debug' => undef,
+    'meta_merge' => {},
+    'get_options' => {},
+    'dist_version_from' => 'lib/SDL2.pm',
+    '_added_to_INC' => [],
+    'auto_configure_requires' => 1,
+    'create_license' => undef,
+    'debugger' => undef,
+    'html_css' => '',
+    'cpan_client' => 'cpan',
+    'mymetafile2' => 'MYMETA.json',
+    'bundle_inc_preload' => [],
+    'build_elements' => [
+      'PL',
+      'support',
+      'pm',
+      'xs',
+      'share_dir',
+      'pod',
+      'script'
+    ],
+    'release_status' => 'stable',
+    'needs_compiler' => 1,
+    'orig_dir' => '/home/kthakore/Documents/Development/PerlGameDev/libsdl2-perl',
+    'include_dirs' => [],
+    'installdirs' => 'site',
+    'mymetafile' => 'MYMETA.yml',
+    'create_makefile_pl' => undef,
+    'magic_number' => undef,
+    'dynamic_config' => 1,
+    'install_sets' => {},
+    'tap_harness_args' => {},
+    'install_base_relpaths' => {},
+    'create_packlist' => 1,
+    'meta_add' => {},
+    'requires' => {
+      'perl' => '5.008000',
+      'Scalar::Util' => '0',
+      'File::ShareDir' => '1.0',
+      'Tie::Simple' => '0',
+      'CPAN' => '1.92'
+    },
+    'install_path' => {},
+    'pm_files' => undef,
+    'quiet' => undef,
+    'script_files' => undef,
+    'extra_compiler_flags' => [
+      '-I/usr/local/include',
+      '-Isrc'
+    ],
+    'build_script' => 'Build',
+    'original_prefix' => {},
+    'c_source' => undef,
+    'program_name' => undef,
+    'autosplit' => undef,
+    'license' => 'perl',
+    'build_requires' => {
+      'Scalar::Util' => '0',
+      'Capture::Tiny' => '0',
+      'Test::Simple' => '0.88',
+      'File::ShareDir' => '1.0',
+      'Tie::Simple' => '0',
+      'File::Find' => '0',
+      'Test::Most' => '0.21',
+      'Alien::SDL' => '1.438',
+      'ExtUtils::CBuilder' => 0
+    },
+    'config' => undef,
+    'blib' => 'blib',
+    'prefix' => undef
+  }
+];
+$x; }

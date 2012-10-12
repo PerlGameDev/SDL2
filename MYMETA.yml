@@ -1,0 +1,42 @@
+---
+abstract: 'XS Bindings to libSDL2'
+author:
+  - kthakore@cpan.org
+build_requires:
+  Alien::SDL: 1.438
+  Capture::Tiny: 0
+  ExtUtils::CBuilder: 0
+  File::Find: 0
+  File::ShareDir: 1.0
+  Scalar::Util: 0
+  Test::Most: 0.21
+  Test::Simple: 0.88
+  Tie::Simple: 0
+configure_requires:
+  Alien::SDL: 1.438
+  Capture::Tiny: 0
+  ExtUtils::CBuilder: 0.260301
+  File::Find: 0
+  File::ShareDir: 1.0
+  Module::Build: 0
+  Tie::Simple: 0
+dynamic_config: 0
+generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120351'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: SDL2
+provides:
+  SDL2:
+    file: lib/SDL2.pm
+    version: 0.01
+requires:
+  CPAN: 1.92
+  File::ShareDir: 1.0
+  Scalar::Util: 0
+  Tie::Simple: 0
+  perl: 5.008000
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.01
