@@ -6,7 +6,7 @@ use Test::More tests => 2;
 
 BEGIN { use_ok( 'SDL2' ); }
 
-my $object = SDL2->new ();
-isa_ok ($object, 'SDL2');
+SDL2::init();
 
+SDL2::quit();
 
