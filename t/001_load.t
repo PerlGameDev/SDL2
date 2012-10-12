@@ -10,3 +10,4 @@ SDL2::init();
 
 SDL2::quit();
 
+pass();

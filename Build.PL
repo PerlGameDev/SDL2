@@ -45,6 +45,7 @@ my $build = Module::Build->new(
         module_name     => 'SDL2',
         license         => 'perl',
         dist_version_from  => 'lib/SDL2.pm',
+        dist_abstract   => 'XS bindings to libSDL2',
         configure_requires => {
         'Module::Build'      => '0',
         'ExtUtils::CBuilder' => '0.260301',

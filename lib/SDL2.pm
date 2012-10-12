@@ -13,7 +13,7 @@ $VERSION = eval $VERSION;
 use SDL2::Internal::Loader;
 internal_load_dlls(__PACKAGE__);
 
-bootstrap SDL;
+bootstrap SDL2;
 
 use base 'Exporter';
 
