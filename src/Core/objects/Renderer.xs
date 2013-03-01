@@ -74,6 +74,7 @@ renderer_set_draw_color (renderer, r, g, b, a)
     Uint8 b
     Uint8 a
     CODE:
+        warn("Color: %d %d %d %d", r, g, b, a);
         RETVAL = SDL_SetRenderDrawColor(renderer, r, g, b, a);
     OUTPUT:
         RETVAL

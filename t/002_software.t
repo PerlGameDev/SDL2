@@ -46,6 +46,8 @@ my $rect2 = SDL2::Rect->new(4,4,10,10);
 
 warn $renderer->draw_rect($rect);
 
+$renderer->present();
+
 SDL2pp::delay(3000);
 
 SDL2pp::quit();

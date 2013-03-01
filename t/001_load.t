@@ -34,7 +34,7 @@ my $renderer = SDL2::Renderer->new($win, -1, 0x00000002); #Hardware accelerated 
 
 my $rect = SDL2::Rect->new(0,0,4,4);
 
-warn $renderer->set_draw_color(255,0,0,255);
+warn $renderer->set_draw_color(0,0,0,255);
 
 warn $renderer->clear();
 
@@ -45,6 +45,8 @@ warn $renderer->fill_rect($rect);
 my $rect2 = SDL2::Rect->new(4,4,10,10);
 
 warn $renderer->draw_rect($rect);
+
+$renderer->present();
 
 SDL2pp::delay(3000);
 
