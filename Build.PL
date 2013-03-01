@@ -41,7 +41,7 @@ my %xs =
 	map { $subsystems{$_}{file}{from} => $subsystems{$_}{file}{to} }
 	keys %subsystems;
 
-my $cflags = '-I. '. `sdl2-config --cflags`;
+my $cflags = '-I. -Isrc '. `sdl2-config --cflags`;
 my $libs = `sdl2-config --libs`;
 
 my $build = Module::Build->new(

@@ -19,9 +19,6 @@ int
 init ( flags )
 	Uint32 flags
 	CODE:
-#if defined WINDOWS || defined WIN32
-		windows_force_driver();
-#endif
 		RETVAL = SDL_Init(flags);
 	OUTPUT:
 		RETVAL
@@ -56,11 +53,7 @@ was_init ( flags )
 IV
 get_handle ()
 	CODE:
-#if defined WINDOWS || defined WIN32
-		RETVAL = (IV)get_handle_win32();
-#else
 		RETVAL = 0;
-#endif
 	OUTPUT:
 		RETVAL
 
