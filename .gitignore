@@ -2,7 +2,9 @@ _build
 blib
 *.o
 lib/*.c
+lib/*.xs
 *.swp
 Build
 MYMETA.json
 MYMETA.yml
+Build.bat
