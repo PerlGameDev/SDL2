@@ -2,15 +2,16 @@
 
 # t/001_load.t - check module loading and create testing directory
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 
 BEGIN { 
     use_ok( 'SDL2pp' );
     use_ok( 'SDL2::Window' );
     use_ok( 'SDL2::Renderer' );
+    use_ok( 'SDL2::Rect' );
      }
 
-SDL2pp::init(0);
+exit 0 if SDL2pp::init(0x00000020) < 0 ; #SDL_INIT_VIDEO
 
 my $window_flags => {     SDL_WINDOW_FULLSCREEN => 0x00000001, 
     SDL_WINDOW_OPENGL => 0x00000002, 
@@ -29,7 +30,21 @@ my $window_flags => {     SDL_WINDOW_FULLSCREEN => 0x00000001,
 
 my $win = SDL2::Window->new("FIRST WINDOW", 50, 50, 200, 200, $window_flags->{SDL_WINDOW_SHOWN} | $window_flags->{SDL_WINDOW_OPENGL});
 
-my $renderer = SDL2::Renderer->new($win, -1, 0);
+my $renderer = SDL2::Renderer->new($win, -1, 0); #Hardware accelerated with software fallback
+
+my $rect = SDL2::Rect->new(0,0,4,4);
+
+warn $renderer->set_draw_color(255,0,0,255);
+
+warn $renderer->clear();
+
+warn $renderer->set_draw_color(0, 255,0,255);
+
+warn $renderer->fill_rect($rect);
+
+my $rect2 = SDL2::Rect->new(4,4,10,10);
+
+warn $renderer->draw_rect($rect);
 
 SDL2pp::delay(3000);
 

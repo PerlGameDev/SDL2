@@ -33,7 +33,15 @@ my %subsystems = (
 			to   => 'lib/SDL2/Renderer.xs',
 		},
 		libraries => [qw( SDL2 )],
+        },
+    Rect => {
+		file => {
+			from => 'src/Core/objects/Rect.xs',
+			to   => 'lib/SDL2/Rect.xs',
+		},
+		libraries => [qw( SDL2 )],
         }
+
 
     );
 
