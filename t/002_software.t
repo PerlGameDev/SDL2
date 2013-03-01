@@ -13,7 +13,7 @@ BEGIN {
 
 exit 0 if SDL2pp::init(0x00000020) < 0 ; #SDL_INIT_VIDEO
 
-my $window_flags => {     SDL_WINDOW_FULLSCREEN => 0x00000001, 
+my $window_flags = {     SDL_WINDOW_FULLSCREEN => 0x00000001, 
     SDL_WINDOW_OPENGL => 0x00000002, 
     SDL_WINDOW_SHOWN => 0x00000004, 
     SDL_WINDOW_HIDDEN => 0x00000008, 
