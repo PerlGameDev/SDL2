@@ -29,7 +29,7 @@ window_new (CLASS, title, x, y, w, h, flags)
 	Uint32 flags
 	CODE:
         SDL_Window* window = SDL_CreateWindow(title, x, y, w, h, flags);
-        warn( "Made window %p", window);
+        //warn( "Made window %p", window);
         RETVAL = window;
 	OUTPUT:
 		RETVAL
@@ -40,6 +40,6 @@ window_DESTROY(bag)
 	CODE:
         void* obj = bag2obj( bag );
         SDL_Window* window = (SDL_Window*)obj;
-        warn( "Destroying bag: %p obj: %p window %p", bag, obj, window );
+        //warn( "Destroying bag: %p obj: %p window %p", bag, obj, window );
 		SDL_DestroyWindow( window );
-        warn( "Destroyed"); 
+        //warn( "Destroyed"); 
