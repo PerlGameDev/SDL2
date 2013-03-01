@@ -2,7 +2,7 @@
 
 # t/001_load.t - check module loading and create testing directory
 
-use Test::More tests => 5;
+use Test::More tests => 10;
 
 BEGIN { 
     use_ok( 'SDL2pp' );
@@ -34,17 +34,17 @@ my $renderer = SDL2::Renderer->new($win, -1, 0x00000002); #Hardware accelerated 
 
 my $rect = SDL2::Rect->new(0,0,4,4);
 
-warn $renderer->set_draw_color(0,0,0,255);
+is($renderer->set_draw_color(0,0,0,255), 0, "Can set draw color" );
 
-warn $renderer->clear();
+is($renderer->clear(), 0, "Can clear renderer");
 
-warn $renderer->set_draw_color(0, 255,0,255);
+is($renderer->set_draw_color(0, 255,0,255), 0, "Can change draw color");
 
-warn $renderer->fill_rect($rect);
+is($renderer->fill_rect($rect), 0, "Can fill rect");
 
 my $rect2 = SDL2::Rect->new(4,4,10,10);
 
-warn $renderer->draw_rect($rect);
+is($renderer->draw_rect($rect2), 0, "Can draw rect");
 
 $renderer->present();
 
