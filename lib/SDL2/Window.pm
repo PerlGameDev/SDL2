@@ -1,16 +1,10 @@
 package SDL2::Window;
 use strict;
 use warnings;
-use vars qw($VERSION $XS_VERSION @ISA @EXPORT @EXPORT_OK);
+use vars qw(@ISA @EXPORT @EXPORT_OK);
 require Exporter;
 require DynaLoader;
 our @ISA = qw(Exporter DynaLoader);
-
-our $VERSION    = '0.01';
-our $XS_VERSION = $VERSION;
-$VERSION = eval $VERSION;
-
-
 
 use SDL2::Internal::Loader;
 internal_load_dlls(__PACKAGE__);
