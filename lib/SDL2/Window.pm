@@ -1,4 +1,4 @@
-package SDL2pp;
+package SDL2::Window;
 use strict;
 use warnings;
 use vars qw($VERSION $XS_VERSION @ISA @EXPORT @EXPORT_OK);
@@ -10,10 +10,12 @@ our $VERSION    = '0.01';
 our $XS_VERSION = $VERSION;
 $VERSION = eval $VERSION;
 
+
+
 use SDL2::Internal::Loader;
 internal_load_dlls(__PACKAGE__);
 
-bootstrap SDL2pp;
+bootstrap SDL2::Window;
 
 use base 'Exporter';
 

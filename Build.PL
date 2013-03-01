@@ -19,6 +19,14 @@ my %subsystems = (
 			to   => 'lib/SDL2pp.xs',
 		},
 		libraries => [qw( SDL2 )],
+        },
+    Window => {
+		file => {
+			from => 'src/Core/objects/Window.xs',
+			to   => 'lib/SDL2/Window.xs',
+		},
+		libraries => [qw( SDL2 )],
+
         }
     );
 
