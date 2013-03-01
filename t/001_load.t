@@ -2,11 +2,12 @@
 
 # t/001_load.t - check module loading and create testing directory
 
-use Test::More tests => 3;
+use Test::More tests => 4;
 
 BEGIN { 
     use_ok( 'SDL2pp' );
     use_ok( 'SDL2::Window' );
+    use_ok( 'SDL2::Renderer' );
      }
 
 SDL2pp::init(0);
@@ -27,6 +28,8 @@ my $window_flags => {     SDL_WINDOW_FULLSCREEN => 0x00000001,
 };
 
 my $win = SDL2::Window->new("FIRST WINDOW", 50, 50, 200, 200, $window_flags->{SDL_WINDOW_SHOWN} | $window_flags->{SDL_WINDOW_OPENGL});
+
+my $renderer = SDL2::Renderer->new($win, -1, 0);
 
 SDL2pp::delay(3000);
 
