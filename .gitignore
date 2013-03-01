@@ -3,6 +3,9 @@ blib
 *.o
 lib/*.c
 lib/*.xs
+*.c
+lib/SDL2/*.c
+lib/SDL2/*.xs
 *.swp
 Build
 MYMETA.json
