@@ -58,10 +58,10 @@ was_init ( flags )
 	OUTPUT:
 		RETVAL
 
-IV
-get_handle ()
+char*
+get_error ()
 	CODE:
-		RETVAL = 0;
+		RETVAL = SDL_GetError();
 	OUTPUT:
 		RETVAL
 

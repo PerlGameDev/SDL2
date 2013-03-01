@@ -28,9 +28,9 @@ my $window_flags => {     SDL_WINDOW_FULLSCREEN => 0x00000001,
     SDL_WINDOW_FOREIGN => 0x00000800 
 };
 
-my $win = SDL2::Window->new("FIRST WINDOW", 50, 50, 200, 200, $window_flags->{SDL_WINDOW_SHOWN} | $window_flags->{SDL_WINDOW_OPENGL});
+my $win = SDL2::Window->new("FIRST WINDOW", 50, 50, 200, 200, $window_flags->{SDL_WINDOW_SHOWN} );
 
-my $renderer = SDL2::Renderer->new($win, -1, 0x00000002); #Hardware accelerated with software fallback
+my $renderer = SDL2::Renderer->new($win, -1, 0x00000001); #Hardware accelerated with software fallback
 
 my $rect = SDL2::Rect->new(0,0,4,4);
 
