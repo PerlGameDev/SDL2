@@ -17,6 +17,7 @@ Sint16			T_IV
 Sint16 *		T_PTR
 Sint32			T_IV
 Sint32 *		T_PTR
+SDL_Window * 	O_OBJECT	
 SDL_Event *		O_OBJECT	
 SDL_ActiveEvent * 	O_OBJECT
 SDL_KeyboardEvent * 	O_OBJECT
