@@ -15,8 +15,8 @@ use Module::Build;
 my %subsystems = (
 	SDL2 => {
 		file => {
-			from => 'src/SDL2.xs',
-			to   => 'lib/SDL2.xs',
+			from => 'src/SDL2pp.xs',
+			to   => 'lib/SDL2pp.xs',
 		},
 		libraries => [qw( SDL2 )],
         }
