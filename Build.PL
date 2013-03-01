@@ -41,6 +41,7 @@ my %xs =
 	map { $subsystems{$_}{file}{from} => $subsystems{$_}{file}{to} }
 	keys %subsystems;
 
+
 my $build = Module::Build->new(
         module_name     => 'SDL2',
         license         => 'perl',
@@ -73,8 +74,8 @@ my $build = Module::Build->new(
             'perl'           => '5.008000',
         },
 	    'xs_files'      => \%xs,
-        'extra_compiler_flags' =>   '-I/usr/local/include -Isrc',
-        'extra_linker_flags' => '-lSDL2'
+        'extra_compiler_flags' =>  $cflags,
+        'extra_linker_flags' => $libs
         
         );
 print "Detecting available libraries ...\n";
