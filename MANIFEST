@@ -6,3 +6,5 @@ Changes
 Build.PL
 lib/SDL2.pm
 t/001_load.t
+META.yml
+META.json

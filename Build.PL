@@ -2,110 +2,81 @@
 
 use strict;
 use warnings;
-use Carp;
 
 use Alien::SDL2;
 use Module::Build;
-# See perldoc Module::Build for details of how this works
-### Subsystems to build
-#    <subsystem>
-#        <file> = hash of the following 2 values:
-#            <from> = location of source file
-#            <to>   = location of build file to get name right
-#        <libraries> = list reqiured libraries, names the same as keys to hash %libraries
-my %subsystems = (
-	SDL2 => {
-		file => {
-			from => 'src/SDL2pp.xs',
-			to   => 'lib/SDL2pp.xs',
-		},
-		libraries => [qw( SDL2 )],
-        },
-    Window => {
-		file => {
-			from => 'src/Core/objects/Window.xs',
-			to   => 'lib/SDL2/Window.xs',
-		},
-		libraries => [qw( SDL2 )],
-        },
-    Renderer => {
-		file => {
-			from => 'src/Core/objects/Renderer.xs',
-			to   => 'lib/SDL2/Renderer.xs',
-		},
-		libraries => [qw( SDL2 )],
-        },
-    Rect => {
-		file => {
-			from => 'src/Core/objects/Rect.xs',
-			to   => 'lib/SDL2/Rect.xs',
-		},
-		libraries => [qw( SDL2 )],
-        }
 
+### All available subsystems to build
+my %mods = (
+    'SDL2pp' => {
+        xs => [ 'src/SDL2pp.xs' => 'lib/SDL2pp.xs'],
+        libs => [qw( SDL2 )],
+    },
+    'SDL2::Window' => {
+        xs => [ 'src/Core/objects/Window.xs' => 'lib/SDL2/Window.xs' ],
+        libs => [qw( SDL2 )],
+    },
+    'SDL2::Renderer' => {
+        xs => [ 'src/Core/objects/Renderer.xs' => 'lib/SDL2/Renderer.xs' ],
+        libs => [qw( SDL2 )],
+    },
+    'SDL2::Rect' => {
+        xs => [ 'src/Core/objects/Rect.xs' => 'lib/SDL2/Rect.xs' ],
+        libs => [qw( SDL2 )],
+    }
+);
 
-    );
+### Check for available libs
+for my $m (keys %mods) {
+  my @libs = @{$mods{$m}{libs}};
+  if (!Alien::SDL2->havelib(@libs)) {
+    warn "WARNING: disabling '$m' (requires: " . join(',',@libs) . ")\n";
+    delete $mods{$m} ;
+  }
+}
 
-
-### External libraries
-#    <library name> = symbolic library name
-#        <define> = value that will be used as -D<value> option when compiling XS code
-#        <header> = header related to the library that will be used for avalability detection,
-#                   could be a sigle value or an array of values
-#        <lib>    = value that will be used as -l<value> option when linking XS code
-my %libraries = (
-	SDL => {
-		define => 'HAVE_SDL2',
-		header => 'SDL2/SDL.h',
-		lib    => 'SDL2',
-	}
-   );
-### Mangle the compilable files into a format Module::Build can understand
-my %xs =
-	map { $subsystems{$_}{file}{from} => $subsystems{$_}{file}{to} }
-	keys %subsystems;
-
-my $cflags = '-I. -Isrc '. Alien::SDL2->config('cflags');
-my $libs = Alien::SDL2->config('libs');
+### Prepare data we later pass to Module::Build
+my %xs      = map { $mods{$_}{xs}[0] => $mods{$_}{xs}[1] } keys %mods;
+my %mod2lib = map { $_ => $mods{$_}{libs} } keys %mods;
+my $cflags  = '-I. -Isrc '. Alien::SDL2->config('cflags');
+my $libs    = Alien::SDL2->config('libs');
 
 my $build = Module::Build->new(
-        module_name     => 'SDL2',
-        license         => 'perl',
-        dist_version_from  => 'lib/SDL2.pm',
-        dist_abstract   => 'XS bindings to libSDL2',
-        configure_requires => {
+    module_name     => 'SDL2',
+    license         => 'perl',
+    dist_version_from  => 'lib/SDL2.pm',
+    dist_abstract   => 'XS bindings to libSDL2',
+    configure_requires => {
         'Module::Build'      => '0',
         'ExtUtils::CBuilder' => '0.260301',
-        'Alien::SDL2'         => '0',
+        'Alien::SDL2'        => '0',
         'File::Find'         => '0',
         'File::ShareDir'     => '1.0',
         'Tie::Simple'        => '0',
         'Capture::Tiny'      => '0',
-        },
-        build_requires => {
-        'Test::Simple'   => '0.88',
-        'Capture::Tiny'  => '0',
-        'Test::Most'     => '0.21',
-        'Alien::SDL2'     => '0',
-        'File::Find'     => '0',
-        'File::ShareDir' => '1.0',
-        'Tie::Simple'    => '0',
-        'Scalar::Util'   => '0',
-        },
-        requires => {
-            'Scalar::Util'   => '0',
-            'Tie::Simple'    => '0',
-            'File::ShareDir' => '1.0',
-            'CPAN'           => '1.92',
-            'perl'           => '5.008000',
-        },
-	    'xs_files'      => \%xs,
-        'extra_compiler_flags' =>  $cflags,
-        'extra_linker_flags' => $libs
-        
-        );
-print "Detecting available libraries ...\n";
+    },
+    build_requires => {
+        'Test::Simple'       => '0.88',
+        'Capture::Tiny'      => '0',
+        'Test::Most'         => '0.21',
+        'Alien::SDL2'        => '0',
+        'File::Find'         => '0',
+        'File::ShareDir'     => '1.0',
+        'Tie::Simple'        => '0',
+        'Scalar::Util'       => '0',
+    },
+    requires => {
+        'Scalar::Util'       => '0',
+        'Tie::Simple'        => '0',
+        'File::ShareDir'     => '1.0',
+        'CPAN'               => '1.92',
+        'perl'               => '5.008000',
+    },
+    create_readme => 1,
+    xs_files => \%xs,
+    extra_compiler_flags =>  $cflags,
+    extra_linker_flags => $libs,
+    config_data => { mod2lib => \%mod2lib },
+);
 
-#my $build_systems = $build->find_subsystems( \%subsystems, \%libraries );
-
-  $build->create_build_script;
+$build->create_build_script;

@@ -7,9 +7,12 @@ require DynaLoader;
 our @ISA = qw(Exporter DynaLoader);
 
 use SDL2::Internal::Loader;
-internal_load_dlls(__PACKAGE__);
-
-bootstrap SDL2pp;
+if (check_and_load(__PACKAGE__)) {
+  bootstrap SDL2pp;
+}
+else {
+  warn "WARNING: " . __PACKAGE__ . " is not available\n";
+}
 
 use base 'Exporter';
 
