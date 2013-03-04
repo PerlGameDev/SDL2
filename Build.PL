@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
+use Alien::SDL2;
 use Module::Build;
 # See perldoc Module::Build for details of how this works
 ### Subsystems to build
@@ -64,8 +65,8 @@ my %xs =
 	map { $subsystems{$_}{file}{from} => $subsystems{$_}{file}{to} }
 	keys %subsystems;
 
-my $cflags = '-I. -Isrc '. `sdl2-config --cflags`;
-my $libs = `sdl2-config --libs`;
+my $cflags = '-I. -Isrc '. Alien::SDL2->config('cflags');
+my $libs = Alien::SDL2->config('libs');
 
 my $build = Module::Build->new(
         module_name     => 'SDL2',
@@ -75,7 +76,7 @@ my $build = Module::Build->new(
         configure_requires => {
         'Module::Build'      => '0',
         'ExtUtils::CBuilder' => '0.260301',
-        'Alien::SDL'         => '1.438',
+        'Alien::SDL2'         => '0',
         'File::Find'         => '0',
         'File::ShareDir'     => '1.0',
         'Tie::Simple'        => '0',
@@ -85,7 +86,7 @@ my $build = Module::Build->new(
         'Test::Simple'   => '0.88',
         'Capture::Tiny'  => '0',
         'Test::Most'     => '0.21',
-        'Alien::SDL'     => '1.438',
+        'Alien::SDL2'     => '0',
         'File::Find'     => '0',
         'File::ShareDir' => '1.0',
         'Tie::Simple'    => '0',
