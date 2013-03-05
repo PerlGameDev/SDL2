@@ -11,6 +11,8 @@ use SDL2::Rect;
 
 ok( exists &SDL2::Rect::new, 'new exists');
 
+can_ok('SDL2::Rect', qw/new/);
+
 my $rect = SDL2::Rect->new(0,0,0,0);
 
 isa_ok($rect, 'SDL2::Rect', 'new makes an SDL2::Rect');

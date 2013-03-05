@@ -10,6 +10,8 @@ BEGIN {
 use SDL2::Window;
 
 ok( exists &SDL2::Window::new, 'new exists');
+can_ok('SDL2::Window', qw/new/);
+
 ok 1, 'success 1';
 ok 1, 'success 2';
 
