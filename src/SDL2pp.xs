@@ -58,6 +58,52 @@ was_init ( flags )
 	OUTPUT:
 		RETVAL
 
+void
+clear_hints ( )
+    CODE:
+        SDL_ClearHints();
+
+char *
+get_hint( name )
+    char * name
+    CODE:
+        RETVAL = SDL_GetHint(name);
+    OUTPUT:
+        RETVAL
+
+
+int
+set_hint( name, value )
+    char* name
+    char* value
+    CODE:
+        SDL_bool result;
+        result = SDL_SetHint( name, value );
+        if( result == SDL_TRUE )
+            RETVAL = 1;
+        else
+            RETVAL = 0;
+    OUTPUT:
+        RETVAL
+
+int
+set_hint_with_priority( name, value, priority)
+    char* name
+    char* value
+    int priority
+    CODE:
+        SDL_bool result;
+        SDL_HintPriority hp;
+        hp = (SDL_HintPriority)priority;
+        result = SDL_SetHintWithPriority( name, value, hp );
+        if( result == SDL_TRUE )
+            RETVAL = 1;
+        else
+            RETVAL = 0;
+    OUTPUT:
+        RETVAL
+
+
 char*
 get_error ()
 	CODE:
