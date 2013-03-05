@@ -10,6 +10,11 @@ BEGIN {
 use SDL2::Rect;
 
 ok( exists &SDL2::Rect::new, 'new exists');
+
+my $rect = SDL2::Rect->new(0,0,0,0);
+
+isa_ok($rect, 'SDL2::Rect', 'new makes an SDL2::Rect');
+
 ok 1, 'success 1';
 ok 1, 'success 2';
 
