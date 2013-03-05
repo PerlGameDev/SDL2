@@ -1,7 +1,5 @@
 # -*- perl -*-
 
-# t/001_load.t - check module loading and create testing directory
-
 use Test::More tests => 10;
 
 BEGIN { 
@@ -9,7 +7,7 @@ BEGIN {
     use_ok( 'SDL2::Window' );
     use_ok( 'SDL2::Renderer' );
     use_ok( 'SDL2::Rect' );
-     }
+}
 
 exit 0 if SDL2pp::init(0x00000020) < 0 ; #SDL_INIT_VIDEO
 
