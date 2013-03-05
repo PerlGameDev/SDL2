@@ -23,23 +23,32 @@ my %mods = (
     'SDL2::Rect' => {
         xs => [ 'src/Core/objects/Rect.xs' => 'lib/SDL2/Rect.xs' ],
         libs => [qw( SDL2 )],
-    }
+    },
+    #'SDL2::Mixer' => {
+    #    xs => [ 'src/Core/objects/Mixer.xs' => 'lib/SDL2/Mixer.xs' ],
+    #    libs => [qw( SDL2 SDL2_Mixer )],
+    #},
 );
 
 ### Check for available libs
+my %seen;
 for my $m (keys %mods) {
   my @libs = @{$mods{$m}{libs}};
   if (!Alien::SDL2->havelib(@libs)) {
     warn "WARNING: disabling '$m' (requires: " . join(',',@libs) . ")\n";
-    delete $mods{$m} ;
+    delete $mods{$m};
+    next;
   }
+  $seen{$_} = 1 for @libs;
 }
+delete $seen{SDL2}; #we do not need -lSDL2 in extra_libs
+my @extra_libs = map { "-l$_" } keys %seen;
 
 ### Prepare data we later pass to Module::Build
 my %xs      = map { $mods{$_}{xs}[0] => $mods{$_}{xs}[1] } keys %mods;
 my %mod2lib = map { $_ => $mods{$_}{libs} } keys %mods;
 my $cflags  = '-I. -Isrc '. Alien::SDL2->config('cflags');
-my $libs    = Alien::SDL2->config('libs');
+my $libs    = Alien::SDL2->config('libs', @extra_libs);
 
 my $build = Module::Build->new(
     module_name     => 'SDL2',
