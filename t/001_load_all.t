@@ -14,6 +14,7 @@ use SDL2pp;
 use SDL2::Window;
 use SDL2::Renderer;
 use SDL2::Rect;
+use SDL2::Video;
 #add more
 
 ok 1, 'All modules loaded successfully';

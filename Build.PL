@@ -12,6 +12,11 @@ my %mods = (
         xs => [ 'src/SDL2pp.xs' => 'lib/SDL2pp.xs'],
         libs => [qw( SDL2 )],
     },
+    'SDL2::Video' => {
+        xs => [ 'src/Core/Video.xs' => 'lib/SDL2/Video.xs'],
+        libs => [qw( SDL2 )],
+    },
+
     'SDL2::Window' => {
         xs => [ 'src/Core/objects/Window.xs' => 'lib/SDL2/Window.xs' ],
         libs => [qw( SDL2 )],

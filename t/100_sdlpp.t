@@ -13,6 +13,20 @@ use SDL2pp;
 
 pass('Loaded');
 
+can_ok('SDL2pp', qw/ 
+    init
+    init_sub_system
+    delay
+    quit_sub_system
+    quit
+    was_init
+    clear_hints
+    get_hint
+    set_hint
+    set_hint_with_priority
+    get_error  
+/);
+
 
 done_testing;
 
