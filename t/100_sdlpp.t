@@ -11,6 +11,7 @@ BEGIN {
 
 use SDL2pp;
 
+pass('Loaded');
 
 
 done_testing;
