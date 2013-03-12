@@ -25,7 +25,10 @@ can_ok('SDL2pp', qw/
     set_hint
     set_hint_with_priority
     get_error  
+    clear_error
+    set_error
 /);
+
 
 
 done_testing;

@@ -104,11 +104,24 @@ set_hint_with_priority( name, value, priority)
         RETVAL
 
 
-char*
+const char*
 get_error ()
 	CODE:
 		RETVAL = SDL_GetError();
 	OUTPUT:
 		RETVAL
+
+
+void
+clear_error ()
+    CODE:
+        SDL_ClearError();
+
+
+void
+set_error (fmt)
+    const char* fmt
+    CODE: 
+       SDL_SetError( fmt );
 
 
