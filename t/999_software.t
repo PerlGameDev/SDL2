@@ -9,7 +9,7 @@ BEGIN {
     use_ok( 'SDL2::Rect' );
 }
 
-exit 0 if SDL2pp::init(0x00000020) < 0 ; #SDL_INIT_VIDEO
+exit 0 if SDL2pp::init(SDL_INIT_VIDEO) < 0 ; #SDL_INIT_VIDEO
 
 my $window_flags = {     SDL_WINDOW_FULLSCREEN => 0x00000001, 
     SDL_WINDOW_OPENGL => 0x00000002, 
