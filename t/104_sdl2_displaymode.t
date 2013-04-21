@@ -13,11 +13,14 @@ ok( exists &SDL2::DisplayMode::new, 'new exists');
 
 can_ok('SDL2::DisplayMode', qw/new/);
 
-my $displaymode = SDL2::DisplayMode->new(10,10,60);
+my $dm = SDL2::DisplayMode->new(10,10,60);
 
-isa_ok($displaymode, 'SDL2::DisplayMode', 'new makes an SDL2::DisplayMode');
+is( $dm->w, 10 );
 
-ok 1, 'success 1';
-ok 1, 'success 2';
+is( $dm->h, 10 );
+
+is( $dm->refresh_rate, 60);
+
+isa_ok($dm, 'SDL2::DisplayMode', 'new makes an SDL2::DisplayMode');
 
 done_testing();
