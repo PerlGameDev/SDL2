@@ -36,6 +36,14 @@ our %EXPORT_TAGS = (
         SDL_WINDOW_FOREIGN 
         )
 
+    ],
+    'SDL2::Renderer/type' => [
+        qw(
+        SDL_RENDERER_SOFTWARE
+        SDL_RENDERER_ACCELERATED
+        SDL_RENDERER_PRESENTVSYNC
+        SDL_RENDERER_TARGETTEXTURE 
+        )
     ]
 );
 
@@ -82,5 +90,11 @@ use constant {
 
 }; # SDL/Window
 
+use constant {
+    SDL_RENDERER_SOFTWARE => 0x00000001,
+    SDL_RENDERER_ACCELERATED => 0x00000002,
+    SDL_RENDERER_PRESENTVSYNC => 0x00000004,
+    SDL_RENDERER_TARGETTEXTURE => 0x00000008
 
+};
 1;

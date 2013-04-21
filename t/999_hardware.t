@@ -12,7 +12,7 @@ BEGIN {
 exit 0 if SDL2pp::init(SDL_INIT_VIDEO) < 0 ; #SDL_INIT_VIDEO
 my $win = SDL2::Window->new("FIRST WINDOW", 50, 50, 200, 200, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
-my $renderer = SDL2::Renderer->new($win, -1, 0x00000002); #Hardware accelerated with software fallback
+my $renderer = SDL2::Renderer->new($win, -1, SDL_RENDERER_ACCELERATED); #Hardware accelerated with software fallback
 
 my $rect = SDL2::Rect->new(0,0,4,4);
 

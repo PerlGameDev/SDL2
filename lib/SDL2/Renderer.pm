@@ -14,6 +14,15 @@ else {
   warn "WARNING: " . __PACKAGE__ . " is not available\n";
 }
 
+use SDL2::Constants ':SDL2::Renderer';
 use base 'Exporter';
+
+our @EXPORT = @{ $SDL2::Constants::EXPORT_TAGS{'SDL2::Renderer'} };
+
+our %EXPORT_TAGS = (
+    all     => \@EXPORT,
+    type    => $SDL2::Constants::EXPORT_TAGS{'SDL2::Renderer/type'}
+);
+
 
 1;
