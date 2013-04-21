@@ -38,8 +38,5 @@ void
 window_DESTROY(bag)
 	SV *bag
 	CODE:
-        void* obj = bag2obj( bag );
-        SDL_Window* window = (SDL_Window*)obj;
-        //warn( "Destroying bag: %p obj: %p window %p", bag, obj, window );
-		SDL_DestroyWindow( window );
-        //warn( "Destroyed"); 
+        objDESTROY(bag, SDL_DestroyWindow);
+

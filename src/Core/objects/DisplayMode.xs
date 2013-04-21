@@ -67,6 +67,5 @@ void
 displaymode_DESTROY(bag)
 	SV *bag
 	CODE:
-        void* obj = bag2obj( bag );
-        SDL_DisplayMode* dm = (SDL_DisplayMode*)obj;
-        safefree(dm);
+        objDESTROY( bag, safefree );
+

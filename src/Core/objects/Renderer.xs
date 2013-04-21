@@ -83,8 +83,5 @@ void
 renderer_DESTROY(bag)
 	SV *bag
 	CODE:
-        void* obj = bag2obj( bag );
-        SDL_Renderer* renderer = (SDL_Renderer*)obj;
-        //warn( "Destroying bag: %p obj: %p renderer %p", bag, obj, renderer );
-		SDL_DestroyRenderer( renderer );
-        //warn( "Destroyed"); 
+        objDESTROY( bag, SDL_DestroyRenderer);
+
