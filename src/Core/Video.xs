@@ -23,7 +23,20 @@ get_current_video_driver ( )
         RETVAL
 
 
+int
+get_num_video_drivers () 
+    CODE:
+        RETVAL = SDL_GetNumVideoDrivers();
+    OUTPUT:
+        RETVAL
 
 
+const char *
+get_video_driver ( index )
+    int index
+    CODE:
+        RETVAL = SDL_GetVideoDriver( index );
+    OUTPUT:
+        RETVAL
 
 

@@ -9,6 +9,17 @@ BEGIN {
 
 use SDL2::Video;
 
-can_ok('SDL2::Video', qw/get_current_video_driver/);
+can_ok('SDL2::Video', qw/get_current_video_driver get_num_video_drivers get_video_driver/);
+
+SDL2::Video::get_current_video_driver();
+pass();
+
+foreach( 0..SDL2::Video::get_num_video_drivers() )
+{
+   SDL2::Video::get_video_driver($_);
+   pass();
+}
+pass();
+
 
 done_testing();
