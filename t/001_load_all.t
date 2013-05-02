@@ -16,6 +16,7 @@ use SDL2::Renderer;
 use SDL2::Rect;
 use SDL2::Video;
 use SDL2::Constants;
+use SDL2::Log;
 #add more
 
 ok 1, 'All modules loaded successfully';
