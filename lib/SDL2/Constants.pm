@@ -18,7 +18,7 @@ our %EXPORT_TAGS = (
     SDL_INIT_EVERYTHING
         )
     ],
-    'SDL2/hints' => [
+    'SDL2/hint' => [
         qw (
         SDL_FRAMEBUFFER_ACCELERATION
         SDL_HINT_RENDER_DRIVER
@@ -34,6 +34,9 @@ our %EXPORT_TAGS = (
         SDL_HINT_ORIENTATIONS
         SDL_GAMECONTROLLERCONFIG
         SDL_ALLOW_TOPMOST
+        SDL_HINT_DEFAULT
+        SDL_HINT_NORMAL
+        SDL_HINT_OVERRIDE
         )
     ],
     'SDL2::Window/type' => [
@@ -103,7 +106,9 @@ use constant {
  SDL_HINT_ORIENTATIONS  => "SDL_IOS_ORIENTATIONS",
  SDL_HINT_GAMECONTROLLERCONFIG  => "SDL_GAMECONTROLLERCONFIG",
  SDL_HINT_ALLOW_TOPMOST  => "SDL_ALLOW_TOPMOST"
-
+ SDL_HINT_DEFAULT => 1,
+ SDL_HINT_NORMAL => 2,
+ SDL_HINT_OVERRIDE => 3
 }; # SDL/hint
 
 use constant {

@@ -14,7 +14,9 @@ our @EXPORT = @{ $SDL2::Constants::EXPORT_TAGS{SDL2} };
 push @EXPORT, 'NULL';
 our %EXPORT_TAGS = (
     all      => \@EXPORT,
-    init     => $SDL2::Constants::EXPORT_TAGS{'SDL2/init'}
+    init     => $SDL2::Constants::EXPORT_TAGS{'SDL2/init'},
+    hint     =>  $SDL2::Constants::EXPORT_TAGS{'SDL2/hint'}
+
 );
 
 
