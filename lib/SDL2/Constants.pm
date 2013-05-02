@@ -64,6 +64,18 @@ our %EXPORT_TAGS = (
         SDL_RENDERER_PRESENTVSYNC
         SDL_RENDERER_TARGETTEXTURE 
         )
+    ],
+    'SDL2::Log/priority' => [
+        qw(
+        SDL_LOG_PRIORITY_VERBOSE
+        SDL_LOG_PRIORITY_DEBUG
+        SDL_LOG_PRIORITY_INFO
+        SDL_LOG_PRIORITY_WARN
+        SDL_LOG_PRIORITY_ERROR
+        SDL_LOG_PRIORITY_CRITICAL
+        SDL_NUM_LOG_PRIORITIES
+
+        )
     ]
 );
 
@@ -136,4 +148,14 @@ use constant {
     SDL_RENDERER_TARGETTEXTURE => 0x00000008
 
 };
+
+use constant {
+    SDL_LOG_PRIORITY_VERBOSE => 1,
+    SDL_LOG_PRIORITY_DEBUG => 2,
+    SDL_LOG_PRIORITY_INFO => 3,
+    SDL_LOG_PRIORITY_WARN => 4,
+    SDL_LOG_PRIORITY_ERROR => 5,
+    SDL_LOG_PRIORITY_CRITICAL => 6,
+    SDL_NUM_LOG_PRIORITIES => 7
+}; # SDL2::Log/priority
 1;
