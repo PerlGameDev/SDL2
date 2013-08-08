@@ -19,12 +19,14 @@ log_set_all_priority ( pri )
 	CODE:
 		SDL_LogSetAllPriority( pri );
 
+
 void
 log_set_priority ( cat, pri )
     int cat
 	int pri
 	CODE:
 		SDL_LogSetPriority( cat, pri );
+
 
 int
 log_get_priority ( cat )
