@@ -19,6 +19,7 @@ Sint32			T_IV
 Sint32 *		T_PTR
 SDL_Window * 	O_OBJECT	
 SDL_Renderer * 	O_OBJECT	
+SDL_Texture *   O_OBJECT
 SDL_DisplayMode * O_OBJECT
 SDL_Event *		O_OBJECT	
 SDL_ActiveEvent * 	O_OBJECT

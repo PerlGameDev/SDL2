@@ -14,6 +14,7 @@ use SDL2pp;
 use SDL2::Window;
 use SDL2::Renderer;
 use SDL2::Rect;
+use SDL2::Texture;
 use SDL2::Video;
 use SDL2::Constants;
 use SDL2::Log;

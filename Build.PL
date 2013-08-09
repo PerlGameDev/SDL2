@@ -33,6 +33,10 @@ my %mods = (
         xs => [ 'src/Core/objects/Rect.xs' => 'lib/SDL2/Rect.xs' ],
         libs => [qw( SDL2 )],
     },
+    'SDL2::Texture' => {
+        xs => [ 'src/Core/objects/Texture.xs' => 'lib/SDL2/Texture.xs' ],
+        libs => [qw( SDL2 )],
+    },
     'SDL2::DisplayMode' => {
         xs => [ 'src/Core/objects/DisplayMode.xs' => 'lib/SDL2/DisplayMode.xs' ],
         libs => [qw( SDL2 )],
