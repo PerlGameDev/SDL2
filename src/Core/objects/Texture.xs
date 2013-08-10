@@ -31,4 +31,4 @@ void
 texture_DESTROY(bag)
 	SV *bag
 	CODE:
-		objDESTROY(bag, safefree);
+		objDESTROY(bag, SDL_DestroyTexture);
