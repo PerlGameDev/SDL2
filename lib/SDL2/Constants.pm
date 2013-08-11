@@ -1,5 +1,19 @@
 package SDL2::Constants;
 use warnings;
+use vars qw(@ISA @EXPORT @EXPORT_OK);
+require Exporter;
+require DynaLoader;
+our @ISA = qw(Exporter DynaLoader);
+
+use SDL2::Internal::Loader;
+if (check_and_load(__PACKAGE__)) {
+  bootstrap SDL2::Constants;
+}
+else {
+  warn "WARNING: " . __PACKAGE__ . " is not available\n";
+}
+
+
 use base 'Exporter';
 use Config;
 
@@ -76,7 +90,14 @@ our %EXPORT_TAGS = (
         SDL_NUM_LOG_PRIORITIES
 
         )
+    ],
+    'SDL2::Texture/access' => [
+        qw(
+        SDL_TEXTUREACCESS_STATIC
+        SDL_TEXTUREACCESS_STREAMING
+        )
     ]
+
 );
 
 #From https://github.com/PerlGameDev/SDL/blob/master/lib/SDL/Constants.pm#L609

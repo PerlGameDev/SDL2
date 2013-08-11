@@ -5,6 +5,7 @@ use SDL2::Renderer;
 use SDL2::Rect;
 use SDL2::Texture;
 use SDL2::ConfigData;
+use SDL2::Constants;
 
 BEGIN {
 
@@ -21,8 +22,10 @@ my $renderer = SDL2::Renderer->new($win, -1, SDL_RENDERER_SOFTWARE); #Hardware a
 
 can_ok('SDL2::Texture', qw/new/);
 
-my $texture = SDL2::Texture->new($renderer, 0, 0, 100, 100);
+my $texture = SDL2::Texture->new($renderer, 0, SDL_TEXTUREACCESS_STATIC, 100, 100);
 fail( SDL2pp::get_error() ) unless $texture;
+my $texture2 = SDL2::Texture->new($renderer, 0, SDL_TEXTUREACCESS_STREAMING, 100, 100);
+fail( SDL2pp::get_error() ) unless $texture2;
 
 isa_ok($texture, 'SDL2::Texture');
 

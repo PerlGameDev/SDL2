@@ -12,6 +12,10 @@ my %mods = (
         xs => [ 'src/SDL2pp.xs' => 'lib/SDL2pp.xs'],
         libs => [qw( SDL2 )],
     },
+    'SDL2::Constants' => {
+        xs => [ 'src/Core/Constants.xs' => 'lib/SDL2/Constants.xs'],
+        libs => [qw( SDL2 )],
+    },
     'SDL2::Log' => {
         xs => [ 'src/Core/Log.xs' => 'lib/SDL2/Log.xs'],
         libs => [qw( SDL2 )],
@@ -20,7 +24,6 @@ my %mods = (
         xs => [ 'src/Core/Video.xs' => 'lib/SDL2/Video.xs'],
         libs => [qw( SDL2 )],
     },
-
     'SDL2::Window' => {
         xs => [ 'src/Core/objects/Window.xs' => 'lib/SDL2/Window.xs' ],
         libs => [qw( SDL2 )],
