@@ -1,0 +1,41 @@
+language: perl
+perl:
+  - "5.10"
+  - "5.12"
+  - "5.14"
+  - "5.16"
+  - "5.18"
+
+before_install:
+# install tiff
+  - sudo apt-get update
+  - sudo apt-get -y purge ruby libtiff4 libtiff4-dev libtiffxx0c2 zlib1g-dev
+  - sudo apt-get autoremove
+  - sudo apt-get install automake libxmu-dev libxmu6 libxmu-headers libxmuu1 xpra xserver-xorg-video-dummy freeglut3-dev mesa-utils
+  - "xpra --xvfb=\"Xorg +extension GLX -config `pwd`/dummy.xorg.conf -logfile ${HOME}/.xpra/xorg.log\"  start :9"
+  - export DISPLAY=:9
+  - ps -ef|grep xpra
+  - glxinfo
+
+# install Alien-SDL2 deps first...
+  - git clone https://github.com/PerlGameDev/Alien-SDL2
+  - cd Alien-SDL2
+  - cat ./cpan-deps | cpanm --sudo --notest -v
+#  - cat ./cpan-deps
+#  - dpkg -l
+  - perl ./Build.PL --travis
+  - ./Build
+  - sudo ./Build install
+  - prove
+  - cd ..
+
+install:
+  - perl ./Build.PL
+  - ./Build
+  - sudo ./Build install
+
+script:
+  - prove -v
+
+notifications:
+  irc: "irc.perl.org#sdl"
