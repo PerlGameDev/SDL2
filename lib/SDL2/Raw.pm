@@ -22,6 +22,40 @@ use constant {
     BYTEORDER       => $Config{byteorder},
     BIG_ENDIAN      => 4321,
     LIL_ENDIAN      => 1234,
+    MIX_MAXVOLUME   => 128,
+};
+
+# Init flags
+use constant {
+    INIT_TIMER                => 0x000001,
+    INIT_AUDIO                => 0x000010,
+    INIT_VIDEO                => 0x000020,
+    INIT_JOYSTICK             => 0x000200,
+    INIT_HAPTIC               => 0x001000,
+    INIT_GAMECONTROLLER       => 0x002000,
+    INIT_EVENTS               => 0x004000,
+    INIT_SENSOR               => 0x008000,
+    INIT_NOPARACHUTE          => 0x100000,
+};
+
+use constant INIT_EVERYTHING => (
+    INIT_TIMER    | INIT_AUDIO  | INIT_VIDEO          | INIT_EVENTS |
+    INIT_JOYSTICK | INIT_HAPTIC | INIT_GAMECONTROLLER | INIT_SENSOR
+);
+
+# Window flags
+use constant {
+    WINDOWPOS_UNDEFINED       => 0x1FFF0000,
+    WINDOWPOS_CENTERED        => 0x2FFF0000,
+};
+
+# Mouse buttons
+use constant {
+    BUTTON_LEFT   => 1,
+    BUTTON_MIDDLE => 2,
+    BUTTON_RIGHT  => 3,
+    BUTTON_X1     => 4,
+    BUTTON_X2     => 5,
 };
 
 sub enum {
@@ -1011,39 +1045,6 @@ BEGIN {
         }
     );
 }
-
-# Init flags
-use constant {
-    INIT_TIMER                => 0x000001,
-    INIT_AUDIO                => 0x000010,
-    INIT_VIDEO                => 0x000020,
-    INIT_JOYSTICK             => 0x000200,
-    INIT_HAPTIC               => 0x001000,
-    INIT_GAMECONTROLLER       => 0x002000,
-    INIT_EVENTS               => 0x004000,
-    INIT_SENSOR               => 0x008000,
-    INIT_NOPARACHUTE          => 0x100000,
-};
-
-use constant INIT_EVERYTHING => (
-    INIT_TIMER    | INIT_AUDIO  | INIT_VIDEO          | INIT_EVENTS |
-    INIT_JOYSTICK | INIT_HAPTIC | INIT_GAMECONTROLLER | INIT_SENSOR
-);
-
-# Window flags
-use constant {
-    WINDOWPOS_UNDEFINED       => 0x1FFF0000,
-    WINDOWPOS_CENTERED        => 0x2FFF0000,
-};
-
-# Mouse buttons
-use constant {
-    BUTTON_LEFT   => 1,
-    BUTTON_MIDDLE => 2,
-    BUTTON_RIGHT  => 3,
-    BUTTON_X1     => 4,
-    BUTTON_X2     => 5,
-};
 
 
 $ffi->type( sint32 => 'SDL_BlendMode' );
