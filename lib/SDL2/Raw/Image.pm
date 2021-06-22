@@ -7,12 +7,26 @@ use SDL2::Raw;
 use FFI::CheckLib;
 use FFI::Platypus 1.00;
 
-use constant {
-    INIT_JPG  => 0x1,
-    INIT_PNG  => 0x2,
-    INIT_TIF  => 0x4,
-    INIT_WEBP => 0x8,
-};
+BEGIN {
+    require constant;
+
+    my %enums = (
+        InitFlags => {
+            INIT_JPG  => 0x1,
+            INIT_PNG  => 0x2,
+            INIT_TIF  => 0x4,
+            INIT_WEBP => 0x8,
+        },
+    );
+
+    while ( my ( $name, $values ) = each %enums ) {
+        constant->import($values);
+
+        my $variable = __PACKAGE__ . '::' . $name;
+        no strict 'refs';
+        %{$variable} = ( %{$variable}, reverse %$values );
+    }
+}
 
 my $ffi = FFI::Platypus->new( api => 1 );
 $ffi->lib( find_lib_or_exit lib => 'SDL2_image' );

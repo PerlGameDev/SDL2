@@ -8,6 +8,47 @@ use FFI::CheckLib;
 use FFI::Platypus 1.00;
 use Ref::Util;
 
+BEGIN {
+    require constant;
+
+    my %enums = (
+        InitFlags => {
+            INIT_FLAC          => 0x01,
+            INIT_MOD           => 0x02,
+            INIT_MP3           => 0x08,
+            INIT_OGG           => 0x10,
+            INIT_MID           => 0x20,
+            INIT_OPUS          => 0x40,
+        },
+        Fading => {
+            NO_FADING          => 0,
+            FADING_OUT         => 1,
+            FADING_IN          => 2,
+        },
+        MusicType => {
+            MUS_NONE           =>  0,
+            MUS_CMD            =>  1,
+            MUS_WAV            =>  2,
+            MUS_MOD            =>  3,
+            MUS_MID            =>  4,
+            MUS_OGG            =>  5,
+            MUS_MP3            =>  6,
+            MUS_MP3_MAD_UNUSED =>  7,
+            MUS_FLAC           =>  8,
+            MUS_MODPLUG_UNUSED =>  9,
+            MUS_OPUS           => 10,
+        },
+    );
+
+    while ( my ( $name, $values ) = each %enums ) {
+        constant->import($values);
+
+        my $variable = __PACKAGE__ . '::' . $name;
+        no strict 'refs';
+        %{$variable} = ( %{$variable}, reverse %$values );
+    }
+}
+
 use constant {
     INIT_JPG  => 0x1,
     INIT_PNG  => 0x2,
