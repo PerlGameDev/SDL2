@@ -50,21 +50,19 @@ BEGIN {
 }
 
 use constant {
-    INIT_JPG  => 0x1,
-    INIT_PNG  => 0x2,
-    INIT_TIF  => 0x4,
-    INIT_WEBP => 0x8,
-
-    NO_FADING  => 0,
-    FADING_OUT => 1,
-    FADING_IN  => 2,
+    DEFAULT_FREQUENCY => 44_100,
+    DEFAULT_FORMAT    => SDL2::BYTEORDER == SDL2::LIL_ENDIAN ? SDL2::AUDIO_S16LSB : SDL2::AUDIO_S16MSB,
+    DEFAULT_CHANNELS  => 2,
+    MAX_VOLUME        => SDL2::MIX_MAXVOLUME,
 };
 
 my $ffi = FFI::Platypus->new( api => 1 );
 $ffi->lib( find_lib_or_exit lib => 'SDL_mixer' );
 
 $ffi->mangler( sub { 'Mix_' . shift } );
-$ffi->type( opaque => 'Mix_Chunk' );
+$ffi->type( opaque => 'Mix_Chunk'     );
+$ffi->type( opaque => 'Mix_Music'     );
+$ffi->type( int    => 'Mix_MusicType' );
 
 ## General
 
@@ -102,7 +100,7 @@ $ffi->attach( Playing            => ['int'                                  ] =>
 $ffi->attach( Paused             => ['int'                                  ] => 'int'       );
 $ffi->attach( FadingChannel      => ['int'                                  ] => 'int'       );
 $ffi->attach( GetChunk           => ['int'                                  ] => 'Mix_Chunk' );
-$ffi->attach( ChannelFinished    => ['(int)->void'                          ] => 'void' => sub {
+$ffi->attach( ChannelFinished    => ['(int)->void'                          ] => 'void' => sub { # Untested
     my ( $xsub, $closure ) = @_;
     $closure = $ffi->closure($closure) if Ref::Util::is_subref $closure;
     $xsub->($closure);
@@ -111,5 +109,32 @@ sub PlayChannel   {   PlayChannelTimed( @_, -1 ) }
 sub FadeInChannel { FadeInChannelTimed( @_, -1 ) }
 
 ## Groups
+
+#TODO
+
+## Music
+
+$ffi->attach( GetNumMusicDecoders  => [                                   ] => 'int'           );
+$ffi->attach( GetMusicDecoder      => ['int'                              ] => 'string'        );
+$ffi->attach( LoadMUS              => ['string'                           ] => 'Mix_Music'     );
+$ffi->attach( FreeMusic            => ['Mix_Music'                        ] => 'void'          );
+$ffi->attach( PlayMusic            => ['Mix_Music', 'int'                 ] => 'int'           );
+$ffi->attach( FadeInMusic          => ['Mix_Music', 'int', 'int'          ] => 'int'           );
+$ffi->attach( FadeInMusicPos       => ['Mix_Music', 'int', 'int', 'double'] => 'int'           );
+$ffi->attach( HookMusic            => ['(opaque, uint8)->void', 'opaque'  ] => 'void'          ); # Untested
+$ffi->attach( VolumeMusic          => ['int'                              ] => 'int'           );
+$ffi->attach( PauseMusic           => [                                   ] => 'void'          );
+$ffi->attach( ResumeMusic          => [                                   ] => 'void'          );
+$ffi->attach( RewindMusic          => [                                   ] => 'void'          );
+$ffi->attach( SetMusicPosition     => ['double'                           ] => 'int'           );
+$ffi->attach( SetMusicCMD          => ['string'                           ] => 'int'           );
+$ffi->attach( HaltMusic            => [                                   ] => 'int'           );
+$ffi->attach( FadeOutMusic         => ['int'                              ] => 'int'           );
+$ffi->attach( HookMusicFinished    => ['()->void'                         ] => 'void'          ); # Untested
+$ffi->attach( GetMusicType         => ['Mix_Music'                        ] => 'Mix_MusicType' );
+$ffi->attach( PlayingMusic         => [                                   ] => 'int'           );
+$ffi->attach( PausedMusic          => [                                   ] => 'int'           );
+$ffi->attach( FadingMusic          => [                                   ] => 'int'           );
+$ffi->attach( GetMusicHookData     => [                                   ] => 'opaque'        );
 
 1;

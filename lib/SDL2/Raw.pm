@@ -58,6 +58,32 @@ use constant {
     BUTTON_X2     => 5,
 };
 
+# Audio flags
+use constant {
+    AUDIO_U8        => 0x0008, # Unsigned 8-bit samples
+    AUDIO_S8        => 0x8008, # Signed 8-bit samples
+    AUDIO_U16LSB    => 0x0010, # Unsigned 16-bit samples
+    AUDIO_S16LSB    => 0x8010, # Signed 16-bit samples
+    AUDIO_U16MSB    => 0x1010, # As above, but big-endian byte order
+    AUDIO_S16MSB    => 0x9010, # As above, but big-endian byte order
+    AUDIO_S32LSB    => 0x8020, # 32-bit integer samples
+    AUDIO_S32MSB    => 0x9020, # As above, but big-endian byte order
+    AUDIO_F32LSB    => 0x8120, # 32-bit floating point samples
+    AUDIO_F32MSB    => 0x9120, # As above, but big-endian byte order
+
+    AUDIO_MASK_BITSIZE  => 0xFF,
+    AUDIO_MASK_DATATYPE => 1 <<  8,
+    AUDIO_MASK_ENDIAN   => 1 << 12,
+    AUDIO_MASK_SIGNED   => 1 << 15,
+};
+
+use constant {
+    AUDIO_U16       => AUDIO_U16LSB,
+    AUDIO_S16       => AUDIO_S16LSB,
+    AUDIO_S32       => AUDIO_S32LSB,
+    AUDIO_F32       => AUDIO_F32LSB,
+};
+
 sub enum {
     require enum::hash;
     require constant;
