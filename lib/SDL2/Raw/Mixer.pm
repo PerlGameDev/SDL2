@@ -6,6 +6,7 @@ use warnings;
 use SDL2::Raw;
 use FFI::CheckLib;
 use FFI::Platypus 1.00;
+use FFI::C;
 use Ref::Util;
 
 BEGIN {
@@ -50,6 +51,7 @@ BEGIN {
 }
 
 use constant {
+    CHANNEL_POST      => -2,
     DEFAULT_FREQUENCY => 44_100,
     DEFAULT_FORMAT    => SDL2::BYTEORDER == SDL2::LIL_ENDIAN ? SDL2::AUDIO_S16LSB : SDL2::AUDIO_S16MSB,
     DEFAULT_CHANNELS  => 2,
@@ -59,10 +61,21 @@ use constant {
 my $ffi = FFI::Platypus->new( api => 1 );
 $ffi->lib( find_lib_or_exit lib => 'SDL_mixer' );
 
+FFI::C->ffi($ffi);
 $ffi->mangler( sub { 'Mix_' . shift } );
-$ffi->type( opaque => 'Mix_Chunk'     );
-$ffi->type( opaque => 'Mix_Music'     );
-$ffi->type( int    => 'Mix_MusicType' );
+
+package SDL2::Mixer::Chunk {
+    FFI::C->struct( Mix_Chunk => [
+        allocated => 'int',
+        abuf      => 'opaque',
+        alen      => 'uint32',
+        volume    => 'uint8',
+    ]);
+}
+
+$ffi->type( opaque                             => 'Mix_Music'      );
+$ffi->type( int                                => 'Mix_MusicType'  );
+$ffi->type( '(int, opaque, int, opaque)->void' => 'Mix_EffectFunc' );
 
 ## General
 
@@ -84,7 +97,7 @@ $ffi->attach( QuickLoad_WAV       => ['uint8*'          ] => 'Mix_Chunk' );
 $ffi->attach( QuickLoad_RAW       => ['uint8*'          ] => 'Mix_Chunk' );
 $ffi->attach( VolumeChunk         => ['Mix_Chunk', 'int'] => 'Mix_Chunk' );
 $ffi->attach( FreeChunk           => ['Mix_Chunk'       ] => 'void'      );
-sub LoadWav { LoadWAV_RW( SDL2::RWFromFile( shift, 'rb' ), 1 ) }
+sub LoadWAV { LoadWAV_RW( SDL2::RWFromFile( shift, 'rb' ), 1 ) }
 
 ## Channels
 
@@ -102,7 +115,7 @@ $ffi->attach( FadingChannel      => ['int'                                  ] =>
 $ffi->attach( GetChunk           => ['int'                                  ] => 'Mix_Chunk' );
 $ffi->attach( ChannelFinished    => ['(int)->void'                          ] => 'void' => sub { # Untested
     my ( $xsub, $closure ) = @_;
-    $closure = $ffi->closure($closure) if Ref::Util::is_subref $closure;
+    $closure = $ffi->closure($closure) if Ref::Util::is_coderef $closure;
     $xsub->($closure);
 });
 sub PlayChannel   {   PlayChannelTimed( @_, -1 ) }
@@ -136,5 +149,16 @@ $ffi->attach( PlayingMusic         => [                                   ] => '
 $ffi->attach( PausedMusic          => [                                   ] => 'int'           );
 $ffi->attach( FadingMusic          => [                                   ] => 'int'           );
 $ffi->attach( GetMusicHookData     => [                                   ] => 'opaque'        );
+
+## Effects
+
+$ffi->attach( RegisterEffect       => ['int', 'Mix_EffectFunc'                       ] => 'void' );
+$ffi->attach( UnregisterEffect     => ['int', '(opaque, opaque, int)->void', 'opaque'] => 'void' );
+$ffi->attach( UnregisterAllEffects => ['int'                                         ] => 'int'  );
+$ffi->attach( SetPostMix           => ['(opaque, opaque, int)->void', 'opaque'       ] => 'void' );
+$ffi->attach( SetPanning           => ['int', 'uint8', 'uint8'                       ] => 'int'  );
+$ffi->attach( SetDistance          => ['int', 'uint8'                                ] => 'int'  );
+$ffi->attach( SetPosition          => ['int', 'sint16', 'uint8'                      ] => 'int'  );
+$ffi->attach( SetReverseStereo     => ['int', 'int'                                  ] => 'int'  );
 
 1;
