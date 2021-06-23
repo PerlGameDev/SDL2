@@ -9,7 +9,7 @@ use Getopt::Long;
 use Syntax::Keyword::Defer;
 
 my %OPT = (
-    looping     => 1,
+    loop        => 1,
     interactive => 1,
     format      => SDL2::Mixer::DEFAULT_FORMAT,
     rate        => SDL2::Mixer::DEFAULT_FREQUENCY,
@@ -92,7 +92,7 @@ for my $file (@ARGV) {
     print "Detected music type: $type\n";
 
     print "Playing $file\n";
-    SDL2::Mixer::FadeInMusic( $music, $OPT{looping}, 2000 );
+    SDL2::Mixer::FadeInMusic( $music, $OPT{loop}, 2000 );
 
     while ( !$NEXT_TRACK && SDL2::Mixer::PlayingMusic || SDL2::Mixer::PausedMusic ) {
         SDL2::Delay(100);
