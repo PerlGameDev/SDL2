@@ -1701,6 +1701,18 @@ $ffi->attach( RegisterEvents => ['uint32'] => 'int' );
 # SDL_GetRevisionNumber
 $ffi->attach( GetVersion => ['SDL_Version'] => 'void' );
 
+## Logging
+
+$ffi->attach( Log         => [       'string'] => 'void' => sub { my $xs = shift; $xs->(        sprintf shift, @_ ) } );
+$ffi->attach( LogCritical => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
+$ffi->attach( LogDebug    => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
+$ffi->attach( LogError    => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
+$ffi->attach( LogInfo     => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
+$ffi->attach( LogMessage  => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
+$ffi->attach( LogMessageV => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
+$ffi->attach( LogVerbose  => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
+$ffi->attach( LogWarn     => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
+
 # Clean helper functions
 delete $SDL2::{$_} for qw( enum pixel_format );
 
