@@ -1289,11 +1289,39 @@ package SDL2::Surface {
 package SDL2::Rect {
     use FFI::Platypus::Record;
     record_layout_1( int => 'x', int => 'y', int => 'w', int => 'h' );
+
+    {
+        # Give rect a positional constructor
+        no strict 'refs';
+        no warnings 'redefine';
+
+        my $old  = __PACKAGE__->can('new') or die;
+        my $new  = sub {
+            shift->$old({ x => shift, y => shift, w => shift, h => shift });
+        };
+        my $name = __PACKAGE__ . '::new';
+
+        require Sub::Util;
+        *{$name} = Sub::Util::set_subname $name => $new;
+    }
 }
 
 package SDL2::Point {
     use FFI::Platypus::Record;
     record_layout_1( int => 'x', int => 'y' );
+
+    {
+        # Give point a positional constructor
+        no strict 'refs';
+        no warnings 'redefine';
+
+        my $old  = __PACKAGE__->can('new') or die;
+        my $new  = sub { shift->$old({ x => shift, y => shift }) };
+        my $name = __PACKAGE__ . '::new';
+
+        require Sub::Util;
+        *{$name} = Sub::Util::set_subname $name => $new;
+    }
 }
 
 package SDL2::RendererInfo {
