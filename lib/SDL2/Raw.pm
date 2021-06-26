@@ -1533,7 +1533,7 @@ $ffi->attach( RenderCopyEx => [qw( SDL_Renderer SDL_Texture SDL_Rect* SDL_Rect* 
 # SDL_RenderDrawPointF
 $ffi->attach( RenderDrawPoints => [qw( SDL_Renderer int[] int )] => 'int' );
 # SDL_RenderDrawPointsF
-# SDL_RenderDrawRect
+$ffi->attach( RenderDrawRect => [qw( SDL_Renderer SDL_Rect* )] => 'int' );
 # SDL_RenderDrawRectF
 # SDL_RenderDrawRects
 # SDL_RenderDrawRectsF
@@ -1541,7 +1541,7 @@ $ffi->attach( RenderDrawPoints => [qw( SDL_Renderer int[] int )] => 'int' );
 # SDL_RendererFlags
 # SDL_RendererFlip
 # SDL_RendererInfo
-# SDL_RenderFillRect
+$ffi->attach( RenderFillRect => [qw( SDL_Renderer SDL_Rect* )] => 'int' );
 # SDL_RenderFillRectF
 # SDL_RenderFillRects
 # SDL_RenderFillRectsF
