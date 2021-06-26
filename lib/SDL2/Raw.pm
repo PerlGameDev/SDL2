@@ -4,7 +4,7 @@ package SDL2;
 use strict;
 use warnings;
 
-use FFI::CheckLib;
+use FFI::CheckLib ();
 use FFI::Platypus 1.00;
 use FFI::C;
 use Ref::Util;
@@ -12,7 +12,7 @@ use Ref::Util;
 my $ffi;
 BEGIN {
     $ffi = FFI::Platypus->new( api => 1 );
-    $ffi->lib( find_lib_or_exit lib => 'SDL2' );
+    $ffi->lib( FFI::CheckLib::find_lib_or_exit lib => 'SDL2' );
     FFI::C->ffi($ffi);
 }
 
@@ -314,7 +314,7 @@ BEGIN {
             POWERSTATE_CHARGING
             POWERSTATE_CHARGED
         )],
-        eventaction => [qw(
+        EventAction => [qw(
             ADDEVENT
             PEEKEVENT
             GETEVENT
@@ -1044,7 +1044,7 @@ BEGIN {
 }
 
 BEGIN {
-    my sub define_fourcc { ord(shift) << 0 | ord(shift) << 8 | ord(shift) << 16 | ord(shift) << 24 }
+    my $define_fourcc = sub { ord(shift) << 0 | ord(shift) << 8 | ord(shift) << 16 | ord(shift) << 24 };
 
     enum(
         PixelFormatEnum => {
@@ -1060,14 +1060,14 @@ BEGIN {
                 PIXELFORMAT_BGRA32 => PIXELFORMAT_ARGB8888,
                 PIXELFORMAT_ABGR32 => PIXELFORMAT_RGBA8888,
             ),
-            PIXELFORMAT_YV12         => define_fourcc( 'Y', 'V', '1', '2' ),
-            PIXELFORMAT_IYUV         => define_fourcc( 'I', 'Y', 'U', 'V' ),
-            PIXELFORMAT_YUY2         => define_fourcc( 'Y', 'U', 'Y', '2' ),
-            PIXELFORMAT_UYVY         => define_fourcc( 'U', 'Y', 'V', 'Y' ),
-            PIXELFORMAT_YVYU         => define_fourcc( 'Y', 'V', 'Y', 'U' ),
-            PIXELFORMAT_NV12         => define_fourcc( 'N', 'V', '1', '2' ),
-            PIXELFORMAT_NV21         => define_fourcc( 'N', 'V', '2', '1' ),
-            PIXELFORMAT_EXTERNAL_OES => define_fourcc( 'O', 'E', 'S', ' ' ),
+            PIXELFORMAT_YV12         => $define_fourcc->( 'Y', 'V', '1', '2' ),
+            PIXELFORMAT_IYUV         => $define_fourcc->( 'I', 'Y', 'U', 'V' ),
+            PIXELFORMAT_YUY2         => $define_fourcc->( 'Y', 'U', 'Y', '2' ),
+            PIXELFORMAT_UYVY         => $define_fourcc->( 'U', 'Y', 'V', 'Y' ),
+            PIXELFORMAT_YVYU         => $define_fourcc->( 'Y', 'V', 'Y', 'U' ),
+            PIXELFORMAT_NV12         => $define_fourcc->( 'N', 'V', '1', '2' ),
+            PIXELFORMAT_NV21         => $define_fourcc->( 'N', 'V', '2', '1' ),
+            PIXELFORMAT_EXTERNAL_OES => $define_fourcc->( 'O', 'E', 'S', ' ' ),
         }
     );
 }
