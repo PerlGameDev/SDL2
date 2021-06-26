@@ -1731,15 +1731,23 @@ $ffi->attach( GetVersion => ['SDL_Version'] => 'void' );
 
 ## Logging
 
-$ffi->attach( Log         => [       'string'] => 'void' => sub { my $xs = shift; $xs->(        sprintf shift, @_ ) } );
-$ffi->attach( LogCritical => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
-$ffi->attach( LogDebug    => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
-$ffi->attach( LogError    => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
-$ffi->attach( LogInfo     => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
-$ffi->attach( LogMessage  => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
-$ffi->attach( LogMessageV => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
-$ffi->attach( LogVerbose  => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
-$ffi->attach( LogWarn     => ['int', 'string'] => 'void' => sub { my $xs = shift; $xs->( shift, sprintf shift, @_ ) } );
+$ffi->attach( Log                => [qw(         string )] => 'void' => sub { $_[0]->(               sprintf $_[1], @_[ 2 .. $#_ ] ) } );
+$ffi->attach( LogCritical        => [qw(     int string )] => 'void' => sub { $_[0]->( $_[1],        sprintf $_[2], @_[ 3 .. $#_ ] ) } );
+$ffi->attach( LogDebug           => [qw(     int string )] => 'void' => sub { $_[0]->( $_[1],        sprintf $_[2], @_[ 3 .. $#_ ] ) } );
+$ffi->attach( LogError           => [qw(     int string )] => 'void' => sub { $_[0]->( $_[1],        sprintf $_[2], @_[ 3 .. $#_ ] ) } );
+$ffi->attach( LogInfo            => [qw(     int string )] => 'void' => sub { $_[0]->( $_[1],        sprintf $_[2], @_[ 3 .. $#_ ] ) } );
+$ffi->attach( LogVerbose         => [qw(     int string )] => 'void' => sub { $_[0]->( $_[1],        sprintf $_[2], @_[ 3 .. $#_ ] ) } );
+$ffi->attach( LogWarn            => [qw(     int string )] => 'void' => sub { $_[0]->( $_[1],        sprintf $_[2], @_[ 3 .. $#_ ] ) } );
+$ffi->attach( LogMessage         => [qw( int int string )] => 'void' => sub { $_[0]->( $_[1], $_[2], sprintf $_[3], @_[ 4 .. $#_ ] ) } );
+$ffi->attach( LogMessageV        => [qw( int int string )] => 'void' => sub { $_[0]->( $_[1], $_[2], sprintf $_[3], @_[ 4 .. $#_ ] ) } );
+$ffi->attach( LogSetPriority     => [qw( int int        )] => 'void' );
+$ffi->attach( LogGetPriority     => [qw( int            )] => 'int'  );
+$ffi->attach( LogSetAllPriority  => [qw( int            )] => 'void' );
+$ffi->attach( LogResetPriorities => [qw(                )] => 'void' );
+
+# TODO
+sub LogGetOutputFunction { ... }
+sub LogSetOutputFunction { ... }
 
 # Clean helper functions
 delete $SDL2::{$_} for qw( enum pixel_format );
