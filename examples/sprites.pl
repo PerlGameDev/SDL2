@@ -84,12 +84,7 @@ package Sprite {
             h      => $h,
             frame  => 0,
             frames => [
-                map SDL2::Rect->new(
-                    x => $x + $_ * $w,
-                    y => $y,
-                    w => $w,
-                    h => $h,
-                ), 0 .. 3
+                map SDL2::Rect->new( $x + $_ * $w, $y, $w, $h ), 0 .. 3
             ],
         } => $class;
     }
@@ -101,12 +96,7 @@ package Sprite {
             $renderer,
             $atlas,
             $self->{frames}[ $self->{frame} ],
-            SDL2::Rect->new(
-                x => $x,
-                y => $y,
-                w => $self->{w} * $scale,
-                h => $self->{h} * $scale,
-            ),
+            SDL2::Rect->new( $x, $y, $self->{w} * $scale, $self->{h} * $scale ),
         ) and die 'Could not render texture: ' . SDL2::GetError;
 
         $self->{frame} = 0 if $self->{frame}++ >= $#{ $self->{frames} };
