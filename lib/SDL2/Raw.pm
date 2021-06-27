@@ -1088,6 +1088,15 @@ $ffi->type( sint64 => 'SDL_GestureID'  );
 
 $ffi->mangler( sub { 'SDL_' . shift } );
 
+package SDL2::Finger {
+    FFI::C->struct( SDL_Finger => [
+        id       => 'SDL_FingerID',
+        x        => 'float',
+        y        => 'float',
+        pressure => 'float',
+    ]);
+}
+
 package SDL2::AudioDeviceEvent {
     FFI::C->struct( SDL_AudioDeviceEvent => [
         type      => 'uint32',
@@ -1872,61 +1881,37 @@ $ffi->attach( JoystickInstanceID => ['SDL_Joystick'] => 'SDL_JoystickID' );
 
 ## Events
 
-# SDL_AddEventWatch
-# SDL_AudioDeviceEvent
-# SDL_ControllerAxisEvent
-# SDL_ControllerButtonEvent
-# SDL_ControllerDeviceEvent
-# SDL_DelEventWatch
-# SDL_DollarGestureEvent
-# SDL_DropEvent
-# SDL_Event
-# SDL_EventState
-# SDL_EventType
-# SDL_FilterEvents
-# SDL_Finger
-# SDL_FlushEvent
-# SDL_FlushEvents
-# SDL_GetEventFilter
-# SDL_GetEventState
-# SDL_GetNumTouchDevices
-# SDL_GetNumTouchFingers
-# SDL_GetTouchDevice
-# SDL_GetTouchFinger
-# SDL_HasEvent
-# SDL_HasEvents
-# SDL_JoyAxisEvent
-# SDL_JoyBallEvent
-# SDL_JoyButtonEvent
-# SDL_JoyDeviceEvent
-# SDL_JoyHatEvent
-# SDL_KeyboardEvent
-# SDL_LoadDollarTemplates
-# SDL_MouseButtonEvent
-# SDL_MouseMotionEvent
-# SDL_MouseWheelEvent
-# SDL_MultiGestureEvent
-# SDL_PeepEvents
-$ffi->attach( PollEvent => ['SDL_Event'] => 'int' );
-# SDL_PumpEvents
-$ffi->attach( PushEvent => ['SDL_Event'] => 'int' );
-# SDL_QuitEvent
-# SDL_QuitRequested
-# SDL_RecordGesture
-$ffi->attach( RegisterEvents => ['uint32'] => 'int' );
-# SDL_SaveAllDollarTemplates
-# SDL_SaveDollarTemplate
-# SDL_SensorEvent
-# SDL_SetEventFilter
-# SDL_SysWMEvent
-# SDL_TextEditingEvent
-# SDL_TextInputEvent
-# SDL_TouchFingerEvent
-# SDL_UserEvent
-# SDL_WaitEvent
-# SDL_WaitEventTimeout
-# SDL_WindowEvent
-# SDL_WindowEventID
+$ffi->type( '(opaque, opaque)->void', => 'SDL_EventFilter' );
+
+$ffi->attach( AddEventWatch          => [qw( SDL_EventFilter opaque          )] => 'void'        ); # TODO
+$ffi->attach( DelEventWatch          => [qw( SDL_EventFilter opaque          )] => 'void'        ); # TODO
+$ffi->attach( EventState             => [qw( uint32 int                      )] => 'uint8'       );
+$ffi->attach( FilterEvents           => [qw( SDL_EventFilter opaque          )] => 'void'        ); # TODO
+$ffi->attach( FlushEvent             => [qw( uint32                          )] => 'void'        );
+$ffi->attach( FlushEvents            => [qw( uint32 uint32                   )] => 'void'        );
+sub GetEventFilter { ... } # TODO
+$ffi->attach( GetNumTouchDevices     => [qw(                                 )] => 'int'         );
+$ffi->attach( GetNumTouchFingers     => [qw( SDL_TouchID                     )] => 'int'         );
+$ffi->attach( GetTouchDevice         => [qw( int                             )] => 'SDL_TouchID' );
+$ffi->attach( GetTouchFinger         => [qw( SDL_TouchID int                 )] => 'SDL_Finger'  );
+$ffi->attach( HasEvent               => [qw( uint32                          )] => 'int'         );
+$ffi->attach( HasEvents              => [qw( uint32 uint32                   )] => 'int'         );
+$ffi->attach( LoadDollarTemplates    => [qw( SDL_TouchID SDL_RWops           )] => 'int'         );
+$ffi->attach( PeepEvents             => [qw( SDL_Event int int uint32 uint32 )] => 'int'         );
+$ffi->attach( PollEvent              => [qw( SDL_Event                       )] => 'int'         );
+$ffi->attach( PumpEvents             => [qw(                                 )] => 'void'        );
+$ffi->attach( PushEvent              => [qw( opaque                          )] => 'int'         );
+$ffi->attach( RecordGesture          => [qw( SDL_TouchID                     )] => 'int'         );
+$ffi->attach( RegisterEvents         => [qw( uint32                          )] => 'int'         );
+$ffi->attach( SaveAllDollarTemplates => [qw( SDL_RWops                       )] => 'int'         );
+$ffi->attach( SaveDollarTemplate     => [qw( SDL_GestureID SDL_RWops         )] => 'int'         );
+$ffi->attach( SetEventFilter         => [qw( SDL_EventFilter opaque          )] => 'void'        ); # TODO
+$ffi->attach( WaitEvent              => [qw( SDL_Event                       )] => 'int'         );
+$ffi->attach( WaitEventTimeout       => [qw( SDL_Event int                   )] => 'int'         );
+
+# Not implemented in 2.0.8
+# $ffi->attach( GetEventState          => [qw( uint32                          )] => 'uint8'       );
+# $ffi->attach( QuitRequested          => [qw(                                 )] => 'int'         );
 
 ## Version
 

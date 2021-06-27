@@ -38,6 +38,7 @@ is [ sort keys %SDL2:: ], [qw(
     AUDIO_U16LSB
     AUDIO_U16MSB
     AUDIO_U8
+    AddEventWatch
     ArrayOrder
     AudioDeviceEvent::
     BEGIN
@@ -112,6 +113,7 @@ is [ sort keys %SDL2:: ], [qw(
     DROPCOMPLETE
     DROPFILE
     DROPTEXT
+    DelEventWatch
     Delay
     DestroyRenderer
     DestroyTexture
@@ -124,6 +126,7 @@ is [ sort keys %SDL2:: ], [qw(
     ENABLE
     Event::
     EventAction
+    EventState
     EventType
     FALSE
     FINGERDOWN
@@ -133,6 +136,10 @@ is [ sort keys %SDL2:: ], [qw(
     FLIP_HORIZONTAL
     FLIP_NONE
     FLIP_VERTICAL
+    FilterEvents
+    Finger::
+    FlushEvent
+    FlushEvents
     FreeSurface
     GETEVENT
     GLContextResetNotification
@@ -183,6 +190,9 @@ is [ sort keys %SDL2:: ], [qw(
     GameControllerNameForIndex
     GameControllerOpen
     GetError
+    GetEventFilter
+    GetNumTouchDevices
+    GetNumTouchFingers
     GetRenderTarget
     GetRendererInfo
     GetRevision
@@ -191,12 +201,16 @@ is [ sort keys %SDL2:: ], [qw(
     GetTextureBlendMode
     GetTextureColorMod
     GetTicks
+    GetTouchDevice
+    GetTouchFinger
     GetVersion
     GetWindowSurface
     GetWindowWMInfo
     HINT_DEFAULT
     HINT_NORMAL
     HINT_OVERRIDE
+    HasEvent
+    HasEvents
     HintPriority
     IGNORE
     INIT_AUDIO
@@ -502,6 +516,7 @@ is [ sort keys %SDL2:: ], [qw(
     LOG_PRIORITY_WARN
     LoadBMP
     LoadBMP_RW
+    LoadDollarTemplates
     LockTexture
     Log
     LogCategory
@@ -631,12 +646,14 @@ is [ sort keys %SDL2:: ], [qw(
     PRESSED
     PackedLayout
     PackedOrder
+    PeepEvents
     PixelFormat::
     PixelFormatEnum
     PixelType
     Point::
     PollEvent
     PowerState
+    PumpEvents
     PushEvent
     QUERY
     QUIT
@@ -651,6 +668,7 @@ is [ sort keys %SDL2:: ], [qw(
     RENDER_DEVICE_RESET
     RENDER_TARGETS_RESET
     RWFromFile
+    RecordGesture
     Rect::
     RegisterEvents
     RenderClear
@@ -938,11 +956,14 @@ is [ sort keys %SDL2:: ], [qw(
     SYSWM_WINDOWS
     SYSWM_WINRT
     SYSWM_X11
+    SaveAllDollarTemplates
+    SaveDollarTemplate
     ScaleMode
     ScanCode
     SensorEvent::
     SetColorKey
     SetError
+    SetEventFilter
     SetRenderDrawColor
     SetRenderTarget
     SetTextureAlphaMod
@@ -1018,6 +1039,8 @@ is [ sort keys %SDL2:: ], [qw(
     WINDOW_TOOLTIP
     WINDOW_UTILITY
     WINDOW_VULKAN
+    WaitEvent
+    WaitEventTimeout
     WasInit
     WindowEvent::
     WindowEventID
