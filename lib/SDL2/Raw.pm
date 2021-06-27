@@ -1072,22 +1072,176 @@ BEGIN {
     );
 }
 
-
-$ffi->type( sint32 => 'SDL_BlendMode' );
+$ffi->type( sint32 => 'SDL_BlendMode'  );
 $ffi->type( sint32 => 'SDL_JoystickID' );
+$ffi->type( sint64 => 'SDL_TouchID'    );
+$ffi->type( sint64 => 'SDL_FingerID'   );
+$ffi->type( sint64 => 'SDL_GestureID'  );
+
 $ffi->mangler( sub { 'SDL_' . shift } );
 
-package SDL2::WindowEvent {
-    FFI::C->struct( SDL_WindowEvent => [
+package SDL2::AudioDeviceEvent {
+    FFI::C->struct( SDL_AudioDeviceEvent => [
         type      => 'uint32',
         timestamp => 'uint32',
-        windowID  => 'uint32',
-        event     => 'uint8',
+        which     => 'uint32',
+        iscapture => 'uint8',
         padding1  => 'uint8',
         padding2  => 'uint8',
         padding3  => 'uint8',
-        data1     => 'sint32',
-        data2     => 'sint32',
+    ]);
+}
+
+package SDL2::ControllerAxisEvent {
+    FFI::C->struct( SDL_ControllerAxisEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'SDL_JoystickID',
+        axis      => 'uint8',
+        padding1  => 'uint8',
+        padding2  => 'uint8',
+        padding3  => 'uint8',
+        value     => 'sint16',
+        padding4  => 'uint16',
+    ]);
+}
+
+package SDL2::ControllerButtonEvent {
+    FFI::C->struct( SDL_ControllerButtonEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'SDL_JoystickID',
+        button    => 'uint8',
+        state     => 'uint8',
+        padding1  => 'uint8',
+        padding2  => 'uint8',
+    ]);
+}
+
+package SDL2::ControllerDeviceEvent {
+    FFI::C->struct( SDL_ControllerDeviceEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'SDL_JoystickID',
+    ]);
+}
+
+package SDL2::ControllerTouchpadEvent {
+    FFI::C->struct( SDL_ControllerTouchpadEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'SDL_JoystickID',
+        touchpad  => 'sint32',
+        finger    => 'sint32',
+        x         => 'float',
+        y         => 'float',
+        pressure  => 'float',
+    ]);
+}
+
+package SDL2::ControllerSensorEvent {
+    FFI::C->struct( SDL_ControllerSensorEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'SDL_JoystickID',
+        data      => 'float[3]',
+    ]);
+}
+
+package SDL2::DisplayEvent {
+    FFI::C->struct( SDL_DisplayEvent => [
+        type       => 'uint32',
+        timestamp  => 'uint32',
+        display    => 'uint32',
+        event      => 'uint8',
+        padding1   => 'uint8',
+        padding2   => 'uint8',
+        padding3   => 'uint8',
+        data1      => 'sint32',
+    ]);
+}
+
+package SDL2::DollarGestureEvent {
+    FFI::C->struct( SDL_DollarGestureEvent => [
+        type       => 'uint32',
+        timestamp  => 'uint32',
+        touchId    => 'SDL_TouchID',
+        gestureId  => 'SDL_GestureID',
+        numFingers => 'uint32',
+        error      => 'float',
+        x          => 'float',
+        y          => 'float',
+    ]);
+}
+
+package SDL2::DropEvent {
+    FFI::C->struct( SDL_DropEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        _file     => 'opaque',
+        windowID  => 'uint32',
+    ]);
+
+    sub file { $ffi->cast( opaque => string => shift->_file ) }
+}
+
+package SDL2::JoyAxisEvent {
+    FFI::C->struct( SDL_JoyAxisEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'SDL_JoystickID',
+        axis      => 'uint8',
+        padding1  => 'uint8',
+        padding2  => 'uint8',
+        padding3  => 'uint8',
+        value     => 'sint16',
+        padding4  => 'uint16',
+    ]);
+}
+
+package SDL2::JoyBallEvent {
+    FFI::C->struct( SDL_JoyBallEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'SDL_JoystickID',
+        ball      => 'uint8',
+        padding1  => 'uint8',
+        padding2  => 'uint8',
+        padding3  => 'uint8',
+        xrel      => 'sint16',
+        yrel      => 'sint16',
+    ]);
+}
+
+package SDL2::JoyButtonEvent {
+    FFI::C->struct( SDL_JoyButtonEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'SDL_JoystickID',
+        button    => 'uint8',
+        state     => 'uint8',
+        padding1  => 'uint8',
+        padding2  => 'uint8',
+    ]);
+}
+
+package SDL2::JoyDeviceEvent {
+    FFI::C->struct( SDL_JoyDeviceEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'SDL_JoystickID',
+    ]);
+}
+
+package SDL2::JoyHatEvent {
+    FFI::C->struct( SDL_JoyHatEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'SDL_JoystickID',
+        hat       => 'uint8',
+        value     => 'uint8',
+        padding1  => 'uint8',
+        padding2  => 'uint8',
     ]);
 }
 
@@ -1145,37 +1299,48 @@ package SDL2::MouseWheelEvent {
     ]);
 }
 
-package SDL2::ControllerButtonEvent {
-    FFI::C->struct( SDL_ControllerButtonEvent => [
-        type      => 'uint32',
-        timestamp => 'uint32',
-        which     => 'SDL_JoystickID',
-        button    => 'uint8',
-        state     => 'uint8',
-        padding1  => 'uint8',
-        padding2  => 'uint8',
+package SDL2::MultiGestureEvent {
+    FFI::C->struct( SDL_MultiGestureEvent => [
+        type       => 'uint32',
+        timestamp  => 'uint32',
+        touchId    => 'SDL_TouchID',
+        dThetha    => 'float',
+        dHist      => 'float',
+        x          => 'float',
+        y          => 'float',
+        numFingers => 'uint16',
+        padding    => 'uint16',
     ]);
 }
 
-package SDL2::ControllerDeviceEvent {
-    FFI::C->struct( SDL_ControllerDeviceEvent => [
+package SDL2::OSEvent {
+    FFI::C->struct( SDL_OSEvent => [
         type      => 'uint32',
         timestamp => 'uint32',
-        which     => 'SDL_JoystickID',
     ]);
 }
 
-package SDL2::ControllerAxisEvent {
-    FFI::C->struct( SDL_ControllerAxisEvent => [
+package SDL2::QuitEvent {
+    FFI::C->struct( SDL_QuitEvent => [
         type      => 'uint32',
         timestamp => 'uint32',
-        which     => 'SDL_JoystickID',
-        axis      => 'uint8',
-        padding1  => 'uint8',
-        padding2  => 'uint8',
-        padding3  => 'uint8',
-        value     => 'sint16',
-        padding4  => 'uint16',
+    ]);
+}
+
+package SDL2::SensorEvent {
+    FFI::C->struct( SDL_SensorEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        which     => 'sint32',
+        data      => 'float[6]',
+    ]);
+}
+
+package SDL2::SysWMEvent {
+    FFI::C->struct( SDL_SysWMEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        msg       => 'opaque', # TODO: driver dependent data
     ]);
 }
 
@@ -1203,15 +1368,18 @@ package SDL2::TextInputEvent {
     sub text { my $data = shift->_text; substr $data, 0, index $data, "\0" }
 }
 
-package SDL2::DropEvent {
-    FFI::C->struct( SDL_DropEvent => [
+package SDL2::TouchFingerEvent {
+    FFI::C->struct( SDL_TouchFingerEvent => [
         type      => 'uint32',
         timestamp => 'uint32',
-        _file     => 'opaque',
-        windowID  => 'uint32',
+        touchId   => 'SDL_TouchID',
+        fingerID  => 'SDL_FingerID',
+        x         => 'float',
+        y         => 'float',
+        dx        => 'float',
+        dy        => 'float',
+        pressure  => 'float',
     ]);
-
-    sub file { $ffi->cast( opaque => string => shift->_file ) }
 }
 
 package SDL2::UserEvent {
@@ -1227,23 +1395,52 @@ package SDL2::UserEvent {
     sub file { $ffi->cast( opaque => string => shift->_file ) }
 }
 
+package SDL2::WindowEvent {
+    FFI::C->struct( SDL_WindowEvent => [
+        type      => 'uint32',
+        timestamp => 'uint32',
+        windowID  => 'uint32',
+        event     => 'uint8',
+        padding1  => 'uint8',
+        padding2  => 'uint8',
+        padding3  => 'uint8',
+        data1     => 'sint32',
+        data2     => 'sint32',
+    ]);
+}
+
 package SDL2::Event {
     FFI::C->union( SDL_Event => [
         type      => 'uint32',
         timestamp => 'uint32',
 
+        adevice   => 'SDL_AudioDeviceEvent',
         button    => 'SDL_MouseButtonEvent',
         caxis     => 'SDL_ControllerAxisEvent',
         cbutton   => 'SDL_ControllerButtonEvent',
         cdevice   => 'SDL_ControllerDeviceEvent',
+        csensor   => 'SDL_ControllerSensorEvent',
+        ctouchpad => 'SDL_ControllerTouchpadEvent',
+        dgesture  => 'SDL_DollarGestureEvent',
+        display   => 'SDL_DisplayEvent',
         drop      => 'SDL_DropEvent',
         edit      => 'SDL_TextEditingEvent',
+        jaxis     => 'SDL_JoyAxisEvent',
+        jball     => 'SDL_JoyBallEvent',
+        jbutton   => 'SDL_JoyButtonEvent',
+        jdevide   => 'SDL_JoyDeviceEvent',
+        jhat      => 'SDL_JoyHatEvent',
         key       => 'SDL_KeyboardEvent',
+        mgesture  => 'SDL_MultiGestureEvent',
         motion    => 'SDL_MouseMotionEvent',
+        quit      => 'SDL_QuitEvent',
+        sensor    => 'SDL_SensorEvent',
+        syswm     => 'SDL_SysWMEvent',
         text      => 'SDL_TextInputEvent',
+        tfinger   => 'SDL_TouchFingerEvent',
+        user      => 'SDL_UserEvent',
         wheel     => 'SDL_MouseWheelEvent',
         window    => 'SDL_WindowEvent',
-        user      => 'SDL_UserEvent',
 
         padding   => 'uint8[56]',
     ]);

@@ -39,6 +39,7 @@ is [ sort keys %SDL2:: ], [qw(
     AUDIO_U16MSB
     AUDIO_U8
     ArrayOrder
+    AudioDeviceEvent::
     BEGIN
     BIG_ENDIAN
     BITMAPORDER_1234
@@ -92,6 +93,8 @@ is [ sort keys %SDL2:: ], [qw(
     ControllerAxisEvent::
     ControllerButtonEvent::
     ControllerDeviceEvent::
+    ControllerSensorEvent::
+    ControllerTouchpadEvent::
     CreateRGBSurfaceFrom
     CreateRenderer
     CreateTexture
@@ -112,8 +115,10 @@ is [ sort keys %SDL2:: ], [qw(
     DestroyRenderer
     DestroyTexture
     DestroyWindow
+    DisplayEvent::
     DisplayEventID
     DisplayOrientation
+    DollarGestureEvent::
     DropEvent::
     Event::
     EventAction
@@ -208,6 +213,11 @@ is [ sort keys %SDL2:: ], [qw(
     JOYDEVICEADDED
     JOYDEVICEREMOVED
     JOYHATMOTION
+    JoyAxisEvent::
+    JoyBallEvent::
+    JoyButtonEvent::
+    JoyDeviceEvent::
+    JoyHatEvent::
     JoystickInstanceID
     KEYDOWN
     KEYMAPCHANGED
@@ -516,6 +526,7 @@ is [ sort keys %SDL2:: ], [qw(
     MouseMotionEvent::
     MouseWheelDirection
     MouseWheelEvent::
+    MultiGestureEvent::
     NUM_LOG_PRIORITIES
     NUM_SCANCODES
     NUM_SYSTEM_CURSORS
@@ -524,6 +535,7 @@ is [ sort keys %SDL2:: ], [qw(
     ORIENTATION_PORTRAIT
     ORIENTATION_PORTRAIT_FLIPPED
     ORIENTATION_UNKNOWN
+    OSEvent::
     PACKEDLAYOUT_1010102
     PACKEDLAYOUT_1555
     PACKEDLAYOUT_2101010
@@ -621,6 +633,7 @@ is [ sort keys %SDL2:: ], [qw(
     PushEvent
     QUIT
     Quit
+    QuitEvent::
     QuitSubSystem
     RENDERER_ACCELERATED
     RENDERER_PRESENTVSYNC
@@ -918,6 +931,7 @@ is [ sort keys %SDL2:: ], [qw(
     SYSWM_X11
     ScaleMode
     ScanCode
+    SensorEvent::
     SetColorKey
     SetError
     SetRenderDrawColor
@@ -928,6 +942,7 @@ is [ sort keys %SDL2:: ], [qw(
     SetWindowIcon
     SetWindowTitle
     Surface::
+    SysWMEvent::
     SysWMinfo::
     SystemCursor
     TEXTEDITING
@@ -942,6 +957,7 @@ is [ sort keys %SDL2:: ], [qw(
     TextInputEvent::
     TextureAccess
     TextureModulate
+    TouchFingerEvent::
     USEREVENT
     UnlockTexture
     UpdateWindowSurface
