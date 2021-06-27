@@ -1578,9 +1578,7 @@ $ffi->type( opaque => 'SDL_RWops'          );
 
 ## Video
 
-# SDL_BlendMode
 $ffi->attach( CreateWindow => [qw( string sint32 sint32 sint32 sint32 sint32 )] => 'SDL_Window' );
-# SDL_CreateWindowAndRenderer
 # SDL_CreateWindowFrom
 $ffi->attach( DestroyWindow => ['SDL_Window' ] => 'void' );
 # SDL_DisableScreenSaver
@@ -1617,8 +1615,8 @@ $ffi->attach( DestroyWindow => ['SDL_Window' ] => 'void' );
 # SDL_GetWindowPosition
 # SDL_GetWindowSize
 $ffi->attach( GetWindowSurface => ['SDL_Window'] => 'SDL_Surface' );
-# SDL_GetWindowTitle
-$ffi->attach( GetWindowWMInfo => ['SDL_Window', 'SDL_SysWMinfo'] => 'int' );
+$ffi->attach( GetWindowTitle   => ['SDL_Window'] => 'string' );
+$ffi->attach( GetWindowWMInfo  => ['SDL_Window', 'SDL_SysWMinfo'] => 'int' );
 # SDL_GL_CreateContext
 # SDL_GL_DeleteContext
 # SDL_GL_ExtensionSupported
@@ -1709,16 +1707,14 @@ $ffi->attach( SetError   => ['string'] => 'void' => sub { shift->( sprintf shift
 
 ## Render
 
-# SDL_BlendFactor
-# SDL_BlendOperation
-# SDL_ComposeCustomBlendMode
-$ffi->attach( CreateRenderer           => [qw( SDL_Window sint32 sint32                 )] => 'SDL_Renderer' );
-# SDL_CreateSoftwareRenderer
-$ffi->attach( CreateTexture            => [qw( SDL_Renderer uint32 sint32 sint32 sint32 )] => 'SDL_Texture'  );
-$ffi->attach( CreateTextureFromSurface => [qw( SDL_Renderer SDL_Surface                 )] => 'SDL_Texture'  );
-# SDL_CreateWindowAndRenderer
-$ffi->attach( DestroyRenderer          => [qw( SDL_Renderer                             )] => 'void'         );
-$ffi->attach( DestroyTexture           => [qw( SDL_Texture                              )] => 'void'         );
+$ffi->attach( ComposeCustomBlendMode   => [qw( int int int int int int                  )] => 'int'           );
+$ffi->attach( CreateRenderer           => [qw( SDL_Window sint32 sint32                 )] => 'SDL_Renderer'  );
+$ffi->attach( CreateSoftwareRenderer   => [qw( SDL_Surface                              )] => 'SDL_Renderer'  );
+$ffi->attach( CreateTexture            => [qw( SDL_Renderer uint32 sint32 sint32 sint32 )] => 'SDL_Texture'   );
+$ffi->attach( CreateTextureFromSurface => [qw( SDL_Renderer SDL_Surface                 )] => 'SDL_Texture'   );
+$ffi->attach( CreateWindowAndRenderer  => [qw( int int uint32 opaque* opaque*           )] => 'int'           );
+$ffi->attach( DestroyRenderer          => [qw( SDL_Renderer                             )] => 'void'          );
+$ffi->attach( DestroyTexture           => [qw( SDL_Texture                              )] => 'void'          );
 # SDL_GetNumRenderDrivers
 # SDL_GetRenderDrawBlendMode
 # SDL_GetRenderDrawColor

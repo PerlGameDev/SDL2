@@ -12,14 +12,11 @@ say 'This demo should capture all recognised SDL2 events';
 die 'Could not initialise SDL2: ' . SDL2::GetError
     if SDL2::Init( SDL2::INIT_VIDEO | SDL2::INIT_GAMECONTROLLER );
 
-my $window = SDL2::CreateWindow(
-    'Event handling demo',
-    SDL2::WINDOWPOS_CENTERED,
-    SDL2::WINDOWPOS_CENTERED,
-    320,
-    240,
-    SDL2::WINDOW_OPENGL | SDL2::WINDOW_RESIZABLE,
-) or die 'Error creating SDL window: ' . SDL2::GetError;
+my ( $window, $renderer );
+SDL2::CreateWindowAndRenderer(
+    320, 240, SDL2::WINDOW_OPENGL | SDL2::WINDOW_RESIZABLE,
+    \$window, \$renderer,
+) and die 'Error creating SDL window: ' . SDL2::GetError;
 
 my ( $done, $controller );
 while ( !$done ) {
