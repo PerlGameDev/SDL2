@@ -1922,9 +1922,9 @@ $ffi->attach( RegisterEvents => ['uint32'] => 'int' );
 
 ## Version
 
-# SDL_GetRevision
-# SDL_GetRevisionNumber
-$ffi->attach( GetVersion => ['SDL_Version'] => 'void' );
+$ffi->attach( GetRevision       => [             ] => 'string' );
+$ffi->attach( GetRevisionNumber => [             ] => 'int'    ); # Deprecated
+$ffi->attach( GetVersion        => ['SDL_Version'] => 'void'   );
 
 ## Logging
 

@@ -182,6 +182,8 @@ is [ sort keys %SDL2:: ], [qw(
     GetError
     GetRenderTarget
     GetRendererInfo
+    GetRevision
+    GetRevisionNumber
     GetTextureAlphaMod
     GetTextureBlendMode
     GetTextureColorMod
