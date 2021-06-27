@@ -100,6 +100,7 @@ is [ sort keys %SDL2:: ], [qw(
     CreateTexture
     CreateTextureFromSurface
     CreateWindow
+    DISABLE
     DISPLAYEVENT
     DISPLAYEVENT_CONNECTED
     DISPLAYEVENT_DISCONNECTED
@@ -120,9 +121,11 @@ is [ sort keys %SDL2:: ], [qw(
     DisplayOrientation
     DollarGestureEvent::
     DropEvent::
+    ENABLE
     Event::
     EventAction
     EventType
+    FALSE
     FINGERDOWN
     FINGERMOTION
     FINGERUP
@@ -195,6 +198,7 @@ is [ sort keys %SDL2:: ], [qw(
     HINT_NORMAL
     HINT_OVERRIDE
     HintPriority
+    IGNORE
     INIT_AUDIO
     INIT_EVENTS
     INIT_EVERYTHING
@@ -624,6 +628,7 @@ is [ sort keys %SDL2:: ], [qw(
     POWERSTATE_NO_BATTERY
     POWERSTATE_ON_BATTERY
     POWERSTATE_UNKNOWN
+    PRESSED
     PackedLayout
     PackedOrder
     PixelFormat::
@@ -633,10 +638,12 @@ is [ sort keys %SDL2:: ], [qw(
     PollEvent
     PowerState
     PushEvent
+    QUERY
     QUIT
     Quit
     QuitEvent::
     QuitSubSystem
+    RELEASED
     RENDERER_ACCELERATED
     RENDERER_PRESENTVSYNC
     RENDERER_SOFTWARE
@@ -955,6 +962,7 @@ is [ sort keys %SDL2:: ], [qw(
     TEXTUREMODULATE_ALPHA
     TEXTUREMODULATE_COLOR
     TEXTUREMODULATE_NONE
+    TRUE
     TextEditingEvent::
     TextInputEvent::
     TextureAccess

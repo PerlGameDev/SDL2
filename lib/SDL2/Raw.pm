@@ -23,6 +23,14 @@ use constant {
     BIG_ENDIAN      => 4321,
     LIL_ENDIAN      => 1234,
     MIX_MAXVOLUME   => 128,
+    FALSE           => 0,
+    TRUE            => 1,
+    QUERY           => -1,
+    IGNORE          => 0,
+    DISABLE         => 0,
+    ENABLE          => 1,
+    RELEASED        => 0,
+    PRESSED         => 1,
 };
 
 # Init flags
