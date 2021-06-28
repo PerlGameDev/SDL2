@@ -123,6 +123,7 @@ is [ sort keys %SDL2:: ], [qw(
     DestroyWindow
     DisplayEvent::
     DisplayEventID
+    DisplayMode::
     DisplayOrientation
     DollarGestureEvent::
     DropEvent::

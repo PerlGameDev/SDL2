@@ -1110,14 +1110,7 @@ $ffi->type( sint64 => 'SDL_GestureID'  );
 
 $ffi->mangler( sub { 'SDL_' . shift } );
 
-package SDL2::Finger {
-    FFI::C->struct( SDL_Finger => [
-        id       => 'SDL_FingerID',
-        x        => 'float',
-        y        => 'float',
-        pressure => 'float',
-    ]);
-}
+# Event structs
 
 package SDL2::AudioDeviceEvent {
     FFI::C->struct( SDL_AudioDeviceEvent => [
@@ -1485,6 +1478,27 @@ package SDL2::Event {
     ]);
 }
 
+# Non-event structs
+
+package SDL2::Finger {
+    FFI::C->struct( SDL_Finger => [
+        id       => 'SDL_FingerID',
+        x        => 'float',
+        y        => 'float',
+        pressure => 'float',
+    ]);
+}
+
+package SDL2::DisplayMode {
+    FFI::C->struct( SDL_DisplayMode => [
+        format       => 'uint32', # One of SDL_PixelFormatEnum
+        w            => 'int',
+        h            => 'int',
+        refresh_rate => 'int',
+        driverdata   => 'opaque',
+    ]);
+}
+
 package SDL2::JoystickGUID {
     FFI::C->struct( SDL_JoystickGUID => [ data => 'uint8[16]' ]);
 }
@@ -1516,14 +1530,22 @@ package SDL2::PixelFormat {
     sub next { $ffi->cast( opaque => 'SDL_PixelFormat', shift ) }
 }
 
-package SDL2::Surface {
-    FFI::C->struct( SDL_Surface => [
-        flags  => 'uint32',
-        format => 'opaque',
-        w      => 'int',
-        h      => 'int',
-        pitch  => 'int',
-    ]);
+package SDL2::Point {
+    use FFI::Platypus::Record;
+    record_layout_1( int => 'x', int => 'y' );
+
+    {
+        # Give point a positional constructor
+        no strict 'refs';
+        no warnings 'redefine';
+
+        my $old  = __PACKAGE__->can('new') or die;
+        my $new  = sub { shift->$old({ x => shift, y => shift }) };
+        my $name = __PACKAGE__ . '::new';
+
+        require Sub::Util;
+        *{$name} = Sub::Util::set_subname $name => $new;
+    }
 }
 
 package SDL2::Rect {
@@ -1546,24 +1568,6 @@ package SDL2::Rect {
     }
 }
 
-package SDL2::Point {
-    use FFI::Platypus::Record;
-    record_layout_1( int => 'x', int => 'y' );
-
-    {
-        # Give point a positional constructor
-        no strict 'refs';
-        no warnings 'redefine';
-
-        my $old  = __PACKAGE__->can('new') or die;
-        my $new  = sub { shift->$old({ x => shift, y => shift }) };
-        my $name = __PACKAGE__ . '::new';
-
-        require Sub::Util;
-        *{$name} = Sub::Util::set_subname $name => $new;
-    }
-}
-
 package SDL2::RendererInfo {
     FFI::C->struct( SDL_RendererInfo => [
         '_name'               => 'opaque',
@@ -1575,6 +1579,16 @@ package SDL2::RendererInfo {
     ]);
 
     sub name { $ffi->cast( opaque => string => shift->_name ) }
+}
+
+package SDL2::Surface {
+    FFI::C->struct( SDL_Surface => [
+        flags  => 'uint32',
+        format => 'opaque',
+        w      => 'int',
+        h      => 'int',
+        pitch  => 'int',
+    ]);
 }
 
 package SDL2::Version {
