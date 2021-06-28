@@ -104,6 +104,7 @@ is [ sort keys %SDL2:: ], [qw(
     CreateTextureFromSurface
     CreateWindow
     CreateWindowAndRenderer
+    CreateWindowFrom
     DISABLE
     DISPLAYEVENT
     DISPLAYEVENT_CONNECTED
@@ -121,6 +122,7 @@ is [ sort keys %SDL2:: ], [qw(
     DestroyRenderer
     DestroyTexture
     DestroyWindow
+    DisableScreenSaver
     DisplayEvent::
     DisplayEventID
     DisplayMode::
@@ -128,6 +130,7 @@ is [ sort keys %SDL2:: ], [qw(
     DollarGestureEvent::
     DropEvent::
     ENABLE
+    EnableScreenSaver
     Event::
     EventAction
     EventState
@@ -193,8 +196,16 @@ is [ sort keys %SDL2:: ], [qw(
     GameControllerGetJoystick
     GameControllerNameForIndex
     GameControllerOpen
+    GetClosestDisplayMode
+    GetCurrentDisplayMode
+    GetCurrentVideoDriver
+    GetDesktopDisplayMode
+    GetDisplayDPI
+    GetDisplayMode
+    GetDisplayName
     GetError
     GetEventFilter
+    GetGrabbedWindow
     GetNumTouchDevices
     GetNumTouchFingers
     GetPerformanceCounter
@@ -210,6 +221,23 @@ is [ sort keys %SDL2:: ], [qw(
     GetTouchDevice
     GetTouchFinger
     GetVersion
+    GetVideoDriver
+    GetWindowBordersSize
+    GetWindowBrightness
+    GetWindowData
+    GetWindowDisplayIndex
+    GetWindowDisplayMode
+    GetWindowFlags
+    GetWindowFromID
+    GetWindowGammaRamp
+    GetWindowGrab
+    GetWindowID
+    GetWindowMaximumSize
+    GetWindowMinimumSize
+    GetWindowOpacity
+    GetWindowPixelFormat
+    GetWindowPosition
+    GetWindowSize
     GetWindowSurface
     GetWindowTitle
     GetWindowWMInfo
@@ -228,6 +256,7 @@ is [ sort keys %SDL2:: ], [qw(
     HasEvent
     HasEvents
     HatPosition
+    HideWindow
     HintPriority
     IGNORE
     INIT_AUDIO
@@ -243,6 +272,7 @@ is [ sort keys %SDL2:: ], [qw(
     Init
     InitSubSystem
     IsGameController
+    IsScreenSaverEnabled
     JOYAXISMOTION
     JOYBALLMOTION
     JOYBUTTONDOWN
@@ -590,6 +620,8 @@ is [ sort keys %SDL2:: ], [qw(
     MOUSEWHEEL_FLIPPED
     MOUSEWHEEL_NORMAL
     MULTIGESTURE
+    MaximizeWindow
+    MinimizeWindow
     MouseButtonEvent::
     MouseMotionEvent::
     MouseWheelDirection
@@ -716,6 +748,7 @@ is [ sort keys %SDL2:: ], [qw(
     RENDER_DEVICE_RESET
     RENDER_TARGETS_RESET
     RWFromFile
+    RaiseWindow
     RecordGesture
     Rect::
     RegisterEvents
@@ -729,6 +762,7 @@ is [ sort keys %SDL2:: ], [qw(
     RendererFlags
     RendererFlip
     RendererInfo::
+    RestoreWindow
     SCALEMODEBEST
     SCALEMODELINEAR
     SCALEMODENEAREST
@@ -1017,8 +1051,25 @@ is [ sort keys %SDL2:: ], [qw(
     SetTextureAlphaMod
     SetTextureBlendMode
     SetTextureColorMod
+    SetWindowBordered
+    SetWindowBrightness
+    SetWindowData
+    SetWindowDisplayMode
+    SetWindowFullscreen
+    SetWindowGammaRamp
+    SetWindowGrab
+    SetWindowHitTest
     SetWindowIcon
+    SetWindowInputFocus
+    SetWindowMaximumSize
+    SetWindowMinimumSize
+    SetWindowModalFor
+    SetWindowOpacity
+    SetWindowPosition
+    SetWindowResizable
+    SetWindowSize
     SetWindowTitle
+    ShowWindow
     Surface::
     SysWMEvent::
     SysWMinfo::
@@ -1044,6 +1095,8 @@ is [ sort keys %SDL2:: ], [qw(
     UpperBlit
     UserEvent::
     Version::
+    VideoInit
+    VideoQuit
     WINDOWEVENT
     WINDOWEVENT_CLOSE
     WINDOWEVENT_ENTER
