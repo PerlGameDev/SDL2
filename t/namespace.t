@@ -90,6 +90,7 @@ is [ sort keys %SDL2:: ], [qw(
     CONTROLLERTOUCHPADMOTION
     CONTROLLERTOUCHPADUP
     ClearError
+    ComposeCustomBlendMode
     Config
     ControllerAxisEvent::
     ControllerButtonEvent::
@@ -98,9 +99,11 @@ is [ sort keys %SDL2:: ], [qw(
     ControllerTouchpadEvent::
     CreateRGBSurfaceFrom
     CreateRenderer
+    CreateSoftwareRenderer
     CreateTexture
     CreateTextureFromSurface
     CreateWindow
+    CreateWindowAndRenderer
     DISABLE
     DISPLAYEVENT
     DISPLAYEVENT_CONNECTED
@@ -205,6 +208,7 @@ is [ sort keys %SDL2:: ], [qw(
     GetTouchFinger
     GetVersion
     GetWindowSurface
+    GetWindowTitle
     GetWindowWMInfo
     HINT_DEFAULT
     HINT_NORMAL
