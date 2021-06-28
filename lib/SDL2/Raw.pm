@@ -4,10 +4,13 @@ package SDL2;
 use strict;
 use warnings;
 
+use Carp ();
+use FFI::C;
 use FFI::CheckLib ();
 use FFI::Platypus 1.00;
-use FFI::C;
 use Ref::Util;
+use Sub::Util ();
+use version ();
 
 my $ffi;
 BEGIN {
@@ -1793,7 +1796,7 @@ package SDL2::Point {
     record_layout_1( int => 'x', int => 'y' );
 
     {
-        # Give point a positional constructor
+        # Give package a positional constructor
         no strict 'refs';
         no warnings 'redefine';
 
@@ -1801,7 +1804,23 @@ package SDL2::Point {
         my $new  = sub { shift->$old({ x => shift, y => shift }) };
         my $name = __PACKAGE__ . '::new';
 
-        require Sub::Util;
+        *{$name} = Sub::Util::set_subname $name => $new;
+    }
+}
+
+package SDL2::FPoint {
+    use FFI::Platypus::Record;
+    record_layout_1( float => 'x', float => 'y' );
+
+    {
+        # Give package a positional constructor
+        no strict 'refs';
+        no warnings 'redefine';
+
+        my $old  = __PACKAGE__->can('new') or die;
+        my $new  = sub { shift->$old({ x => shift, y => shift }) };
+        my $name = __PACKAGE__ . '::new';
+
         *{$name} = Sub::Util::set_subname $name => $new;
     }
 }
@@ -1811,7 +1830,7 @@ package SDL2::Rect {
     record_layout_1( int => 'x', int => 'y', int => 'w', int => 'h' );
 
     {
-        # Give rect a positional constructor
+        # Give package a positional constructor
         no strict 'refs';
         no warnings 'redefine';
 
@@ -1821,19 +1840,37 @@ package SDL2::Rect {
         };
         my $name = __PACKAGE__ . '::new';
 
-        require Sub::Util;
+        *{$name} = Sub::Util::set_subname $name => $new;
+    }
+}
+
+package SDL2::FRect {
+    use FFI::Platypus::Record;
+    record_layout_1( float => 'x', float => 'y', float => 'w', float => 'h' );
+
+    {
+        # Give package a positional constructor
+        no strict 'refs';
+        no warnings 'redefine';
+
+        my $old  = __PACKAGE__->can('new') or die;
+        my $new  = sub {
+            shift->$old({ x => shift, y => shift, w => shift, h => shift });
+        };
+        my $name = __PACKAGE__ . '::new';
+
         *{$name} = Sub::Util::set_subname $name => $new;
     }
 }
 
 package SDL2::RendererInfo {
     FFI::C->struct( SDL_RendererInfo => [
-        '_name'               => 'opaque',
-        flags                 => 'uint32',
-        'num_texture_formats' => 'uint32',
-        'texture_formats'     => 'uint32[16]',
-        'max_texture_width'   => 'int',
-        'max_texture_height'  => 'int',
+        _name               => 'opaque',
+        flags               => 'uint32',
+        num_texture_formats => 'uint32',
+        texture_formats     => 'uint32[16]',
+        max_texture_width   => 'int',
+        max_texture_height  => 'int',
     ]);
 
     sub name { $ffi->cast( opaque => string => shift->_name ) }
@@ -1864,10 +1901,23 @@ package SDL2::SysWMinfo {
     ]);
 }
 
-$ffi->type( 'record(SDL2::Rect)'  => 'SDL_Rect'  );
-$ffi->type( 'record(SDL2::Point)' => 'SDL_Point' );
+$ffi->type( 'record(SDL2::Rect)'   => 'SDL_Rect'   );
+$ffi->type( 'record(SDL2::Point)'  => 'SDL_Point'  );
+$ffi->type( 'record(SDL2::FRect)'  => 'SDL_FRect'  );
+$ffi->type( 'record(SDL2::FPoint)' => 'SDL_FPoint' );
 
 $ffi->type( '( SDL_Window, SDL_Point, opaque )->int' => 'SDL_HitTest' );
+
+## Version
+
+$ffi->attach( GetRevision       => [             ] => 'string' );
+$ffi->attach( GetRevisionNumber => [             ] => 'int'    ); # Deprecated
+$ffi->attach( GetVersion        => ['SDL_Version'] => 'void'   );
+
+GetVersion( my $version = SDL2::Version->new );
+$version = version->parse(
+    sprintf '%d.%d.%d', $version->major, $version->minor, $version->patch
+);
 
 ## Video
 
@@ -1953,7 +2003,7 @@ $ffi->attach( ShowMessageBox           => [qw( SDL_MessageBoxData int*          
 $ffi->attach( ShowSimpleMessageBox     => [qw( uint32 string string SDL_Window           )] => 'int'             );
 $ffi->attach( ShowWindow               => [qw( SDL_Window                                )] => 'void'            );
 $ffi->attach( UpdateWindowSurface      => [qw( SDL_Window                                )] => 'int'             );
-$ffi->attach( UpdateWindowSurfaceRects => [qw( SDL_Window int* int                       )] => 'int'             ); # TODO: SDL_Rect*
+$ffi->attach( UpdateWindowSurfaceRects => [qw( SDL_Window int[] int                      )] => 'int'             ); # TODO: SDL_Rect[]
 $ffi->attach( VideoInit                => [qw( string                                    )] => 'int'             );
 $ffi->attach( VideoQuit                => [                                               ] => 'void'            );
 
@@ -1986,80 +2036,64 @@ $ffi->attach( SetError   => ['string'] => 'void' => sub { shift->( sprintf shift
 
 ## Render
 
-$ffi->attach( ComposeCustomBlendMode   => [qw( int int int int int int                  )] => 'int'           );
-$ffi->attach( CreateRenderer           => [qw( SDL_Window sint32 sint32                 )] => 'SDL_Renderer'  );
-$ffi->attach( CreateSoftwareRenderer   => [qw( SDL_Surface                              )] => 'SDL_Renderer'  );
-$ffi->attach( CreateTexture            => [qw( SDL_Renderer uint32 sint32 sint32 sint32 )] => 'SDL_Texture'   );
-$ffi->attach( CreateTextureFromSurface => [qw( SDL_Renderer SDL_Surface                 )] => 'SDL_Texture'   );
-$ffi->attach( CreateWindowAndRenderer  => [qw( int int uint32 opaque* opaque*           )] => 'int'           );
-$ffi->attach( DestroyRenderer          => [qw( SDL_Renderer                             )] => 'void'          );
-$ffi->attach( DestroyTexture           => [qw( SDL_Texture                              )] => 'void'          );
-# SDL_GetNumRenderDrivers
-# SDL_GetRenderDrawBlendMode
-# SDL_GetRenderDrawColor
-# SDL_GetRenderDriverInfo
-# SDL_GetRenderer
-$ffi->attach( GetRendererInfo     => [qw( SDL_Renderer SDL_RendererInfo    )] => 'int'         );
-# SDL_GetRendererOutputSize
-$ffi->attach( GetRenderTarget     => [qw( SDL_Renderer                     )] => 'SDL_Texture' );
-$ffi->attach( GetTextureAlphaMod  => [qw( SDL_Texture uint8*               )] => 'int'         );
-$ffi->attach( GetTextureBlendMode => [qw( SDL_Texture SDL_BlendMode        )] => 'int'         );
-$ffi->attach( GetTextureColorMod  => [qw( SDL_Texture uint8* uint8* uint8* )] => 'int'         );
-# SDL_GL_BindTexture
-# SDL_GL_UnbindTexture
-$ffi->attach( LockTexture  => [qw( SDL_Texture SDL_Rect* opaque* int* )] => 'int' );
-# SDL_QueryTexture
-$ffi->attach( RenderClear  => [qw( SDL_Renderer                                                            )] => 'int' );
-$ffi->attach( RenderCopy   => [qw( SDL_Renderer SDL_Texture SDL_Rect* SDL_Rect*                            )] => 'int' );
-$ffi->attach( RenderCopyEx => [qw( SDL_Renderer SDL_Texture SDL_Rect* SDL_Rect* double SDL_Rect* SDL_Rect* )] => 'int' );
-# SDL_RenderCopyExF
-# SDL_RenderCopyF
-# SDL_RenderDrawLine
-# SDL_RenderDrawLineF
-# SDL_RenderDrawLines
-# SDL_RenderDrawLinesF
-# SDL_RenderDrawPoint
-# SDL_RenderDrawPointF
-$ffi->attach( RenderDrawPoints => [qw( SDL_Renderer int[] int )] => 'int' );
-# SDL_RenderDrawPointsF
-$ffi->attach( RenderDrawRect => [qw( SDL_Renderer SDL_Rect* )] => 'int' );
-# SDL_RenderDrawRectF
-# SDL_RenderDrawRects
-# SDL_RenderDrawRectsF
-# SDL_Renderer
-# SDL_RendererFlags
-# SDL_RendererFlip
-# SDL_RendererInfo
-$ffi->attach( RenderFillRect => [qw( SDL_Renderer SDL_Rect* )] => 'int' );
-# SDL_RenderFillRectF
-# SDL_RenderFillRects
-# SDL_RenderFillRectsF
-# SDL_RenderGetClipRect
-# SDL_RenderGetIntegerScale
-# SDL_RenderGetLogicalSize
-# SDL_RenderGetScale
-# SDL_RenderGetViewport
-# SDL_RenderIsClipEnabled
-$ffi->attach( RenderPresent => ['SDL_Renderer'] => 'void' );
-# SDL_RenderReadPixels
-# SDL_RenderSetClipRect
-# SDL_RenderSetIntegerScale
-# SDL_RenderSetLogicalSize
-# SDL_RenderSetScale
-# SDL_RenderSetViewport
-# SDL_RenderTargetSupported
-# SDL_SetRenderDrawBlendMode
-$ffi->attach( SetRenderDrawColor  => [qw( SDL_Renderer uint8 uint8 uint8 uint8 )] => 'int' );
-$ffi->attach( SetRenderTarget     => [qw( SDL_Renderer SDL_Texture             )] => 'int' );
-$ffi->attach( SetTextureAlphaMod  => [qw( SDL_Texture uint8                    )] => 'int' );
-$ffi->attach( SetTextureBlendMode => [qw( SDL_Texture SDL_BlendMode            )] => 'int' );
-$ffi->attach( SetTextureColorMod  => [qw( SDL_Texture uint8 uint8 uint8        )] => 'int' );
-# SDL_Texture
-# SDL_TextureAccess
-# SDL_TextureModulate
-$ffi->attach( UnlockTexture => ['SDL_Texture'] => 'void' );
-# SDL_UpdateTexture
-# SDL_UpdateYUVTexture
+$ffi->attach( ComposeCustomBlendMode   => [qw( int int int int int int                                                 )] => 'int'           );
+$ffi->attach( CreateRenderer           => [qw( SDL_Window sint32 sint32                                                )] => 'SDL_Renderer'  );
+$ffi->attach( CreateSoftwareRenderer   => [qw( SDL_Surface                                                             )] => 'SDL_Renderer'  );
+$ffi->attach( CreateTexture            => [qw( SDL_Renderer uint32 sint32 sint32 sint32                                )] => 'SDL_Texture'   );
+$ffi->attach( CreateTextureFromSurface => [qw( SDL_Renderer SDL_Surface                                                )] => 'SDL_Texture'   );
+$ffi->attach( CreateWindowAndRenderer  => [qw( int int uint32 opaque* opaque*                                          )] => 'int'           );
+$ffi->attach( DestroyRenderer          => [qw( SDL_Renderer                                                            )] => 'void'          );
+$ffi->attach( DestroyTexture           => [qw( SDL_Texture                                                             )] => 'void'          );
+$ffi->attach( GetNumRenderDrivers      => [                                                                             ] => 'int'           );
+$ffi->attach( GetRenderDrawBlendMode   => [qw( SDL_Renderer int*                                                       )] => 'int'           );
+$ffi->attach( GetRenderDrawColor       => [qw( SDL_Renderer int* int* int* int*                                        )] => 'int'           );
+$ffi->attach( GetRenderer              => [qw( SDL_Window                                                              )] => 'SDL_Renderer'  );
+$ffi->attach( GetRenderDriverInfo      => [qw( int SDL_RendererInfo                                                    )] => 'int'           );
+$ffi->attach( GetRendererInfo          => [qw( SDL_Renderer SDL_RendererInfo                                           )] => 'int'           );
+$ffi->attach( GetRendererOutputSize    => [qw( SDL_Renderer int* int*                                                  )] => 'int'           );
+$ffi->attach( GetRenderTarget          => [qw( SDL_Renderer                                                            )] => 'SDL_Texture'   );
+$ffi->attach( GetTextureAlphaMod       => [qw( SDL_Texture uint8*                                                      )] => 'int'           );
+$ffi->attach( GetTextureBlendMode      => [qw( SDL_Texture SDL_BlendMode                                               )] => 'int'           );
+$ffi->attach( GetTextureColorMod       => [qw( SDL_Texture uint8* uint8* uint8*                                        )] => 'int'           );
+$ffi->attach( GL_BindTexture           => [qw( SDL_Texture float* float*                                               )] => 'int'           );
+$ffi->attach( GL_UnbindTexture         => [qw( SDL_Texture                                                             )] => 'int'           );
+$ffi->attach( LockTexture              => [qw( SDL_Texture SDL_Rect* opaque* int*                                      )] => 'int'           );
+$ffi->attach( QueryTexture             => [qw( SDL_Texture uint32* int* int* int*                                      )] => 'int'           );
+$ffi->attach( RenderClear              => [qw( SDL_Renderer                                                            )] => 'int'           );
+$ffi->attach( RenderCopy               => [qw( SDL_Renderer SDL_Texture SDL_Rect* SDL_Rect*                            )] => 'int'           );
+$ffi->attach( RenderCopyEx             => [qw( SDL_Renderer SDL_Texture SDL_Rect* SDL_Rect* double SDL_Point* int      )] => 'int'           );
+$ffi->attach( RenderDrawLine           => [qw( SDL_Renderer int int int int                                            )] => 'int'           );
+$ffi->attach( RenderDrawLines          => [qw( SDL_Renderer int[] int                                                  )] => 'int'           ); # TODO: SDL_Point[]
+$ffi->attach( RenderDrawPoint          => [qw( SDL_Renderer int int                                                    )] => 'int'           );
+$ffi->attach( RenderDrawPoints         => [qw( SDL_Renderer int[] int                                                  )] => 'int'           );
+$ffi->attach( RenderDrawRect           => [qw( SDL_Renderer SDL_Rect*                                                  )] => 'int'           );
+$ffi->attach( RenderDrawRects          => [qw( SDL_Renderer int[]                                                      )] => 'int'           ); # TODO: SDL_Rect[]
+$ffi->attach( RenderFillRect           => [qw( SDL_Renderer SDL_Rect*                                                  )] => 'int'           );
+$ffi->attach( RenderFillRects          => [qw( SDL_Renderer int[] int                                                  )] => 'int'           ); # TODO: SDL_Rect[]
+
+$ffi->attach( RenderGetClipRect        => [qw( SDL_Renderer SDL_Rect*                                                  )] => 'int'           );
+$ffi->attach( RenderGetIntegerScale    => [qw( SDL_Renderer                                                            )] => 'SDL_bool'      );
+$ffi->attach( RenderGetLogicalSize     => [qw( SDL_Renderer int* int*                                                  )] => 'void'          );
+$ffi->attach( RenderGetScale           => [qw( SDL_Renderer float* float*                                              )] => 'void'          );
+$ffi->attach( RenderGetViewport        => [qw( SDL_Renderer SDL_Rect*                                                  )] => 'void'          );
+$ffi->attach( RenderIsClipEnabled      => [qw( SDL_Renderer                                                            )] => 'SDL_bool'      );
+$ffi->attach( RenderPresent            => [qw( SDL_Renderer                                                            )] => 'void'          );
+$ffi->attach( RenderReadPixels         => [qw( SDL_Renderer SDL_Rect* uint32 opaque int                                )] => 'int'           );
+$ffi->attach( RenderSetClipRect        => [qw( SDL_Renderer SDL_Rect*                                                  )] => 'int'           );
+$ffi->attach( RenderSetIntegerScale    => [qw( SDL_Renderer SDL_bool                                                   )] => 'int'           );
+$ffi->attach( RenderSetLogicalSize     => [qw( SDL_Renderer int int                                                    )] => 'int'           );
+$ffi->attach( RenderSetScale           => [qw( SDL_Renderer float float                                                )] => 'int'           );
+$ffi->attach( RenderSetViewport        => [qw( SDL_Renderer SDL_Rect*                                                  )] => 'int'           );
+$ffi->attach( RenderTargetSupported    => [qw( SDL_Renderer                                                            )] => 'SDL_bool'      );
+$ffi->attach( SetRenderDrawBlendMode   => [qw( SDL_Renderer SDL_BlendMode                                              )] => 'int'           );
+$ffi->attach( SetRenderDrawColor       => [qw( SDL_Renderer uint8 uint8 uint8 uint8                                    )] => 'int'           );
+$ffi->attach( SetRenderTarget          => [qw( SDL_Renderer SDL_Texture                                                )] => 'int'           );
+$ffi->attach( SetTextureAlphaMod       => [qw( SDL_Texture uint8                                                       )] => 'int'           );
+$ffi->attach( SetTextureBlendMode      => [qw( SDL_Texture SDL_BlendMode                                               )] => 'int'           );
+$ffi->attach( SetTextureColorMod       => [qw( SDL_Texture uint8 uint8 uint8                                           )] => 'int'           );
+$ffi->attach( UnlockTexture            => [qw( SDL_Texture                                                             )] => 'void'          );
+$ffi->attach( UpdateTexture            => [qw( SDL_Texture SDL_Rect* opaque int                                        )] => 'int'           );
+$ffi->attach( UpdateYUVTexture         => [qw( SDL_Texture uint8[] int uint8[] int uint8[] int                         )] => 'int'           );
 
 ## Surface
 
@@ -2181,16 +2215,6 @@ $ffi->attach( SetEventFilter         => [qw( SDL_EventFilter opaque          )] 
 $ffi->attach( WaitEvent              => [qw( SDL_Event                       )] => 'int'         );
 $ffi->attach( WaitEventTimeout       => [qw( SDL_Event int                   )] => 'int'         );
 
-# Not implemented in 2.0.8
-# $ffi->attach( GetEventState          => [qw( uint32                          )] => 'uint8'       );
-# $ffi->attach( QuitRequested          => [qw(                                 )] => 'int'         );
-
-## Version
-
-$ffi->attach( GetRevision       => [             ] => 'string' );
-$ffi->attach( GetRevisionNumber => [             ] => 'int'    ); # Deprecated
-$ffi->attach( GetVersion        => ['SDL_Version'] => 'void'   );
-
 ## Logging
 
 $ffi->attach( Log                => [qw(         string )] => 'void' => sub { $_[0]->(               sprintf $_[1], @_[ 2 .. $#_ ] ) } );
@@ -2210,6 +2234,36 @@ $ffi->attach( LogResetPriorities => [qw(                )] => 'void' );
 # TODO
 sub LogGetOutputFunction { ... }
 sub LogSetOutputFunction { ... }
+
+my %conditional = (
+    '2.0.10' => {
+        RenderCopyExF     => [ [qw( SDL_Renderer SDL_Texture SDL_Rect* SDL_FRect* double SDL_FPoint* int )] => 'int' ],
+        RenderCopyF       => [ [qw( SDL_Renderer SDL_Texture SDL_Rect* SDL_Rect* SDL_FRect*              )] => 'int' ],
+        RenderDrawLineF   => [ [qw( SDL_Renderer float float float float                                 )] => 'int' ],
+        RenderDrawLinesF  => [ [qw( SDL_Renderer float[] int                                             )] => 'int' ], # TODO: SDL_FPoint[]
+        RenderDrawPointF  => [ [qw( SDL_Renderer float float                                             )] => 'int' ],
+        RenderDrawPointsF => [ [qw( SDL_Renderer float[] int                                             )] => 'int' ], # TODO: SDL_FPoint[]
+        RenderDrawRectF   => [ [qw( SDL_Renderer SDL_FRect*                                              )] => 'int' ],
+        RenderDrawRectsF  => [ [qw( SDL_Renderer float[]                                                 )] => 'int' ], # TODO: SDL_FRect[]
+        RenderFillRectF   => [ [qw( SDL_Renderer SDL_FRect*                                              )] => 'int' ],
+        RenderFillRectsF  => [ [qw( SDL_Renderer float[] int                                             )] => 'int' ], # TODO: SDL_FRect[]
+    },
+);
+
+for my $want ( keys %conditional ) {
+    if ( $version >= version->parse($want) ) {
+        $ffi->attach( $_ => @{ $conditional{$want}{$_} } ) for keys %{ $conditional{$want} };
+    }
+    else {
+        no strict 'refs';
+        for ( keys %{ $conditional{$want} } ) {
+            my $name = __PACKAGE__ . '::' . $_;
+            *{$name} = Sub::Util::set_subname $name => sub {
+                Carp::croak "$_ requires SDL version 2.0.10+ but this is $version";
+            };
+        }
+    }
+}
 
 # Clean helper functions
 delete $SDL2::{$_} for qw( enum pixel_format );

@@ -180,6 +180,8 @@ is [ sort keys %SDL2:: ], [qw(
     FLIP_HORIZONTAL
     FLIP_NONE
     FLIP_VERTICAL
+    FPoint::
+    FRect::
     FilterEvents
     Finger::
     FlushEvent
@@ -195,6 +197,7 @@ is [ sort keys %SDL2:: ], [qw(
     GL_ALPHA_SIZE
     GL_BLUE_SIZE
     GL_BUFFER_SIZE
+    GL_BindTexture
     GL_CONTEXT_DEBUG_FLAG
     GL_CONTEXT_EGL
     GL_CONTEXT_FLAGS
@@ -240,6 +243,7 @@ is [ sort keys %SDL2:: ], [qw(
     GL_SetAttribute
     GL_SetSwapInterval
     GL_SwapWindow
+    GL_UnbindTexture
     GL_UnloadLibrary
     GLattr
     GLcontextFlag
@@ -285,14 +289,20 @@ is [ sort keys %SDL2:: ], [qw(
     GetEventFilter
     GetGrabbedWindow
     GetNumDisplayModes
+    GetNumRenderDrivers
     GetNumTouchDevices
     GetNumTouchFingers
     GetNumVideoDisplays
     GetNumVideoDrivers
     GetPerformanceCounter
     GetPerformanceFrequency
+    GetRenderDrawBlendMode
+    GetRenderDrawColor
+    GetRenderDriverInfo
     GetRenderTarget
+    GetRenderer
     GetRendererInfo
+    GetRendererOutputSize
     GetRevision
     GetRevisionNumber
     GetTextureAlphaMod
@@ -964,6 +974,7 @@ is [ sort keys %SDL2:: ], [qw(
     PushEvent
     QUERY
     QUIT
+    QueryTexture
     Quit
     QuitEvent::
     QuitSubSystem
@@ -982,10 +993,38 @@ is [ sort keys %SDL2:: ], [qw(
     RenderClear
     RenderCopy
     RenderCopyEx
+    RenderCopyExF
+    RenderCopyF
+    RenderDrawLine
+    RenderDrawLineF
+    RenderDrawLines
+    RenderDrawLinesF
+    RenderDrawPoint
+    RenderDrawPointF
     RenderDrawPoints
+    RenderDrawPointsF
     RenderDrawRect
+    RenderDrawRectF
+    RenderDrawRects
+    RenderDrawRectsF
     RenderFillRect
+    RenderFillRectF
+    RenderFillRects
+    RenderFillRectsF
+    RenderGetClipRect
+    RenderGetIntegerScale
+    RenderGetLogicalSize
+    RenderGetScale
+    RenderGetViewport
+    RenderIsClipEnabled
     RenderPresent
+    RenderReadPixels
+    RenderSetClipRect
+    RenderSetIntegerScale
+    RenderSetLogicalSize
+    RenderSetScale
+    RenderSetViewport
+    RenderTargetSupported
     RendererFlags
     RendererFlip
     RendererInfo::
@@ -1273,6 +1312,7 @@ is [ sort keys %SDL2:: ], [qw(
     SetColorKey
     SetError
     SetEventFilter
+    SetRenderDrawBlendMode
     SetRenderDrawColor
     SetRenderTarget
     SetTextureAlphaMod
@@ -1320,8 +1360,10 @@ is [ sort keys %SDL2:: ], [qw(
     TouchFingerEvent::
     USEREVENT
     UnlockTexture
+    UpdateTexture
     UpdateWindowSurface
     UpdateWindowSurfaceRects
+    UpdateYUVTexture
     UpperBlit
     UserEvent::
     Version::
