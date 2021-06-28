@@ -1781,7 +1781,7 @@ package SDL2::Palette {
 package SDL2::PixelFormat {
     FFI::C->struct( SDL_PixelFormat => [
         format        => 'uint32',
-        palette       => 'opaque',
+        palette       => 'SDL_Palette',
         BitsPerPixel  => 'uint8',
         BytesPerPixel => 'uint8',
         padding1      => 'uint8',
