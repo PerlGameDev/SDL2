@@ -214,17 +214,33 @@ is [ sort keys %SDL2:: ], [qw(
     GL_CONTEXT_RESET_NOTIFICATION
     GL_CONTEXT_RESET_NO_NOTIFICATION
     GL_CONTEXT_ROBUST_ACCESS_FLAG
+    GL_CreateContext
     GL_DEPTH_SIZE
     GL_DOUBLEBUFFER
+    GL_DeleteContext
+    GL_ExtensionSupported
     GL_FRAMEBUFFER_SRGB_CAPABLE
     GL_GREEN_SIZE
+    GL_GetAttribute
+    GL_GetCurrentContext
+    GL_GetCurrentWindow
+    GL_GetDrawableSize
+    GL_GetProcAddress
+    GL_GetSwapInterval
+    GL_LoadLibrary
     GL_MULTISAMPLEBUFFERS
     GL_MULTISAMPLESAMPLES
+    GL_MakeCurrent
     GL_RED_SIZE
     GL_RETAINED_BACKING
+    GL_ResetAttributes
     GL_SHARE_WITH_CURRENT_CONTEXT
     GL_STENCIL_SIZE
     GL_STEREO
+    GL_SetAttribute
+    GL_SetSwapInterval
+    GL_SwapWindow
+    GL_UnloadLibrary
     GLattr
     GLcontextFlag
     GLcontextReleaseFlag
@@ -260,14 +276,19 @@ is [ sort keys %SDL2:: ], [qw(
     GetCurrentDisplayMode
     GetCurrentVideoDriver
     GetDesktopDisplayMode
+    GetDisplayBounds
     GetDisplayDPI
     GetDisplayMode
     GetDisplayName
+    GetDisplayUsableBounds
     GetError
     GetEventFilter
     GetGrabbedWindow
+    GetNumDisplayModes
     GetNumTouchDevices
     GetNumTouchFingers
+    GetNumVideoDisplays
+    GetNumVideoDrivers
     GetPerformanceCounter
     GetPerformanceFrequency
     GetRenderTarget
@@ -313,11 +334,22 @@ is [ sort keys %SDL2:: ], [qw(
     HINT_DEFAULT
     HINT_NORMAL
     HINT_OVERRIDE
+    HITTEST_DRAGGABLE
+    HITTEST_NORMAL
+    HITTEST_RESIZE_BOTTOM
+    HITTEST_RESIZE_BOTTOMLEFT
+    HITTEST_RESIZE_BOTTOMRIGHT
+    HITTEST_RESIZE_LEFT
+    HITTEST_RESIZE_RIGHT
+    HITTEST_RESIZE_TOP
+    HITTEST_RESIZE_TOPLEFT
+    HITTEST_RESIZE_TOPRIGHT
     HasEvent
     HasEvents
     HatPosition
     HideWindow
     HintPriority
+    HitTestResult
     IGNORE
     INIT_AUDIO
     INIT_EVENTS
@@ -672,6 +704,19 @@ is [ sort keys %SDL2:: ], [qw(
     LogSetPriority
     LogVerbose
     LogWarn
+    MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT
+    MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
+    MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
+    MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT
+    MESSAGEBOX_COLOR_BACKGROUND
+    MESSAGEBOX_COLOR_BUTTON_BACKGROUND
+    MESSAGEBOX_COLOR_BUTTON_BORDER
+    MESSAGEBOX_COLOR_BUTTON_SELECTED
+    MESSAGEBOX_COLOR_MAX
+    MESSAGEBOX_COLOR_TEXT
+    MESSAGEBOX_ERROR
+    MESSAGEBOX_INFORMATION
+    MESSAGEBOX_WARNING
     MIX_MAXVOLUME
     MOUSEBUTTONDOWN
     MOUSEBUTTONUP
@@ -681,6 +726,13 @@ is [ sort keys %SDL2:: ], [qw(
     MOUSEWHEEL_NORMAL
     MULTIGESTURE
     MaximizeWindow
+    MessageBoxButtonData::
+    MessageBoxButtonFlags
+    MessageBoxColor::
+    MessageBoxColorScheme::
+    MessageBoxColorType
+    MessageBoxData::
+    MessageBoxFlags
     MinimizeWindow
     MouseButtonEvent::
     MouseMotionEvent::
@@ -1129,6 +1181,8 @@ is [ sort keys %SDL2:: ], [qw(
     SetWindowResizable
     SetWindowSize
     SetWindowTitle
+    ShowMessageBox
+    ShowSimpleMessageBox
     ShowWindow
     Surface::
     SysWMEvent::
@@ -1152,6 +1206,7 @@ is [ sort keys %SDL2:: ], [qw(
     USEREVENT
     UnlockTexture
     UpdateWindowSurface
+    UpdateWindowSurfaceRects
     UpperBlit
     UserEvent::
     Version::

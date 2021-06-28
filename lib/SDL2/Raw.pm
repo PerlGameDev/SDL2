@@ -360,6 +360,18 @@ BEGIN {
             HINT_NORMAL
             HINT_OVERRIDE
         )],
+        HitTestResult => [qw(
+            HITTEST_NORMAL
+            HITTEST_DRAGGABLE
+            HITTEST_RESIZE_TOPLEFT
+            HITTEST_RESIZE_TOP
+            HITTEST_RESIZE_TOPRIGHT
+            HITTEST_RESIZE_RIGHT
+            HITTEST_RESIZE_BOTTOMRIGHT
+            HITTEST_RESIZE_BOTTOM
+            HITTEST_RESIZE_BOTTOMLEFT
+            HITTEST_RESIZE_LEFT
+        )],
         JoystickPowerLevel => [qw(
             JOYSTICK_POWER_UNKNOWN
             JOYSTICK_POWER_EMPTY
@@ -399,6 +411,25 @@ BEGIN {
             LOG_PRIORITY_ERROR
             LOG_PRIORITY_CRITICAL
             NUM_LOG_PRIORITIES
+        )],
+        MessageBoxFlags => {
+            MESSAGEBOX_ERROR                 => 0x010,
+            MESSAGEBOX_WARNING               => 0x020,
+            MESSAGEBOX_INFORMATION           => 0x040,
+            MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT => 0x080,
+            MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT => 0x100,
+        },
+        MessageBoxButtonFlags => {
+            MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT => 1,
+            MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT => 2,
+        },
+        MessageBoxColorType => [qw(
+            MESSAGEBOX_COLOR_BACKGROUND
+            MESSAGEBOX_COLOR_TEXT
+            MESSAGEBOX_COLOR_BUTTON_BORDER
+            MESSAGEBOX_COLOR_BUTTON_BACKGROUND
+            MESSAGEBOX_COLOR_BUTTON_SELECTED
+            MESSAGEBOX_COLOR_MAX
         )],
         MouseWheelDirection => [qw(
             MOUSEWHEEL_NORMAL
@@ -1572,6 +1603,45 @@ package SDL2::JoystickGUID {
     FFI::C->struct( SDL_JoystickGUID => [ data => 'uint8[16]' ]);
 }
 
+package SDL2::MessageBoxButtonData {
+    FFI::C->struct( SDL_MessageBoxButtonData => [
+        flags        => 'uint32',
+        buttonid     => 'int',
+        _text        => 'opaque',
+    ]);
+
+    sub text { $ffi->cast( opaque => string => shift->_text ) }
+}
+
+package SDL2::MessageBoxColor {
+    FFI::C->struct( SDL_MessageBoxColor => [
+        r => 'uint8',
+        g => 'uint8',
+        b => 'uint8',
+    ]);
+}
+
+package SDL2::MessageBoxColorScheme {
+    FFI::C->struct( SDL_MessageBoxColorScheme => [
+        colors => 'opaque', # FIXME: 'SDL_MessageBoxColor[' . SDL2::MESSAGEBOX_COLOR_MAX . ']',
+    ]);
+}
+
+package SDL2::MessageBoxData {
+    FFI::C->struct( SDL_MessageBoxData => [
+        flags       => 'uint32', # MessageBoxFlags
+        window      => 'SDL_Window',
+        _title      => 'opaque',
+        _message    => 'opaque',
+        numbuttons  => 'int',
+        buttons     => 'SDL_MessageBoxButtonData',
+        colorScheme => 'SDL_MessageBoxColorScheme',
+    ]);
+
+    sub title   { $ffi->cast( opaque => string => sfhit->_title   ) }
+    sub message { $ffi->cast( opaque => string => sfhit->_message ) }
+}
+
 package SDL2::PixelFormat {
     FFI::C->struct( SDL_PixelFormat => [
         format        => 'uint32',
@@ -1682,103 +1752,91 @@ $ffi->type( '( SDL_Window, SDL_Point, opaque )->int' => 'SDL_HitTest' );
 
 ## Video
 
-$ffi->attach( CreateWindow          => [qw( string sint32 sint32 sint32 sint32 sint32 )] => 'SDL_Window'      );
-$ffi->attach( CreateWindowFrom      => [qw( opaque                                    )] => 'SDL_Window'      );
-$ffi->attach( DestroyWindow         => [qw( SDL_Window                                )] => 'void'            );
-$ffi->attach( DisableScreenSaver    => [                                               ] => 'void'            );
-$ffi->attach( EnableScreenSaver     => [                                               ] => 'void'            );
-$ffi->attach( GetClosestDisplayMode => [qw( int SDL_DisplayMode SDL_DisplayMode       )] => 'SDL_DisplayMode' );
-$ffi->attach( GetCurrentDisplayMode => [qw( int SDL_DisplayMode                       )] => 'int'             );
-$ffi->attach( GetCurrentVideoDriver => [                                               ] => 'string'          );
-$ffi->attach( GetDesktopDisplayMode => [qw( int SDL_DisplayMode                       )] => 'int'             );
-# SDL_GetDisplayBounds
-$ffi->attach( GetDisplayDPI         => [qw( int float* float* float*                  )] => 'int'             );
-$ffi->attach( GetDisplayMode        => [qw( int SDL_DisplayMode                       )] => 'int'             );
-$ffi->attach( GetDisplayName        => [qw( int                                       )] => 'string'          );
-# SDL_GetDisplayUsableBounds
-$ffi->attach( GetGrabbedWindow      => [                                               ] => 'SDL_Window'      );
-# SDL_GetNumDisplayModes
-# SDL_GetNumVideoDisplays
-# SDL_GetNumVideoDrivers
-$ffi->attach( GetVideoDriver        => [qw( int                                       )] => 'string'          );
-$ffi->attach( GetWindowBordersSize  => [qw( SDL_Window int* int* int* int*            )] => 'int'             ); # 2.0.5
-$ffi->attach( GetWindowBrightness   => [qw( SDL_Window                                )] => 'float'           );
-$ffi->attach( GetWindowData         => [qw( SDL_Window string                         )] => 'opaque'          );
-$ffi->attach( GetWindowDisplayIndex => [qw( SDL_Window                                )] => 'int'             );
-$ffi->attach( GetWindowDisplayMode  => [qw( SDL_Window SDL_DisplayMode                )] => 'int'             );
-$ffi->attach( GetWindowFlags        => [qw( SDL_Window                                )] => 'uint32'          );
-$ffi->attach( GetWindowFromID       => [qw( uint32                                    )] => 'SDL_Window'      );
-$ffi->attach( GetWindowGammaRamp    => [qw( SDL_Window int* int* int*                 )] => 'int'             );
-$ffi->attach( GetWindowGrab         => [qw( SDL_Window                                )] => 'SDL_bool'        );
-$ffi->attach( GetWindowID           => [qw( SDL_Window                                )] => 'uint32'          );
-$ffi->attach( GetWindowMinimumSize  => [qw( SDL_Window int* int*                      )] => 'void'            );
-$ffi->attach( GetWindowMaximumSize  => [qw( SDL_Window int* int*                      )] => 'void'            );
-$ffi->attach( GetWindowOpacity      => [qw( SDL_Window float*                         )] => 'int'             ); # 2.0.5
-$ffi->attach( GetWindowPixelFormat  => [qw( SDL_Window                                )] => 'uint32'          );
-$ffi->attach( GetWindowPosition     => [qw( SDL_Window int* int*                      )] => 'void'            );
-$ffi->attach( GetWindowSize         => [qw( SDL_Window int* int*                      )] => 'void'            );
-$ffi->attach( GetWindowSurface      => [qw( SDL_Window                                )] => 'SDL_Surface'     );
-$ffi->attach( GetWindowTitle        => [qw( SDL_Window                                )] => 'string'          );
-$ffi->attach( GetWindowWMInfo       => [qw( SDL_Window SDL_SysWMinfo                  )] => 'int'             );
-# SDL_GL_CreateContext
-# SDL_GL_DeleteContext
-# SDL_GL_ExtensionSupported
-# SDL_GL_GetAttribute
-# SDL_GL_GetCurrentContext
-# SDL_GL_GetCurrentWindow
-# SDL_GL_GetDrawableSize
-# SDL_GL_GetProcAddress
-# SDL_GL_GetSwapInterval
-# SDL_GL_LoadLibrary
-# SDL_GL_MakeCurrent
-# SDL_GL_ResetAttributes
-# SDL_GL_SetAttribute
-# SDL_GL_SetSwapInterval
-# SDL_GL_SwapWindow
-# SDL_GL_UnloadLibrary
-# SDL_GLattr
-# SDL_GLcontextFlag
-# SDL_GLprofile
-$ffi->attach( HideWindow           => [ qw( SDL_Window                               )] => 'void'          );
-# SDL_HitTestResult
-$ffi->attach( IsScreenSaverEnabled => [                                               ] => 'SDL_bool'      );
-$ffi->attach( MaximizeWindow       => [ qw( SDL_Window                               )] => 'void'          );
-# SDL_MessageBoxButtonData
-# SDL_MessageBoxButtonFlags
-# SDL_MessageBoxColor
-# SDL_MessageBoxColorScheme
-# SDL_MessageBoxColorType
-# SDL_MessageBoxData
-# SDL_MessageBoxFlags
-
-$ffi->attach( MinimizeWindow       => [qw( SDL_Window                      )] => 'void'   );
-$ffi->attach( RaiseWindow          => [qw( SDL_Window                      )] => 'void'   );
-$ffi->attach( RestoreWindow        => [qw( SDL_Window                      )] => 'void'   );
-$ffi->attach( SetWindowBordered    => [qw( SDL_Window SDL_bool             )] => 'void'   );
-$ffi->attach( SetWindowBrightness  => [qw( SDL_Window float                )] => 'int'    );
-$ffi->attach( SetWindowData        => [qw( SDL_Window string opaque        )] => 'opaque' );
-$ffi->attach( SetWindowDisplayMode => [qw( SDL_Window SDL_DisplayMode      )] => 'int'    );
-$ffi->attach( SetWindowFullscreen  => [qw( SDL_Window uint32               )] => 'int'    );
-$ffi->attach( SetWindowGammaRamp   => [qw( SDL_Window uint16 uint16 uint16 )] => 'int'    );
-$ffi->attach( SetWindowGrab        => [qw( SDL_Window SDL_bool             )] => 'void'   );
-$ffi->attach( SetWindowHitTest     => [qw( SDL_Window SDL_HitTest          )] => 'int'    );
-$ffi->attach( SetWindowIcon        => [qw( SDL_Window SDL_Surface          )] => 'void'   );
-$ffi->attach( SetWindowInputFocus  => [qw( SDL_Window                      )] => 'int'    );
-$ffi->attach( SetWindowMaximumSize => [qw( SDL_Window int int              )] => 'void'   );
-$ffi->attach( SetWindowMinimumSize => [qw( SDL_Window int int              )] => 'void'   );
-$ffi->attach( SetWindowModalFor    => [qw( SDL_Window SDL_Window           )] => 'int'    ); # 2.0.5
-$ffi->attach( SetWindowOpacity     => [qw( SDL_Window float                )] => 'int'    ); # 2.0.5
-$ffi->attach( SetWindowPosition    => [qw( SDL_Window int int              )] => 'void'   );
-$ffi->attach( SetWindowResizable   => [qw( SDL_Window SDL_bool             )] => 'void'   ); # 2.0.5
-$ffi->attach( SetWindowSize        => [qw( SDL_Window int int              )] => 'void'   );
-$ffi->attach( SetWindowTitle       => [qw( SDL_Window string               )] => 'void'   );
-# TODO: SDL_ShowMessageBox
-# TODO: SDL_ShowSimpleMessageBox
-$ffi->attach( ShowWindow          => ['SDL_Window' ] => 'void' );
-$ffi->attach( UpdateWindowSurface => ['SDL_Window' ] => 'int'  );
-# TODO: SDL_UpdateWindowSurfaceRects
-$ffi->attach( VideoInit => ['string'] => 'int'  );
-$ffi->attach( VideoQuit => [        ] => 'void' );
+$ffi->attach( CreateWindow             => [qw( string sint32 sint32 sint32 sint32 sint32 )] => 'SDL_Window'      );
+$ffi->attach( CreateWindowFrom         => [qw( opaque                                    )] => 'SDL_Window'      );
+$ffi->attach( DestroyWindow            => [qw( SDL_Window                                )] => 'void'            );
+$ffi->attach( DisableScreenSaver       => [                                               ] => 'void'            );
+$ffi->attach( EnableScreenSaver        => [                                               ] => 'void'            );
+$ffi->attach( GetClosestDisplayMode    => [qw( int SDL_DisplayMode SDL_DisplayMode       )] => 'SDL_DisplayMode' );
+$ffi->attach( GetCurrentDisplayMode    => [qw( int SDL_DisplayMode                       )] => 'int'             );
+$ffi->attach( GetCurrentVideoDriver    => [                                               ] => 'string'          );
+$ffi->attach( GetDesktopDisplayMode    => [qw( int SDL_DisplayMode                       )] => 'int'             );
+$ffi->attach( GetDisplayBounds         => [qw( int SDL_Rect*                             )] => 'int'             );
+$ffi->attach( GetDisplayDPI            => [qw( int float* float* float*                  )] => 'int'             );
+$ffi->attach( GetDisplayMode           => [qw( int SDL_DisplayMode                       )] => 'int'             );
+$ffi->attach( GetDisplayName           => [qw( int                                       )] => 'string'          );
+$ffi->attach( GetDisplayUsableBounds   => [qw( int SDL_Rect*                             )] => 'int'             );
+$ffi->attach( GetGrabbedWindow         => [                                               ] => 'SDL_Window'      );
+$ffi->attach( GetNumDisplayModes       => [qw( int                                       )] => 'int'             );
+$ffi->attach( GetNumVideoDisplays      => [                                               ] => 'int'             );
+$ffi->attach( GetNumVideoDrivers       => [                                               ] => 'int'             );
+$ffi->attach( GetVideoDriver           => [qw( int                                       )] => 'string'          );
+$ffi->attach( GetWindowBordersSize     => [qw( SDL_Window int* int* int* int*            )] => 'int'             ); # 2.0.5
+$ffi->attach( GetWindowBrightness      => [qw( SDL_Window                                )] => 'float'           );
+$ffi->attach( GetWindowData            => [qw( SDL_Window string                         )] => 'opaque'          );
+$ffi->attach( GetWindowDisplayIndex    => [qw( SDL_Window                                )] => 'int'             );
+$ffi->attach( GetWindowDisplayMode     => [qw( SDL_Window SDL_DisplayMode                )] => 'int'             );
+$ffi->attach( GetWindowFlags           => [qw( SDL_Window                                )] => 'uint32'          );
+$ffi->attach( GetWindowFromID          => [qw( uint32                                    )] => 'SDL_Window'      );
+$ffi->attach( GetWindowGammaRamp       => [qw( SDL_Window int* int* int*                 )] => 'int'             );
+$ffi->attach( GetWindowGrab            => [qw( SDL_Window                                )] => 'SDL_bool'        );
+$ffi->attach( GetWindowID              => [qw( SDL_Window                                )] => 'uint32'          );
+$ffi->attach( GetWindowMinimumSize     => [qw( SDL_Window int* int*                      )] => 'void'            );
+$ffi->attach( GetWindowMaximumSize     => [qw( SDL_Window int* int*                      )] => 'void'            );
+$ffi->attach( GetWindowOpacity         => [qw( SDL_Window float*                         )] => 'int'             ); # 2.0.5
+$ffi->attach( GetWindowPixelFormat     => [qw( SDL_Window                                )] => 'uint32'          );
+$ffi->attach( GetWindowPosition        => [qw( SDL_Window int* int*                      )] => 'void'            );
+$ffi->attach( GetWindowSize            => [qw( SDL_Window int* int*                      )] => 'void'            );
+$ffi->attach( GetWindowSurface         => [qw( SDL_Window                                )] => 'SDL_Surface'     );
+$ffi->attach( GetWindowTitle           => [qw( SDL_Window                                )] => 'string'          );
+$ffi->attach( GetWindowWMInfo          => [qw( SDL_Window SDL_SysWMinfo                  )] => 'int'             );
+$ffi->attach( GL_CreateContext         => [qw( SDL_Window                                )] => 'SDL_GLContext'   );
+$ffi->attach( GL_DeleteContext         => [qw( SDL_Window                                )] => 'void'            );
+$ffi->attach( GL_ExtensionSupported    => [qw( string                                    )] => 'SDL_bool'        );
+$ffi->attach( GL_GetAttribute          => [qw( int int*                                  )] => 'int'             );
+$ffi->attach( GL_GetCurrentContext     => [                                               ] => 'SDL_GLContext'   );
+$ffi->attach( GL_GetCurrentWindow      => [                                               ] => 'SDL_Window'      );
+$ffi->attach( GL_GetDrawableSize       => [qw( SDL_Window int* int*                      )] => 'void'            );
+$ffi->attach( GL_GetProcAddress        => [qw( string                                    )] => 'opaque'          );
+$ffi->attach( GL_GetSwapInterval       => [                                               ] => 'int'             );
+$ffi->attach( GL_LoadLibrary           => [qw( string                                    )] => 'int'             );
+$ffi->attach( GL_MakeCurrent           => [qw( SDL_Window SDL_GLContext                  )] => 'int'             );
+$ffi->attach( GL_ResetAttributes       => [                                               ] => 'void'            );
+$ffi->attach( GL_SetAttribute          => [qw( int int                                   )] => 'int'             );
+$ffi->attach( GL_SetSwapInterval       => [qw( int                                       )] => 'int'             );
+$ffi->attach( GL_SwapWindow            => [qw( SDL_Window                                )] => 'void'            );
+$ffi->attach( GL_UnloadLibrary         => [                                               ] => 'void'            );
+$ffi->attach( HideWindow               => [qw( SDL_Window                                )] => 'void'            );
+$ffi->attach( IsScreenSaverEnabled     => [                                               ] => 'SDL_bool'        );
+$ffi->attach( MaximizeWindow           => [qw( SDL_Window                                )] => 'void'            );
+$ffi->attach( MinimizeWindow           => [qw( SDL_Window                                )] => 'void'            );
+$ffi->attach( RaiseWindow              => [qw( SDL_Window                                )] => 'void'            );
+$ffi->attach( RestoreWindow            => [qw( SDL_Window                                )] => 'void'            );
+$ffi->attach( SetWindowBordered        => [qw( SDL_Window SDL_bool                       )] => 'void'            );
+$ffi->attach( SetWindowBrightness      => [qw( SDL_Window float                          )] => 'int'             );
+$ffi->attach( SetWindowData            => [qw( SDL_Window string opaque                  )] => 'opaque'          );
+$ffi->attach( SetWindowDisplayMode     => [qw( SDL_Window SDL_DisplayMode                )] => 'int'             );
+$ffi->attach( SetWindowFullscreen      => [qw( SDL_Window uint32                         )] => 'int'             );
+$ffi->attach( SetWindowGammaRamp       => [qw( SDL_Window uint16 uint16 uint16           )] => 'int'             );
+$ffi->attach( SetWindowGrab            => [qw( SDL_Window SDL_bool                       )] => 'void'            );
+$ffi->attach( SetWindowHitTest         => [qw( SDL_Window SDL_HitTest                    )] => 'int'             );
+$ffi->attach( SetWindowIcon            => [qw( SDL_Window SDL_Surface                    )] => 'void'            );
+$ffi->attach( SetWindowInputFocus      => [qw( SDL_Window                                )] => 'int'             );
+$ffi->attach( SetWindowMaximumSize     => [qw( SDL_Window int int                        )] => 'void'            );
+$ffi->attach( SetWindowMinimumSize     => [qw( SDL_Window int int                        )] => 'void'            );
+$ffi->attach( SetWindowModalFor        => [qw( SDL_Window SDL_Window                     )] => 'int'             ); # 2.0.5
+$ffi->attach( SetWindowOpacity         => [qw( SDL_Window float                          )] => 'int'             ); # 2.0.5
+$ffi->attach( SetWindowPosition        => [qw( SDL_Window int int                        )] => 'void'            );
+$ffi->attach( SetWindowResizable       => [qw( SDL_Window SDL_bool                       )] => 'void'            ); # 2.0.5
+$ffi->attach( SetWindowSize            => [qw( SDL_Window int int                        )] => 'void'            );
+$ffi->attach( SetWindowTitle           => [qw( SDL_Window string                         )] => 'void'            );
+$ffi->attach( ShowMessageBox           => [qw( SDL_MessageBoxData int*                   )] => 'int'             );
+$ffi->attach( ShowSimpleMessageBox     => [qw( uint32 string string SDL_Window           )] => 'int'             );
+$ffi->attach( ShowWindow               => [qw( SDL_Window                                )] => 'void'            );
+$ffi->attach( UpdateWindowSurface      => [qw( SDL_Window                                )] => 'int'             );
+$ffi->attach( UpdateWindowSurfaceRects => [qw( SDL_Window int* int                       )] => 'int'             ); # TODO: SDL_Rect*
+$ffi->attach( VideoInit                => [qw( string                                    )] => 'int'             );
+$ffi->attach( VideoQuit                => [                                               ] => 'void'            );
 
 ## SDL
 
