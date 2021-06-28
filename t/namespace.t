@@ -210,11 +210,21 @@ is [ sort keys %SDL2:: ], [qw(
     GetWindowSurface
     GetWindowTitle
     GetWindowWMInfo
+    HAT_CENTERED
+    HAT_DOWN
+    HAT_LEFT
+    HAT_LEFTDOWN
+    HAT_LEFTUP
+    HAT_RIGHT
+    HAT_RIGHTDOWN
+    HAT_RIGHTUP
+    HAT_UP
     HINT_DEFAULT
     HINT_NORMAL
     HINT_OVERRIDE
     HasEvent
     HasEvents
+    HatPosition
     HintPriority
     IGNORE
     INIT_AUDIO
@@ -237,12 +247,42 @@ is [ sort keys %SDL2:: ], [qw(
     JOYDEVICEADDED
     JOYDEVICEREMOVED
     JOYHATMOTION
+    JOYSTICK_POWER_EMPTY
+    JOYSTICK_POWER_FULL
+    JOYSTICK_POWER_LOW
+    JOYSTICK_POWER_MAX
+    JOYSTICK_POWER_MEDIUM
+    JOYSTICK_POWER_UNKNOWN
+    JOYSTICK_POWER_WIRED
     JoyAxisEvent::
     JoyBallEvent::
     JoyButtonEvent::
     JoyDeviceEvent::
     JoyHatEvent::
+    JoystickClose
+    JoystickCurrentPowerLevel
+    JoystickEventState
+    JoystickFromInstanceID
+    JoystickGUID::
+    JoystickGetAttached
+    JoystickGetAxis
+    JoystickGetBall
+    JoystickGetButton
+    JoystickGetDeviceGUID
+    JoystickGetGUID
+    JoystickGetGUIDFromString
+    JoystickGetGUIDString
+    JoystickGetHat
     JoystickInstanceID
+    JoystickName
+    JoystickNameForIndex
+    JoystickNumAxes
+    JoystickNumBalls
+    JoystickNumButtons
+    JoystickNumHats
+    JoystickOpen
+    JoystickPowerLevel
+    JoystickUpdate
     KEYDOWN
     KEYMAPCHANGED
     KEYUP
@@ -555,6 +595,7 @@ is [ sort keys %SDL2:: ], [qw(
     NUM_LOG_PRIORITIES
     NUM_SCANCODES
     NUM_SYSTEM_CURSORS
+    NumJoysticks
     ORIENTATION_LANDSCAPE
     ORIENTATION_LANDSCAPE_FLIPPED
     ORIENTATION_PORTRAIT

@@ -120,11 +120,27 @@ sub pixel_format {
 
 BEGIN {
     enum(
+        JoystickPowerLevel => [qw(
+            JOYSTICK_POWER_UNKNOWN
+            JOYSTICK_POWER_EMPTY
+            JOYSTICK_POWER_LOW
+            JOYSTICK_POWER_MEDIUM
+            JOYSTICK_POWER_FULL
+            JOYSTICK_POWER_WIRED
+            JOYSTICK_POWER_MAX
+        )],
         HintPriority => [qw(
             HINT_DEFAULT
             HINT_NORMAL
             HINT_OVERRIDE
         )],
+        HatPosition => {
+            HAT_CENTERED   => 0x0,
+            HAT_UP         => 0x1,
+            HAT_RIGHT      => 0x2,
+            HAT_DOWN       => 0x4,
+            HAT_LEFT       => 0x8,
+        },
         LogCategory  => [qw(
             LOG_CATEGORY_APPLICATION
             LOG_CATEGORY_ERROR
@@ -744,6 +760,12 @@ BEGIN {
 
 BEGIN {
     enum(
+        HatPosition => {
+            HAT_RIGHTUP   => HAT_RIGHT | HAT_UP,
+            HAT_RIGHTDOWN => HAT_RIGHT | HAT_DOWN,
+            HAT_LEFTUP    => HAT_LEFT  | HAT_UP,
+            HAT_LEFTDOWN  => HAT_LEFT  | HAT_DOWN,
+        },
         Keycode => {
             K_UNKNOWN            => 0,
             K_RETURN             => ord "\r",
@@ -1463,6 +1485,10 @@ package SDL2::Event {
     ]);
 }
 
+package SDL2::JoystickGUID {
+    FFI::C->struct( SDL_JoystickGUID => [ data => 'uint8[16]' ]);
+}
+
 package SDL2::PixelFormat {
     FFI::C->struct( SDL_PixelFormat => [
         format        => 'uint32',
@@ -1575,6 +1601,7 @@ $ffi->type( opaque => 'SDL_Window'         );
 $ffi->type( opaque => 'SDL_GameController' );
 $ffi->type( opaque => 'SDL_Joystick'       );
 $ffi->type( opaque => 'SDL_RWops'          );
+$ffi->type( uint8  => 'SDL_bool'           );
 
 ## Video
 
@@ -1850,30 +1877,29 @@ $ffi->attach( IsGameController           => ['int'               ] => 'bool'    
 
 ## Joystick
 
-# SDL_JoystickClose
-# SDL_JoystickCurrentPowerLevel
-# SDL_JoystickEventState
-# SDL_JoystickFromInstanceID
-# SDL_JoystickGetAttached
-# SDL_JoystickGetAxis
-# SDL_JoystickGetBall
-# SDL_JoystickGetButton
-# SDL_JoystickGetDeviceGUID
-# SDL_JoystickGetGUID
-# SDL_JoystickGetGUIDFromString
-# SDL_JoystickGetGUIDString
-# SDL_JoystickGetHat
-$ffi->attach( JoystickInstanceID => ['SDL_Joystick'] => 'SDL_JoystickID' );
-# SDL_JoystickName
-# SDL_JoystickNameForIndex
-# SDL_JoystickNumAxes
-# SDL_JoystickNumBalls
-# SDL_JoystickNumButtons
-# SDL_JoystickNumHats
-# SDL_JoystickOpen
-# SDL_JoystickPowerLevel
-# SDL_JoystickUpdate
-# SDL_NumJoysticks
+$ffi->attach( JoystickClose             => [qw( SDL_Joystick                 )] => 'void'             );
+$ffi->attach( JoystickCurrentPowerLevel => [qw( SDL_Joystick                 )] => 'int'              );
+$ffi->attach( JoystickEventState        => [qw( int                          )] => 'int'              );
+$ffi->attach( JoystickFromInstanceID    => [qw( SDL_JoystickID               )] => 'SDL_Joystick'     );
+$ffi->attach( JoystickGetAttached       => [qw( SDL_JoystickID               )] => 'SDL_bool'         );
+$ffi->attach( JoystickGetAxis           => [qw( SDL_JoystickID int           )] => 'sint16'           );
+$ffi->attach( JoystickGetBall           => [qw( SDL_JoystickID int int* int* )] => 'int'              );
+$ffi->attach( JoystickGetButton         => [qw( SDL_JoystickID int           )] => 'uint8'            );
+$ffi->attach( JoystickGetDeviceGUID     => [qw( int                          )] => 'SDL_JoystickGUID' );
+$ffi->attach( JoystickGetGUID           => [qw( SDL_Joystick                 )] => 'SDL_JoystickGUID' );
+$ffi->attach( JoystickGetGUIDFromString => [qw( string                       )] => 'SDL_JoystickGUID' );
+$ffi->attach( JoystickGetGUIDString     => [qw( SDL_JoystickGUID opaque int  )] => 'void'             );
+$ffi->attach( JoystickGetHat            => [qw( SDL_JoystickID int           )] => 'uint8'            );
+$ffi->attach( JoystickInstanceID        => [qw( SDL_Joystick                 )] => 'SDL_JoystickID'   );
+$ffi->attach( JoystickName              => [qw( SDL_Joystick                 )] => 'string'           );
+$ffi->attach( JoystickNameForIndex      => [qw( int                          )] => 'string'           );
+$ffi->attach( JoystickNumAxes           => [qw( SDL_Joystick                 )] => 'int'              );
+$ffi->attach( JoystickNumBalls          => [qw( SDL_Joystick                 )] => 'int'              );
+$ffi->attach( JoystickNumButtons        => [qw( SDL_Joystick                 )] => 'int'              );
+$ffi->attach( JoystickNumHats           => [qw( SDL_Joystick                 )] => 'int'              );
+$ffi->attach( JoystickOpen              => [qw( int                          )] => 'SDL_Joystick'     );
+$ffi->attach( JoystickUpdate            => [                                  ] => 'void'             );
+$ffi->attach( NumJoysticks              => [                                  ] => 'int'              );
 
 ## Events
 
