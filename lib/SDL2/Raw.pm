@@ -1802,7 +1802,7 @@ package SDL2::PixelFormat {
         _next         => 'opaque',
     ]);
 
-    sub next { $ffi->cast( opaque => 'SDL_PixelFormat', shift ) }
+    sub next { $ffi->cast( opaque => SDL_PixelFormat => shift->_next ) }
 }
 
 package SDL2::Point {
