@@ -89,6 +89,43 @@ is [ sort keys %SDL2:: ], [qw(
     CONTROLLERTOUCHPADDOWN
     CONTROLLERTOUCHPADMOTION
     CONTROLLERTOUCHPADUP
+    CONTROLLER_AXIS_INVALID
+    CONTROLLER_AXIS_LEFTX
+    CONTROLLER_AXIS_LEFTY
+    CONTROLLER_AXIS_MAX
+    CONTROLLER_AXIS_RIGHTX
+    CONTROLLER_AXIS_RIGHTY
+    CONTROLLER_AXIS_TRIGGERLEFT
+    CONTROLLER_AXIS_TRIGGERRIGHT
+    CONTROLLER_BINDTYPE_AXIS
+    CONTROLLER_BINDTYPE_BUTTON
+    CONTROLLER_BINDTYPE_HAT
+    CONTROLLER_BINDTYPE_NONE
+    CONTROLLER_BUTTON_A
+    CONTROLLER_BUTTON_B
+    CONTROLLER_BUTTON_BACK
+    CONTROLLER_BUTTON_DPAD_DOWN
+    CONTROLLER_BUTTON_DPAD_LEFT
+    CONTROLLER_BUTTON_DPAD_RIGHT
+    CONTROLLER_BUTTON_DPAD_UP
+    CONTROLLER_BUTTON_GUIDE
+    CONTROLLER_BUTTON_INVALID
+    CONTROLLER_BUTTON_LEFTSHOULDER
+    CONTROLLER_BUTTON_LEFTSTICK
+    CONTROLLER_BUTTON_MAX
+    CONTROLLER_BUTTON_RIGHTSHOULDER
+    CONTROLLER_BUTTON_RIGHTSTICK
+    CONTROLLER_BUTTON_START
+    CONTROLLER_BUTTON_X
+    CONTROLLER_BUTTON_Y
+    CONTROLLER_TYPE_NINTENDO_SWITCH_PRO
+    CONTROLLER_TYPE_PS3
+    CONTROLLER_TYPE_PS4
+    CONTROLLER_TYPE_PS5
+    CONTROLLER_TYPE_UNKNOWN
+    CONTROLLER_TYPE_VIRTUAL
+    CONTROLLER_TYPE_XBOX360
+    CONTROLLER_TYPE_XBOXONE
     ClearError
     ComposeCustomBlendMode
     Config
@@ -192,10 +229,33 @@ is [ sort keys %SDL2:: ], [qw(
     GLcontextFlag
     GLcontextReleaseFlag
     GLprofile
+    GameControllerAddMapping
+    GameControllerAddMappingsFromFile
+    GameControllerAddMappingsFromRW
+    GameControllerAxis
+    GameControllerBindType
+    GameControllerButton
+    GameControllerButtonBind::
     GameControllerClose
+    GameControllerEventState
+    GameControllerFromInstanceID
+    GameControllerGetAttached
+    GameControllerGetAxis
+    GameControllerGetAxisFromString
+    GameControllerGetBindForAxis
+    GameControllerGetBindForButton
+    GameControllerGetButton
+    GameControllerGetButtonFromString
     GameControllerGetJoystick
+    GameControllerGetStringForAxis
+    GameControllerGetStringForButton
+    GameControllerMapping
+    GameControllerMappingForGUID
+    GameControllerName
     GameControllerNameForIndex
     GameControllerOpen
+    GameControllerType
+    GameControllerUpdate
     GetClosestDisplayMode
     GetCurrentDisplayMode
     GetCurrentVideoDriver

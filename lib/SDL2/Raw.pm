@@ -120,6 +120,51 @@ sub pixel_format {
 
 BEGIN {
     enum(
+        GameControllerType => [qw(
+            CONTROLLER_TYPE_UNKNOWN
+            CONTROLLER_TYPE_XBOX360
+            CONTROLLER_TYPE_XBOXONE
+            CONTROLLER_TYPE_PS3
+            CONTROLLER_TYPE_PS4
+            CONTROLLER_TYPE_NINTENDO_SWITCH_PRO
+            CONTROLLER_TYPE_VIRTUAL
+            CONTROLLER_TYPE_PS5
+        )],
+        GameControllerBindType => [qw(
+            CONTROLLER_BINDTYPE_NONE
+            CONTROLLER_BINDTYPE_BUTTON
+            CONTROLLER_BINDTYPE_AXIS
+            CONTROLLER_BINDTYPE_HAT
+        )],
+        GameControllerAxis => [qw(
+            CONTROLLER_AXIS_INVALID
+            CONTROLLER_AXIS_LEFTX
+            CONTROLLER_AXIS_LEFTY
+            CONTROLLER_AXIS_RIGHTX
+            CONTROLLER_AXIS_RIGHTY
+            CONTROLLER_AXIS_TRIGGERLEFT
+            CONTROLLER_AXIS_TRIGGERRIGHT
+            CONTROLLER_AXIS_MAX
+        )],
+        GameControllerButton => [qw(
+            CONTROLLER_BUTTON_INVALID
+            CONTROLLER_BUTTON_A
+            CONTROLLER_BUTTON_B
+            CONTROLLER_BUTTON_X
+            CONTROLLER_BUTTON_Y
+            CONTROLLER_BUTTON_BACK
+            CONTROLLER_BUTTON_GUIDE
+            CONTROLLER_BUTTON_START
+            CONTROLLER_BUTTON_LEFTSTICK
+            CONTROLLER_BUTTON_RIGHTSTICK
+            CONTROLLER_BUTTON_LEFTSHOULDER
+            CONTROLLER_BUTTON_RIGHTSHOULDER
+            CONTROLLER_BUTTON_DPAD_UP
+            CONTROLLER_BUTTON_DPAD_DOWN
+            CONTROLLER_BUTTON_DPAD_LEFT
+            CONTROLLER_BUTTON_DPAD_RIGHT
+            CONTROLLER_BUTTON_MAX
+        )],
         JoystickPowerLevel => [qw(
             JOYSTICK_POWER_UNKNOWN
             JOYSTICK_POWER_EMPTY
@@ -1480,6 +1525,22 @@ package SDL2::Event {
 
 # Non-event structs
 
+package SDL2::GameControllerButtonBind::Hat {
+    FFI::C->struct( SDL_GameControllerButtonBind_Hat => [
+        hat      => 'int',
+        hat_mask => 'int',
+    ]);
+}
+
+package SDL2::GameControllerButtonBind {
+    FFI::C->struct( SDL_GameControllerButtonBind => [
+        bindtype => 'int',
+        button   => 'int',
+        axis     => 'int',
+        hat      => 'SDL_GameControllerButtonBind_Hat',
+    ]);
+}
+
 package SDL2::Finger {
     FFI::C->struct( SDL_Finger => [
         id       => 'SDL_FingerID',
@@ -1863,31 +1924,29 @@ $ffi->attach( SetColorKey => [qw( SDL_Surface int uint32 )] => 'int' );
 
 ## GameController
 
-# SDL_GameControllerAddMapping
-# SDL_GameControllerAddMappingsFromFile
-# SDL_GameControllerAddMappingsFromRW
-# SDL_GameControllerAxis
-# SDL_GameControllerButton
-$ffi->attach( GameControllerClose        => ['SDL_GameController'] => 'void'               );
-# SDL_GameControllerEventState
-# SDL_GameControllerFromInstanceID
-# SDL_GameControllerGetAttached
-# SDL_GameControllerGetAxis
-# SDL_GameControllerGetAxisFromString
-# SDL_GameControllerGetBindForAxis
-# SDL_GameControllerGetBindForButton
-# SDL_GameControllerGetButton
-# SDL_GameControllerGetButtonFromString
-$ffi->attach( GameControllerGetJoystick  => ['SDL_GameController'] => 'SDL_Joystick'       );
-# SDL_GameControllerGetStringForAxis
-# SDL_GameControllerGetStringForButton
-# SDL_GameControllerMapping
-# SDL_GameControllerMappingForGUID
-# SDL_GameControllerName
-$ffi->attach( GameControllerNameForIndex => ['int'               ] => 'string'             );
-$ffi->attach( GameControllerOpen         => ['int'               ] => 'SDL_GameController' );
-# SDL_GameControllerUpdate
-$ffi->attach( IsGameController           => ['int'               ] => 'bool'               );
+sub GameControllerAddMappingsFromFile { GameControllerAddMappingsFromRW( RWFromFile( shift, 'rb' ), 1 ) }
+$ffi->attach( GameControllerAddMapping          => [qw( string                 )] => 'int'                          );
+$ffi->attach( GameControllerAddMappingsFromRW   => [qw( SDL_RWops int          )] => 'int'                          ); # 2.0.2
+$ffi->attach( GameControllerClose               => [qw( SDL_GameController     )] => 'void'                         );
+$ffi->attach( GameControllerEventState          => [qw( int                    )] => 'int'                          );
+$ffi->attach( GameControllerFromInstanceID      => [qw( SDL_JoystickID         )] => 'SDL_GameController'           ); # 2.0.4
+$ffi->attach( GameControllerGetAttached         => [qw( SDL_GameController     )] => 'SDL_bool'                     );
+$ffi->attach( GameControllerGetAxis             => [qw( SDL_GameController int )] => 'sint16'                       );
+$ffi->attach( GameControllerGetAxisFromString   => [qw( string                 )] => 'int'                          );
+$ffi->attach( GameControllerGetBindForAxis      => [qw( SDL_GameController int )] => 'SDL_GameControllerButtonBind' );
+$ffi->attach( GameControllerGetBindForButton    => [qw( SDL_GameController int )] => 'SDL_GameControllerButtonBind' );
+$ffi->attach( GameControllerGetButton           => [qw( SDL_GameController int )] => 'uint8'                        );
+$ffi->attach( GameControllerGetButtonFromString => [qw( string                 )] => 'int'                          );
+$ffi->attach( GameControllerGetJoystick         => [qw( SDL_GameController     )] => 'SDL_Joystick'                 );
+$ffi->attach( GameControllerGetStringForAxis    => [qw( int                    )] => 'string'                       );
+$ffi->attach( GameControllerGetStringForButton  => [qw( int                    )] => 'string'                       );
+$ffi->attach( GameControllerMapping             => [qw( SDL_GameController     )] => 'string'                       );
+$ffi->attach( GameControllerMappingForGUID      => [qw( SDL_JoystickGUID       )] => 'string'                       );
+$ffi->attach( GameControllerName                => [qw( SDL_GameController     )] => 'string'                       );
+$ffi->attach( GameControllerNameForIndex        => [qw( int                    )] => 'string'                       );
+$ffi->attach( GameControllerOpen                => [qw( int                    )] => 'SDL_GameController'           );
+$ffi->attach( GameControllerUpdate              => [                            ] => 'void'                         );
+$ffi->attach( IsGameController                  => [qw( int                    )] => 'bool'                         );
 
 ## Joystick
 
