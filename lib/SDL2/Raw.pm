@@ -1885,7 +1885,7 @@ package SDL2::RendererInfo {
 package SDL2::Surface {
     FFI::C->struct( SDL_Surface => [
         flags  => 'uint32',
-        format => 'opaque',
+        format => 'SDL_PixelFormat',
         w      => 'int',
         h      => 'int',
         pitch  => 'int',
@@ -2100,6 +2100,10 @@ $ffi->attach( SetTextureColorMod       => [qw( SDL_Texture uint8 uint8 uint8    
 $ffi->attach( UnlockTexture            => [qw( SDL_Texture                                                             )] => 'void'          );
 $ffi->attach( UpdateTexture            => [qw( SDL_Texture SDL_Rect* opaque int                                        )] => 'int'           );
 $ffi->attach( UpdateYUVTexture         => [qw( SDL_Texture uint8[] int uint8[] int uint8[] int                         )] => 'int'           );
+
+## Pixels
+
+$ffi->attach( GetPixelFormatName => [qw( uint32 )] => 'string' );
 
 ## Surface
 

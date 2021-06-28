@@ -308,6 +308,7 @@ is [ sort keys %SDL2:: ], [qw(
     GetNumVideoDrivers
     GetPerformanceCounter
     GetPerformanceFrequency
+    GetPixelFormatName
     GetRenderDrawBlendMode
     GetRenderDrawColor
     GetRenderDriverInfo
