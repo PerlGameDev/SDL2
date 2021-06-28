@@ -1147,13 +1147,21 @@ BEGIN {
     );
 }
 
+$ffi->mangler( sub { 'SDL_' . shift } );
+
 $ffi->type( sint32 => 'SDL_BlendMode'  );
 $ffi->type( sint32 => 'SDL_JoystickID' );
 $ffi->type( sint64 => 'SDL_TouchID'    );
 $ffi->type( sint64 => 'SDL_FingerID'   );
 $ffi->type( sint64 => 'SDL_GestureID'  );
-
-$ffi->mangler( sub { 'SDL_' . shift } );
+$ffi->type( opaque => 'SDL_GLContext'      );
+$ffi->type( opaque => 'SDL_GameController' );
+$ffi->type( opaque => 'SDL_Joystick'       );
+$ffi->type( opaque => 'SDL_RWops'          );
+$ffi->type( opaque => 'SDL_Renderer'       );
+$ffi->type( opaque => 'SDL_Texture'        );
+$ffi->type( opaque => 'SDL_Window'         );
+$ffi->type( uint8  => 'SDL_bool'           );
 
 # Event structs
 
@@ -1669,14 +1677,6 @@ package SDL2::SysWMinfo {
 
 $ffi->type( 'record(SDL2::Rect)'  => 'SDL_Rect'  );
 $ffi->type( 'record(SDL2::Point)' => 'SDL_Point' );
-
-$ffi->type( opaque => 'SDL_Renderer'       );
-$ffi->type( opaque => 'SDL_Texture'        );
-$ffi->type( opaque => 'SDL_Window'         );
-$ffi->type( opaque => 'SDL_GameController' );
-$ffi->type( opaque => 'SDL_Joystick'       );
-$ffi->type( opaque => 'SDL_RWops'          );
-$ffi->type( uint8  => 'SDL_bool'           );
 
 $ffi->type( '( SDL_Window, SDL_Point, opaque )->int' => 'SDL_HitTest' );
 
