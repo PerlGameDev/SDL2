@@ -1815,10 +1815,8 @@ package SDL2::Point {
         no warnings 'redefine';
 
         my $old  = __PACKAGE__->can('new') or die;
-        my $new  = sub { shift->$old({ x => shift, y => shift }) };
         my $name = __PACKAGE__ . '::new';
-
-        *{$name} = Sub::Util::set_subname $name => $new;
+        *{$name} = Sub::Util::set_subname $name => sub { shift->$old({ x => shift, y => shift }) };
     }
 }
 
@@ -1832,10 +1830,8 @@ package SDL2::FPoint {
         no warnings 'redefine';
 
         my $old  = __PACKAGE__->can('new') or die;
-        my $new  = sub { shift->$old({ x => shift, y => shift }) };
         my $name = __PACKAGE__ . '::new';
-
-        *{$name} = Sub::Util::set_subname $name => $new;
+        *{$name} = Sub::Util::set_subname $name => sub { shift->$old({ x => shift, y => shift }) };
     }
 }
 
@@ -1849,12 +1845,10 @@ package SDL2::Rect {
         no warnings 'redefine';
 
         my $old  = __PACKAGE__->can('new') or die;
-        my $new  = sub {
+        my $name = __PACKAGE__ . '::new';
+        *{$name} = Sub::Util::set_subname $name => sub {
             shift->$old({ x => shift, y => shift, w => shift, h => shift });
         };
-        my $name = __PACKAGE__ . '::new';
-
-        *{$name} = Sub::Util::set_subname $name => $new;
     }
 }
 
@@ -1868,12 +1862,10 @@ package SDL2::FRect {
         no warnings 'redefine';
 
         my $old  = __PACKAGE__->can('new') or die;
-        my $new  = sub {
+        my $name = __PACKAGE__ . '::new';
+        *{$name} = Sub::Util::set_subname $name => sub {
             shift->$old({ x => shift, y => shift, w => shift, h => shift });
         };
-        my $name = __PACKAGE__ . '::new';
-
-        *{$name} = Sub::Util::set_subname $name => $new;
     }
 }
 
