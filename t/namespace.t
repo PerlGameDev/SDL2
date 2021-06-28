@@ -77,6 +77,7 @@ is [ sort keys %SDL2:: ], [qw(
     BlendFactor
     BlendMode
     BlendOperation
+    BlitScaled
     BlitSurface
     CLIPBOARDUPDATE
     CONTROLLERAXISMOTION
@@ -134,7 +135,13 @@ is [ sort keys %SDL2:: ], [qw(
     ControllerDeviceEvent::
     ControllerSensorEvent::
     ControllerTouchpadEvent::
+    ConvertPixels
+    ConvertSurface
+    ConvertSurfaceFormat
+    CreateRGBSurface
     CreateRGBSurfaceFrom
+    CreateRGBSurfaceWithFormat
+    CreateRGBSurfaceWithFormatFrom
     CreateRenderer
     CreateSoftwareRenderer
     CreateTexture
@@ -150,6 +157,7 @@ is [ sort keys %SDL2:: ], [qw(
     DISPLAYEVENT_ORIENTATION
     DOLLARGESTURE
     DOLLARRECORD
+    DONTFREE
     DROPBEGIN
     DROPCOMPLETE
     DROPFILE
@@ -182,6 +190,8 @@ is [ sort keys %SDL2:: ], [qw(
     FLIP_VERTICAL
     FPoint::
     FRect::
+    FillRect
+    FillRects
     FilterEvents
     Finger::
     FlushEvent
@@ -276,7 +286,9 @@ is [ sort keys %SDL2:: ], [qw(
     GameControllerOpen
     GameControllerType
     GameControllerUpdate
+    GetClipRect
     GetClosestDisplayMode
+    GetColorKey
     GetCurrentDisplayMode
     GetCurrentVideoDriver
     GetDesktopDisplayMode
@@ -305,6 +317,9 @@ is [ sort keys %SDL2:: ], [qw(
     GetRendererOutputSize
     GetRevision
     GetRevisionNumber
+    GetSurfaceAlphaMod
+    GetSurfaceBlendMode
+    GetSurfaceColorMod
     GetTextureAlphaMod
     GetTextureBlendMode
     GetTextureColorMod
@@ -811,6 +826,7 @@ is [ sort keys %SDL2:: ], [qw(
     LoadBMP
     LoadBMP_RW
     LoadDollarTemplates
+    LockSurface
     LockTexture
     Log
     LogCategory
@@ -829,6 +845,8 @@ is [ sort keys %SDL2:: ], [qw(
     LogSetPriority
     LogVerbose
     LogWarn
+    LowerBlit
+    LowerBlitScaled
     MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT
     MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
     MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
@@ -850,6 +868,7 @@ is [ sort keys %SDL2:: ], [qw(
     MOUSEWHEEL_FLIPPED
     MOUSEWHEEL_NORMAL
     MULTIGESTURE
+    MUSTLOCK
     MaximizeWindow
     MessageBoxButtonData::
     MessageBoxButtonFlags
@@ -960,9 +979,11 @@ is [ sort keys %SDL2:: ], [qw(
     POWERSTATE_NO_BATTERY
     POWERSTATE_ON_BATTERY
     POWERSTATE_UNKNOWN
+    PREALLOC
     PRESSED
     PackedLayout
     PackedOrder
+    Palette::
     PeepEvents
     PixelFormat::
     PixelFormatEnum
@@ -985,6 +1006,7 @@ is [ sort keys %SDL2:: ], [qw(
     RENDERER_TARGETTEXTURE
     RENDER_DEVICE_RESET
     RENDER_TARGETS_RESET
+    RLEACCEL
     RWFromFile
     RaiseWindow
     RecordGesture
@@ -1276,6 +1298,8 @@ is [ sort keys %SDL2:: ], [qw(
     SCANCODE_Y
     SCANCODE_Z
     SENSORUPDATE
+    SIMD_ALIGNED
+    SWSURFACE
     SYSTEM_CURSOR_ARROW
     SYSTEM_CURSOR_CROSSHAIR
     SYSTEM_CURSOR_HAND
@@ -1305,16 +1329,24 @@ is [ sort keys %SDL2:: ], [qw(
     SYSWM_WINRT
     SYSWM_X11
     SaveAllDollarTemplates
+    SaveBMP
+    SaveBMP_RW
     SaveDollarTemplate
     ScaleMode
     ScanCode
     SensorEvent::
+    SetClipRect
     SetColorKey
     SetError
     SetEventFilter
     SetRenderDrawBlendMode
     SetRenderDrawColor
     SetRenderTarget
+    SetSurfaceAlphaMod
+    SetSurfaceBlendMode
+    SetSurfaceColorMod
+    SetSurfacePalette
+    SetSurfaceRLE
     SetTextureAlphaMod
     SetTextureBlendMode
     SetTextureColorMod
@@ -1359,12 +1391,14 @@ is [ sort keys %SDL2:: ], [qw(
     TextureModulate
     TouchFingerEvent::
     USEREVENT
+    UnlockSurface
     UnlockTexture
     UpdateTexture
     UpdateWindowSurface
     UpdateWindowSurfaceRects
     UpdateYUVTexture
     UpperBlit
+    UpperBlitScaled
     UserEvent::
     Version::
     VideoInit

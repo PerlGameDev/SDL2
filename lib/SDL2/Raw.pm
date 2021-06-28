@@ -34,6 +34,11 @@ use constant {
     ENABLE          => 1,
     RELEASED        => 0,
     PRESSED         => 1,
+    SWSURFACE       => 0,
+    PREALLOC        => 1,
+    RLEACCEL        => 2,
+    DONTFREE        => 4,
+    SIMD_ALIGNED    => 8,
 };
 
 # Hints - https://github.com/libsdl-org/SDL/blob/main/include/SDL_hints.h
@@ -1764,6 +1769,15 @@ package SDL2::MessageBoxData {
     sub message { $ffi->cast( opaque => string => sfhit->_message ) }
 }
 
+package SDL2::Palette {
+    FFI::C->struct( SDL_Palette => [
+        ncolors  => 'int',
+        colors   => 'opaque', # SDL_Color[]',
+        version  => 'uint32',
+        refcount => 'int',
+    ]);
+}
+
 package SDL2::PixelFormat {
     FFI::C->struct( SDL_PixelFormat => [
         format        => 'uint32',
@@ -2097,41 +2111,43 @@ $ffi->attach( UpdateYUVTexture         => [qw( SDL_Texture uint8[] int uint8[] i
 
 ## Surface
 
-$ffi->attach( UpperBlit => [qw( SDL_Surface SDL_Rect* SDL_Surface SDL_Rect* )] => 'int' );
-# SDL_BlitScaled
-sub BlitSurface { goto &UpperBlit }
-# SDL_ConvertPixels
-# SDL_ConvertSurface
-# SDL_ConvertSurfaceFormat
-# SDL_CreateRGBSurface
-$ffi->attach( CreateRGBSurfaceFrom => [qw( opaque int int int int uint32 uint32 uint32 uint32 )] => 'SDL_Surface' );
-# SDL_CreateRGBSurfaceWithFormat
-# SDL_CreateRGBSurfaceWithFormatFrom
-# SDL_FillRect
-# SDL_FillRects
-$ffi->attach( FreeSurface => ['SDL_Surface'] => 'void' );
-# SDL_GetClipRect
-# SDL_GetColorKey
-# SDL_GetSurfaceAlphaMod
-# SDL_GetSurfaceBlendMode
-# SDL_GetSurfaceColorMod
-$ffi->attach( RWFromFile => [qw( string string )] => 'SDL_RWops'   );
-$ffi->attach( LoadBMP_RW => [qw( SDL_RWops int )] => 'SDL_Surface' );
+$ffi->attach( ConvertPixels                  => [qw( int int uint32 opaque uint32 opaque int            )] => 'int'         );
+$ffi->attach( ConvertSurface                 => [qw( SDL_Surface SDL_PixelFormat uint32                 )] => 'SDL_Surface' );
+$ffi->attach( ConvertSurfaceFormat           => [qw( SDL_Surface SDL_PixelFormat uint32                 )] => 'SDL_Surface' );
+$ffi->attach( CreateRGBSurface               => [qw( uint32 int int int uint32 uint32 uint32 uint32     )] => 'SDL_Surface' );
+$ffi->attach( CreateRGBSurfaceFrom           => [qw( opaque int int int int uint32 uint32 uint32 uint32 )] => 'SDL_Surface' );
+$ffi->attach( CreateRGBSurfaceWithFormat     => [qw( uint32 int int int uint32                          )] => 'SDL_Surface' );
+$ffi->attach( CreateRGBSurfaceWithFormatFrom => [qw( opaque uint32 int int int uint32                   )] => 'SDL_Surface' );
+$ffi->attach( FillRect                       => [qw( SDL_Surface SDL_Rect* uint32                       )] => 'int'         );
+$ffi->attach( FillRects                      => [qw( SDL_Surface int[] int uint32                       )] => 'int'         ); # TODO: SDL_Rect[]
+$ffi->attach( FreeSurface                    => [qw( SDL_Surface                                        )] => 'void'        );
+$ffi->attach( GetClipRect                    => [qw( SDL_Surface SDL_Rect*                              )] => 'void'        );
+$ffi->attach( GetColorKey                    => [qw( SDL_Surface uint32*                                )] => 'int'         );
+$ffi->attach( GetSurfaceAlphaMod             => [qw( SDL_Surface uint8*                                 )] => 'int'         );
+$ffi->attach( GetSurfaceBlendMode            => [qw( SDL_Surface SDL_BlendMode*                         )] => 'int'         );
+$ffi->attach( GetSurfaceColorMod             => [qw( SDL_Surface uint8* uint8* uint8*                   )] => 'int'         );
+$ffi->attach( LoadBMP_RW                     => [qw( SDL_RWops int                                      )] => 'SDL_Surface' );
+$ffi->attach( LockSurface                    => [qw( SDL_Surface                                        )] => 'int'         );
+$ffi->attach( LowerBlit                      => [qw( SDL_Surface SDL_Rect* SDL_Surface SDL_Rect*        )] => 'int'         );
+$ffi->attach( LowerBlitScaled                => [qw( SDL_Surface SDL_Rect* SDL_Surface SDL_Rect*        )] => 'int'         );
+$ffi->attach( RWFromFile                     => [qw( string string                                      )] => 'SDL_RWops'   );
+$ffi->attach( SaveBMP_RW                     => [qw( SDL_Surface SDL_RWops int                          )] => 'int'         );
+$ffi->attach( SetClipRect                    => [qw( SDL_Surface SDL_Rect*                              )] => 'SDL_bool'    );
+$ffi->attach( SetColorKey                    => [qw( SDL_Surface int uint32                             )] => 'int'         );
+$ffi->attach( SetSurfaceAlphaMod             => [qw( SDL_Surface uint8                                  )] => 'int'         );
+$ffi->attach( SetSurfaceBlendMode            => [qw( SDL_Surface SDL_BlendMode                          )] => 'int'         );
+$ffi->attach( SetSurfaceColorMod             => [qw( SDL_Surface uint8 uint8 uint8                      )] => 'int'         );
+$ffi->attach( SetSurfacePalette              => [qw( SDL_Surface SDL_Palette                            )] => 'int'         );
+$ffi->attach( SetSurfaceRLE                  => [qw( SDL_Surface int                                    )] => 'int'         );
+$ffi->attach( UnlockSurface                  => [qw( SDL_Surface                                        )] => 'void'        );
+$ffi->attach( UpperBlit                      => [qw( SDL_Surface SDL_Rect* SDL_Surface SDL_Rect*        )] => 'int'         );
+$ffi->attach( UpperBlitScaled                => [qw( SDL_Surface SDL_Rect* SDL_Surface SDL_Rect*        )] => 'int'         );
+
+sub SaveBMP { SaveBMP_RW( $_[0], RWFromFile( $_[1], 'wb' ), 1 ) }
 sub LoadBMP { LoadBMP_RW( RWFromFile( +shift, 'rb' ), 1 ) }
-# SDL_LockSurface
-# SDL_LowerBlit
-# SDL_LowerBlitScaled
-# SDL_MUSTLOCK
-# SDL_SaveBMP
-# SDL_SaveBMP_RW
-# SDL_SetClipRect
-$ffi->attach( SetColorKey => [qw( SDL_Surface int uint32 )] => 'int' );
-# SDL_SetSurfaceAlphaMod
-# SDL_SetSurfaceBlendMode
-# SDL_SetSurfaceColorMod
-# SDL_SetSurfacePalette
-# SDL_SetSurfaceRLE
-# SDL_UnlockSurface
+sub BlitSurface { goto &UpperBlit }
+sub BlitScaled  { goto &UpperBlitScaled }
+sub MUSTLOCK { ( shift->flags & RLEACCEL ) != 0 }
 
 ## GameController
 
