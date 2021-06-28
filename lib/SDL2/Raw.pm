@@ -120,21 +120,140 @@ sub pixel_format {
 
 BEGIN {
     enum(
-        GameControllerType => [qw(
-            CONTROLLER_TYPE_UNKNOWN
-            CONTROLLER_TYPE_XBOX360
-            CONTROLLER_TYPE_XBOXONE
-            CONTROLLER_TYPE_PS3
-            CONTROLLER_TYPE_PS4
-            CONTROLLER_TYPE_NINTENDO_SWITCH_PRO
-            CONTROLLER_TYPE_VIRTUAL
-            CONTROLLER_TYPE_PS5
+        ArrayOrder => [qw(
+            ARRAYORDER_NONE
+            ARRAYORDER_RGB
+            ARRAYORDER_RGBA
+            ARRAYORDER_ARGB
+            ARRAYORDER_BGR
+            ARRAYORDER_BGRA
+            ARRAYORDER_ABGR
         )],
-        GameControllerBindType => [qw(
-            CONTROLLER_BINDTYPE_NONE
-            CONTROLLER_BINDTYPE_BUTTON
-            CONTROLLER_BINDTYPE_AXIS
-            CONTROLLER_BINDTYPE_HAT
+        BlendFactor => [qw(
+            BLENDFACTOR_ZERO
+            BLENDFACTOR_ONE
+            BLENDFACTOR_SRC_COLOR
+            BLENDFACTOR_ONE_MINUS_SRC_COLOR
+            BLENDFACTOR_SRC_ALPHA
+            BLENDFACTOR_ONE_MINUS_SRC_ALPHA
+            BLENDFACTOR_DST_COLOR
+            BLENDFACTOR_ONE_MINUS_DST_COLOR
+            BLENDFACTOR_DST_ALPHA
+            BLENDFACTOR_ONE_MINUS_DST_ALPHA
+        )],
+        BlendMode => {
+            BLENDMODE_NONE    => 0x00000000,
+            BLENDMODE_BLEND   => 0x00000001,
+            BLENDMODE_ADD     => 0x00000002,
+            BLENDMODE_MOD     => 0x00000004,
+            BLENDMODE_MUL     => 0x00000008,
+            BLENDMODE_INVALID => 0x7FFFFFFF,
+        },
+        BlendOperation => [qw(
+            BLENDOPERATION_ADD
+            BLENDOPERATION_SUBTRACT
+            BLENDOPERATION_REV_SUBTRACT
+            BLENDOPERATION_MINIMUM
+            BLENDOPERATION_MAXIMUM
+        )],
+        BitmapOrder => [qw(
+            BITMAPORDER_NONE
+            BITMAPORDER_4321
+            BITMAPORDER_1234
+        )],
+        DisplayEventID => [qw(
+            DISPLAYEVENT_NONE
+            DISPLAYEVENT_ORIENTATION
+            DISPLAYEVENT_CONNECTED
+            DISPLAYEVENT_DISCONNECTED
+        )],
+        DisplayOrientation => [qw(
+            ORIENTATION_UNKNOWN
+            ORIENTATION_LANDSCAPE
+            ORIENTATION_LANDSCAPE_FLIPPED
+            ORIENTATION_PORTRAIT
+            ORIENTATION_PORTRAIT_FLIPPED
+        )],
+        EventAction => [qw(
+            ADDEVENT
+            PEEKEVENT
+            GETEVENT
+        )],
+        EventType => [qw(
+            FIRSTEVENT=0
+
+            QUIT=0x100
+
+            APP_TERMINATING
+            APP_LOWMEMORY
+            APP_WILLENTERBACKGROUND
+            APP_DIDENTERBACKGROUND
+            APP_WILLENTERFOREGROUND
+            APP_DIDENTERFOREGROUND
+
+            LOCALECHANGED
+
+            DISPLAYEVENT=0x150
+
+            WINDOWEVENT=0x200
+            SYSWMEVENT
+
+            KEYDOWN=0x300
+            KEYUP
+            TEXTEDITING
+            TEXTINPUT
+            KEYMAPCHANGED
+
+            MOUSEMOTION=0x400
+            MOUSEBUTTONDOWN
+            MOUSEBUTTONUP
+            MOUSEWHEEL
+
+            JOYAXISMOTION=0x600
+            JOYBALLMOTION
+            JOYHATMOTION
+            JOYBUTTONDOWN
+            JOYBUTTONUP
+            JOYDEVICEADDED
+            JOYDEVICEREMOVED
+
+            CONTROLLERAXISMOTION=0x650
+            CONTROLLERBUTTONDOWN
+            CONTROLLERBUTTONUP
+            CONTROLLERDEVICEADDED
+            CONTROLLERDEVICEREMOVED
+            CONTROLLERDEVICEREMAPPED
+            CONTROLLERTOUCHPADDOWN
+            CONTROLLERTOUCHPADMOTION
+            CONTROLLERTOUCHPADUP
+            CONTROLLERSENSORUPDATE
+
+            FINGERDOWN=0x700
+            FINGERUP
+            FINGERMOTION
+
+            DOLLARGESTURE=0x800
+            DOLLARRECORD
+            MULTIGESTURE
+
+            CLIPBOARDUPDATE=0x900
+
+            DROPFILE=0x1000
+            DROPTEXT
+            DROPBEGIN
+            DROPCOMPLETE
+
+            AUDIODEVICEADDED=0x1100
+            AUDIODEVICEREMOVED
+
+            SENSORUPDATE=0x1200
+
+            RENDER_TARGETS_RESET=0x2000
+            RENDER_DEVICE_RESET
+
+            USEREVENT=0x8000
+
+            LASTEVENT=0xFFFF
         )],
         GameControllerAxis => [qw(
             CONTROLLER_AXIS_INVALID
@@ -145,6 +264,12 @@ BEGIN {
             CONTROLLER_AXIS_TRIGGERLEFT
             CONTROLLER_AXIS_TRIGGERRIGHT
             CONTROLLER_AXIS_MAX
+        )],
+        GameControllerBindType => [qw(
+            CONTROLLER_BINDTYPE_NONE
+            CONTROLLER_BINDTYPE_BUTTON
+            CONTROLLER_BINDTYPE_AXIS
+            CONTROLLER_BINDTYPE_HAT
         )],
         GameControllerButton => [qw(
             CONTROLLER_BUTTON_INVALID
@@ -165,115 +290,15 @@ BEGIN {
             CONTROLLER_BUTTON_DPAD_RIGHT
             CONTROLLER_BUTTON_MAX
         )],
-        JoystickPowerLevel => [qw(
-            JOYSTICK_POWER_UNKNOWN
-            JOYSTICK_POWER_EMPTY
-            JOYSTICK_POWER_LOW
-            JOYSTICK_POWER_MEDIUM
-            JOYSTICK_POWER_FULL
-            JOYSTICK_POWER_WIRED
-            JOYSTICK_POWER_MAX
-        )],
-        HintPriority => [qw(
-            HINT_DEFAULT
-            HINT_NORMAL
-            HINT_OVERRIDE
-        )],
-        HatPosition => {
-            HAT_CENTERED   => 0x0,
-            HAT_UP         => 0x1,
-            HAT_RIGHT      => 0x2,
-            HAT_DOWN       => 0x4,
-            HAT_LEFT       => 0x8,
-        },
-        LogCategory  => [qw(
-            LOG_CATEGORY_APPLICATION
-            LOG_CATEGORY_ERROR
-            LOG_CATEGORY_ASSERT
-            LOG_CATEGORY_SYSTEM
-            LOG_CATEGORY_AUDIO
-            LOG_CATEGORY_VIDEO
-            LOG_CATEGORY_RENDER
-            LOG_CATEGORY_INPUT
-            LOG_CATEGORY_TEST
-            LOG_CATEGORY_RESERVED1
-            LOG_CATEGORY_RESERVED2
-            LOG_CATEGORY_RESERVED3
-            LOG_CATEGORY_RESERVED4
-            LOG_CATEGORY_RESERVED5
-            LOG_CATEGORY_RESERVED6
-            LOG_CATEGORY_RESERVED7
-            LOG_CATEGORY_RESERVED8
-            LOG_CATEGORY_RESERVED9
-            LOG_CATEGORY_RESERVED10
-            LOG_CATEGORY_CUSTOM
-        )],
-        LogPriority => [qw(
-            LOG_PRIORITY_VERBOSE=1
-            LOG_PRIORITY_DEBUG
-            LOG_PRIORITY_INFO
-            LOG_PRIORITY_WARN
-            LOG_PRIORITY_ERROR
-            LOG_PRIORITY_CRITICAL
-            NUM_LOG_PRIORITIES
-        )],
-        WindowFlags => {
-            WINDOW_FULLSCREEN         => 0x00000001,
-            WINDOW_OPENGL             => 0x00000002,
-            WINDOW_SHOWN              => 0x00000004,
-            WINDOW_HIDDEN             => 0x00000008,
-            WINDOW_BORDERLESS         => 0x00000010,
-            WINDOW_RESIZABLE          => 0x00000020,
-            WINDOW_MINIMIZED          => 0x00000040,
-            WINDOW_MAXIMIZED          => 0x00000080,
-            WINDOW_MOUSE_GRABBED      => 0x00000100,
-            WINDOW_INPUT_FOCUS        => 0x00000200,
-            WINDOW_MOUSE_FOCUS        => 0x00000400,
-            WINDOW_FULLSCREEN_DESKTOP => 0x00001001,
-            WINDOW_FOREIGN            => 0x00000800,
-            WINDOW_ALLOW_HIGHDPI      => 0x00002000,
-            WINDOW_MOUSE_CAPTURE      => 0x00004000,
-            WINDOW_ALWAYS_ON_TOP      => 0x00008000,
-            WINDOW_SKIP_TASKBAR       => 0x00010000,
-            WINDOW_UTILITY            => 0x00020000,
-            WINDOW_TOOLTIP            => 0x00040000,
-            WINDOW_POPUP_MENU         => 0x00080000,
-            WINDOW_KEYBOARD_GRABBED   => 0x00100000,
-            WINDOW_VULKAN             => 0x10000000,
-            WINDOW_METAL              => 0x20000000,
-            WINDOW_INPUT_GRABBED      => 0x00000100,
-        },
-        WindowEventID => [qw(
-            WINDOWEVENT_NONE
-            WINDOWEVENT_SHOWN
-            WINDOWEVENT_HIDDEN
-            WINDOWEVENT_EXPOSED
-            WINDOWEVENT_MOVED
-            WINDOWEVENT_RESIZED
-            WINDOWEVENT_SIZE_CHANGED
-            WINDOWEVENT_MINIMIZED
-            WINDOWEVENT_MAXIMIZED
-            WINDOWEVENT_RESTORED
-            WINDOWEVENT_ENTER
-            WINDOWEVENT_LEAVE
-            WINDOWEVENT_FOCUS_GAINED
-            WINDOWEVENT_FOCUS_LOST
-            WINDOWEVENT_CLOSE
-            WINDOWEVENT_TAKE_FOCUS
-            WINDOWEVENT_HIT_TEST
-        )],
-        DisplayEventID => [qw(
-            DISPLAYEVENT_NONE
-            DISPLAYEVENT_ORIENTATION
-            DISPLAYEVENT_CONNECTED
-            DISPLAYEVENT_DISCONNECTED
-        )],
-        DisplayOrientation => [qw(
-            ORIENTATION_UNKNOWN
-            ORIENTATION_LANDSCAPE
-            ORIENTATION_LANDSCAPE_FLIPPED
-            ORIENTATION_PORTRAIT
-            ORIENTATION_PORTRAIT_FLIPPED
+        GameControllerType => [qw(
+            CONTROLLER_TYPE_UNKNOWN
+            CONTROLLER_TYPE_XBOX360
+            CONTROLLER_TYPE_XBOXONE
+            CONTROLLER_TYPE_PS3
+            CONTROLLER_TYPE_PS4
+            CONTROLLER_TYPE_NINTENDO_SWITCH_PRO
+            CONTROLLER_TYPE_VIRTUAL
+            CONTROLLER_TYPE_PS5
         )],
         GLattr => [qw(
             GL_RED_SIZE
@@ -323,89 +348,83 @@ BEGIN {
             GL_CONTEXT_RESET_NO_NOTIFICATION
             GL_CONTEXT_RESET_LOSE_CONTEXT
         )],
-        RendererFlags => {
-            RENDERER_SOFTWARE      => 0x00000001,
-            RENDERER_ACCELERATED   => 0x00000002,
-            RENDERER_PRESENTVSYNC  => 0x00000004,
-            RENDERER_TARGETTEXTURE => 0x00000008,
+        HatPosition => {
+            HAT_CENTERED   => 0x0,
+            HAT_UP         => 0x1,
+            HAT_RIGHT      => 0x2,
+            HAT_DOWN       => 0x4,
+            HAT_LEFT       => 0x8,
         },
-        ScaleMode => [qw(
-            SCALEMODENEAREST
-            SCALEMODELINEAR
-            SCALEMODEBEST
+        HintPriority => [qw(
+            HINT_DEFAULT
+            HINT_NORMAL
+            HINT_OVERRIDE
         )],
-        TextureAccess => [qw(
-            TEXTUREACCESS_STATIC
-            TEXTUREACCESS_STREAMING
-            TEXTUREACCESS_TARGET
+        JoystickPowerLevel => [qw(
+            JOYSTICK_POWER_UNKNOWN
+            JOYSTICK_POWER_EMPTY
+            JOYSTICK_POWER_LOW
+            JOYSTICK_POWER_MEDIUM
+            JOYSTICK_POWER_FULL
+            JOYSTICK_POWER_WIRED
+            JOYSTICK_POWER_MAX
         )],
-        TextureModulate => [qw(
-            TEXTUREMODULATE_NONE
-            TEXTUREMODULATE_COLOR
-            TEXTUREMODULATE_ALPHA
+        LogCategory  => [qw(
+            LOG_CATEGORY_APPLICATION
+            LOG_CATEGORY_ERROR
+            LOG_CATEGORY_ASSERT
+            LOG_CATEGORY_SYSTEM
+            LOG_CATEGORY_AUDIO
+            LOG_CATEGORY_VIDEO
+            LOG_CATEGORY_RENDER
+            LOG_CATEGORY_INPUT
+            LOG_CATEGORY_TEST
+            LOG_CATEGORY_RESERVED1
+            LOG_CATEGORY_RESERVED2
+            LOG_CATEGORY_RESERVED3
+            LOG_CATEGORY_RESERVED4
+            LOG_CATEGORY_RESERVED5
+            LOG_CATEGORY_RESERVED6
+            LOG_CATEGORY_RESERVED7
+            LOG_CATEGORY_RESERVED8
+            LOG_CATEGORY_RESERVED9
+            LOG_CATEGORY_RESERVED10
+            LOG_CATEGORY_CUSTOM
         )],
-        RendererFlip => [qw(
-            FLIP_NONE
-            FLIP_HORIZONTAL
-            FLIP_VERTICAL
-        )],
-        BlendMode => {
-            BLENDMODE_NONE    => 0x00000000,
-            BLENDMODE_BLEND   => 0x00000001,
-            BLENDMODE_ADD     => 0x00000002,
-            BLENDMODE_MOD     => 0x00000004,
-            BLENDMODE_MUL     => 0x00000008,
-            BLENDMODE_INVALID => 0x7FFFFFFF,
-        },
-        BlendOperation => [qw(
-            BLENDOPERATION_ADD
-            BLENDOPERATION_SUBTRACT
-            BLENDOPERATION_REV_SUBTRACT
-            BLENDOPERATION_MINIMUM
-            BLENDOPERATION_MAXIMUM
-        )],
-        BlendFactor => [qw(
-            BLENDFACTOR_ZERO
-            BLENDFACTOR_ONE
-            BLENDFACTOR_SRC_COLOR
-            BLENDFACTOR_ONE_MINUS_SRC_COLOR
-            BLENDFACTOR_SRC_ALPHA
-            BLENDFACTOR_ONE_MINUS_SRC_ALPHA
-            BLENDFACTOR_DST_COLOR
-            BLENDFACTOR_ONE_MINUS_DST_COLOR
-            BLENDFACTOR_DST_ALPHA
-            BLENDFACTOR_ONE_MINUS_DST_ALPHA
-        )],
-        PowerState => [qw(
-            POWERSTATE_UNKNOWN
-            POWERSTATE_ON_BATTERY
-            POWERSTATE_NO_BATTERY
-            POWERSTATE_CHARGING
-            POWERSTATE_CHARGED
-        )],
-        EventAction => [qw(
-            ADDEVENT
-            PEEKEVENT
-            GETEVENT
-        )],
-        SystemCursor => [qw(
-            SYSTEM_CURSOR_ARROW
-            SYSTEM_CURSOR_IBEAM
-            SYSTEM_CURSOR_WAIT
-            SYSTEM_CURSOR_CROSSHAIR
-            SYSTEM_CURSOR_WAITARROW
-            SYSTEM_CURSOR_SIZENWSE
-            SYSTEM_CURSOR_SIZENESW
-            SYSTEM_CURSOR_SIZEWE
-            SYSTEM_CURSOR_SIZENS
-            SYSTEM_CURSOR_SIZEALL
-            SYSTEM_CURSOR_NO
-            SYSTEM_CURSOR_HAND
-            NUM_SYSTEM_CURSORS
+        LogPriority => [qw(
+            LOG_PRIORITY_VERBOSE=1
+            LOG_PRIORITY_DEBUG
+            LOG_PRIORITY_INFO
+            LOG_PRIORITY_WARN
+            LOG_PRIORITY_ERROR
+            LOG_PRIORITY_CRITICAL
+            NUM_LOG_PRIORITIES
         )],
         MouseWheelDirection => [qw(
             MOUSEWHEEL_NORMAL
             MOUSEWHEEL_FLIPPED
+        )],
+        PackedLayout => [qw(
+            PACKEDLAYOUT_NONE
+            PACKEDLAYOUT_332
+            PACKEDLAYOUT_4444
+            PACKEDLAYOUT_1555
+            PACKEDLAYOUT_5551
+            PACKEDLAYOUT_565
+            PACKEDLAYOUT_8888
+            PACKEDLAYOUT_2101010
+            PACKEDLAYOUT_1010102
+        )],
+        PackedOrder => [qw(
+            PACKEDORDER_NONE
+            PACKEDORDER_XRGB
+            PACKEDORDER_RGBX
+            PACKEDORDER_ARGB
+            PACKEDORDER_RGBA
+            PACKEDORDER_XBGR
+            PACKEDORDER_BGRX
+            PACKEDORDER_ABGR
+            PACKEDORDER_BGRA
         )],
         PixelType => [qw(
             PIXELTYPE_UNKNOWN
@@ -421,41 +440,28 @@ BEGIN {
             PIXELTYPE_ARRAYF16
             PIXELTYPE_ARRAYF32
         )],
-        BitmapOrder => [qw(
-            BITMAPORDER_NONE
-            BITMAPORDER_4321
-            BITMAPORDER_1234
+        PowerState => [qw(
+            POWERSTATE_UNKNOWN
+            POWERSTATE_ON_BATTERY
+            POWERSTATE_NO_BATTERY
+            POWERSTATE_CHARGING
+            POWERSTATE_CHARGED
         )],
-        PackedOrder => [qw(
-            PACKEDORDER_NONE
-            PACKEDORDER_XRGB
-            PACKEDORDER_RGBX
-            PACKEDORDER_ARGB
-            PACKEDORDER_RGBA
-            PACKEDORDER_XBGR
-            PACKEDORDER_BGRX
-            PACKEDORDER_ABGR
-            PACKEDORDER_BGRA
+        RendererFlags => {
+            RENDERER_SOFTWARE      => 0x00000001,
+            RENDERER_ACCELERATED   => 0x00000002,
+            RENDERER_PRESENTVSYNC  => 0x00000004,
+            RENDERER_TARGETTEXTURE => 0x00000008,
+        },
+        RendererFlip => [qw(
+            FLIP_NONE
+            FLIP_HORIZONTAL
+            FLIP_VERTICAL
         )],
-        ArrayOrder => [qw(
-            ARRAYORDER_NONE
-            ARRAYORDER_RGB
-            ARRAYORDER_RGBA
-            ARRAYORDER_ARGB
-            ARRAYORDER_BGR
-            ARRAYORDER_BGRA
-            ARRAYORDER_ABGR
-        )],
-        PackedLayout => [qw(
-            PACKEDLAYOUT_NONE
-            PACKEDLAYOUT_332
-            PACKEDLAYOUT_4444
-            PACKEDLAYOUT_1555
-            PACKEDLAYOUT_5551
-            PACKEDLAYOUT_565
-            PACKEDLAYOUT_8888
-            PACKEDLAYOUT_2101010
-            PACKEDLAYOUT_1010102
+        ScaleMode => [qw(
+            SCALEMODENEAREST
+            SCALEMODELINEAR
+            SCALEMODEBEST
         )],
         ScanCode => [qw(
             SCANCODE_UNKNOWN
@@ -708,98 +714,92 @@ BEGIN {
 
             NUM_SCANCODES=512
         )],
-        EventType => [qw(
-            FIRSTEVENT=0
-
-            QUIT=0x100
-
-            APP_TERMINATING
-            APP_LOWMEMORY
-            APP_WILLENTERBACKGROUND
-            APP_DIDENTERBACKGROUND
-            APP_WILLENTERFOREGROUND
-            APP_DIDENTERFOREGROUND
-
-            LOCALECHANGED
-
-            DISPLAYEVENT=0x150
-
-            WINDOWEVENT=0x200
-            SYSWMEVENT
-
-            KEYDOWN=0x300
-            KEYUP
-            TEXTEDITING
-            TEXTINPUT
-            KEYMAPCHANGED
-
-            MOUSEMOTION=0x400
-            MOUSEBUTTONDOWN
-            MOUSEBUTTONUP
-            MOUSEWHEEL
-
-            JOYAXISMOTION=0x600
-            JOYBALLMOTION
-            JOYHATMOTION
-            JOYBUTTONDOWN
-            JOYBUTTONUP
-            JOYDEVICEADDED
-            JOYDEVICEREMOVED
-
-            CONTROLLERAXISMOTION=0x650
-            CONTROLLERBUTTONDOWN
-            CONTROLLERBUTTONUP
-            CONTROLLERDEVICEADDED
-            CONTROLLERDEVICEREMOVED
-            CONTROLLERDEVICEREMAPPED
-            CONTROLLERTOUCHPADDOWN
-            CONTROLLERTOUCHPADMOTION
-            CONTROLLERTOUCHPADUP
-            CONTROLLERSENSORUPDATE
-
-            FINGERDOWN=0x700
-            FINGERUP
-            FINGERMOTION
-
-            DOLLARGESTURE=0x800
-            DOLLARRECORD
-            MULTIGESTURE
-
-            CLIPBOARDUPDATE=0x900
-
-            DROPFILE=0x1000
-            DROPTEXT
-            DROPBEGIN
-            DROPCOMPLETE
-
-            AUDIODEVICEADDED=0x1100
-            AUDIODEVICEREMOVED
-
-            SENSORUPDATE=0x1200
-
-            RENDER_TARGETS_RESET=0x2000
-            RENDER_DEVICE_RESET
-
-            USEREVENT=0x8000
-
-            LASTEVENT=0xFFFF
+        SystemCursor => [qw(
+            SYSTEM_CURSOR_ARROW
+            SYSTEM_CURSOR_IBEAM
+            SYSTEM_CURSOR_WAIT
+            SYSTEM_CURSOR_CROSSHAIR
+            SYSTEM_CURSOR_WAITARROW
+            SYSTEM_CURSOR_SIZENWSE
+            SYSTEM_CURSOR_SIZENESW
+            SYSTEM_CURSOR_SIZEWE
+            SYSTEM_CURSOR_SIZENS
+            SYSTEM_CURSOR_SIZEALL
+            SYSTEM_CURSOR_NO
+            SYSTEM_CURSOR_HAND
+            NUM_SYSTEM_CURSORS
         )],
         SYSWM_TYPE => [qw(
-           SYSWM_UNKNOWN
-           SYSWM_WINDOWS
-           SYSWM_X11
-           SYSWM_DIRECTFB
-           SYSWM_COCOA
-           SYSWM_UIKIT
-           SYSWM_WAYLAND
-           SYSWM_MIR
-           SYSWM_WINRT
-           SYSWM_ANDROID
-           SYSWM_VIVANTE
-           SYSWM_OS2
-           SYSWM_HAIKU
-           SYSWM_KMSDRM
+            SYSWM_UNKNOWN
+            SYSWM_WINDOWS
+            SYSWM_X11
+            SYSWM_DIRECTFB
+            SYSWM_COCOA
+            SYSWM_UIKIT
+            SYSWM_WAYLAND
+            SYSWM_MIR
+            SYSWM_WINRT
+            SYSWM_ANDROID
+            SYSWM_VIVANTE
+            SYSWM_OS2
+            SYSWM_HAIKU
+            SYSWM_KMSDRM
         )],
+        TextureAccess => [qw(
+            TEXTUREACCESS_STATIC
+            TEXTUREACCESS_STREAMING
+            TEXTUREACCESS_TARGET
+        )],
+        TextureModulate => [qw(
+            TEXTUREMODULATE_NONE
+            TEXTUREMODULATE_COLOR
+            TEXTUREMODULATE_ALPHA
+        )],
+        WindowEventID => [qw(
+            WINDOWEVENT_NONE
+            WINDOWEVENT_SHOWN
+            WINDOWEVENT_HIDDEN
+            WINDOWEVENT_EXPOSED
+            WINDOWEVENT_MOVED
+            WINDOWEVENT_RESIZED
+            WINDOWEVENT_SIZE_CHANGED
+            WINDOWEVENT_MINIMIZED
+            WINDOWEVENT_MAXIMIZED
+            WINDOWEVENT_RESTORED
+            WINDOWEVENT_ENTER
+            WINDOWEVENT_LEAVE
+            WINDOWEVENT_FOCUS_GAINED
+            WINDOWEVENT_FOCUS_LOST
+            WINDOWEVENT_CLOSE
+            WINDOWEVENT_TAKE_FOCUS
+            WINDOWEVENT_HIT_TEST
+        )],
+        WindowFlags => {
+            WINDOW_FULLSCREEN         => 0x00000001,
+            WINDOW_OPENGL             => 0x00000002,
+            WINDOW_SHOWN              => 0x00000004,
+            WINDOW_HIDDEN             => 0x00000008,
+            WINDOW_BORDERLESS         => 0x00000010,
+            WINDOW_RESIZABLE          => 0x00000020,
+            WINDOW_MINIMIZED          => 0x00000040,
+            WINDOW_MAXIMIZED          => 0x00000080,
+            WINDOW_MOUSE_GRABBED      => 0x00000100,
+            WINDOW_INPUT_FOCUS        => 0x00000200,
+            WINDOW_MOUSE_FOCUS        => 0x00000400,
+            WINDOW_FULLSCREEN_DESKTOP => 0x00001001,
+            WINDOW_FOREIGN            => 0x00000800,
+            WINDOW_ALLOW_HIGHDPI      => 0x00002000,
+            WINDOW_MOUSE_CAPTURE      => 0x00004000,
+            WINDOW_ALWAYS_ON_TOP      => 0x00008000,
+            WINDOW_SKIP_TASKBAR       => 0x00010000,
+            WINDOW_UTILITY            => 0x00020000,
+            WINDOW_TOOLTIP            => 0x00040000,
+            WINDOW_POPUP_MENU         => 0x00080000,
+            WINDOW_KEYBOARD_GRABBED   => 0x00100000,
+            WINDOW_VULKAN             => 0x10000000,
+            WINDOW_METAL              => 0x20000000,
+            WINDOW_INPUT_GRABBED      => 0x00000100,
+        },
     );
 }
 
