@@ -1733,12 +1733,13 @@ $ffi->attach( WasInit       => ['uint32'] => 'int'  );
 ## Timer
 
 # SDL_AddTimer
-$ffi->attach( Delay    => ['uint32'] => 'void'   );
-# SDL_GetPerformanceCounter
-# SDL_GetPerformanceFrequency
-$ffi->attach( GetTicks => [        ] => 'uint32' );
 # SDL_RemoveTimer
-# SDL_TICKS_PASSED
+$ffi->attach( Delay                   => ['uint32'] => 'void'   );
+$ffi->attach( GetPerformanceCounter   => [        ] => 'uint64' );
+$ffi->attach( GetPerformanceFrequency => [        ] => 'uint64' );
+$ffi->attach( GetTicks                => [        ] => 'uint32' );
+
+sub TICKS_PASSED { ( $_[1] - $_[0] ) <= 0 }
 
 ## Error
 

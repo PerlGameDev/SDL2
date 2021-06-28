@@ -197,6 +197,8 @@ is [ sort keys %SDL2:: ], [qw(
     GetEventFilter
     GetNumTouchDevices
     GetNumTouchFingers
+    GetPerformanceCounter
+    GetPerformanceFrequency
     GetRenderTarget
     GetRendererInfo
     GetRevision
@@ -1029,6 +1031,7 @@ is [ sort keys %SDL2:: ], [qw(
     TEXTUREMODULATE_ALPHA
     TEXTUREMODULATE_COLOR
     TEXTUREMODULATE_NONE
+    TICKS_PASSED
     TRUE
     TextEditingEvent::
     TextInputEvent::
