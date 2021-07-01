@@ -1,5 +1,5 @@
 TODO list for Perl module SDL2
 
-- Nothing yet
-
-
+- Expand test suite
+- Add documentation
+- Add missing bindings

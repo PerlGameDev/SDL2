@@ -11,3 +11,4 @@ Build
 MYMETA.json
 MYMETA.yml
 Build.bat
+.build/
